@@ -15,6 +15,9 @@ import TablePagination from '@material-ui/core/TablePagination';
 import EnhancedTableHead from './EnhancedTableHead';
 import TablePaginationActions from './TablePaginationActions';
 
+// Helper Functions
+import { getSorting, stableSort } from './utils';
+
 const actionsStyles = theme => ({
   root: {
     flexShrink: 0,
@@ -80,17 +83,19 @@ class BudgetTable extends React.Component<Props, State> {
         <Table aria-labelledby="tableTitle">
           <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={this.onRequestSort} />
           <TableBody>
-            {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
-              return (
-                <TableRow key={`${row.date}-${index}`}>
-                  <TableCell>{row.date}</TableCell>
-                  <TableCell>{row.type}</TableCell>
-                  <TableCell>{row.category}</TableCell>
-                  <TableCell>{row.details}</TableCell>
-                  <TableCell numeric>{row.price}</TableCell>
-                </TableRow>
-              );
-            })}
+            {stableSort(data, getSorting(order, orderBy))
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row, index) => {
+                return (
+                  <TableRow key={`${row.date}-${index}`}>
+                    <TableCell>{row.date}</TableCell>
+                    <TableCell>{row.type}</TableCell>
+                    <TableCell>{row.category}</TableCell>
+                    <TableCell>{row.details}</TableCell>
+                    <TableCell numeric>{row.price}</TableCell>
+                  </TableRow>
+                );
+              })}
           </TableBody>
           <TableFooter>
             <TableRow>
