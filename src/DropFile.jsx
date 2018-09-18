@@ -12,7 +12,7 @@ type State = {
     type: string,
     category: string,
     details: string,
-    price: string
+    price: number
   }>
 };
 
@@ -38,7 +38,6 @@ class DropFile extends React.Component<Props, State> {
 
   modifyFile = (csvFile: string) => {
     const results = csvFile.split('\n');
-
     const data = results.map((row, index) => {
       // Convert every row into an array of strings
       const transaction = row.split(',');
@@ -47,12 +46,14 @@ class DropFile extends React.Component<Props, State> {
         type: transaction[0],
         category: '',
         details: transaction[4],
-        price: transaction[6]
+        price: Number(transaction[6])
       };
     });
 
     // Remove the headers
     data.shift();
+    data.pop();
+
     this.setState({ data });
   };
 
