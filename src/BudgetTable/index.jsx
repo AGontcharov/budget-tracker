@@ -16,7 +16,7 @@ import EnhancedTableHead from './EnhancedTableHead';
 import TablePaginationActions from './TablePaginationActions';
 
 // Helper Functions
-import { getSorting, stableSort } from './utils';
+import { getSorting, stableSort } from '../utils';
 
 const actionsStyles = theme => ({
   root: {

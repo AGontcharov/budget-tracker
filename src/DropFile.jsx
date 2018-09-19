@@ -103,7 +103,8 @@ class DropFile extends React.Component<Props, State> {
             alignItems: 'center',
             justifyContent: 'center',
             border: 'solid 1px',
-            borderColor: theme.palette.accent.main
+            borderColor: theme.palette.accent.main,
+            borderRadius: 10
           }}
         >
           {dropzoneActive && <div>Drop files...</div>}
