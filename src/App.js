@@ -1,6 +1,11 @@
 // @flow
 import * as React from 'react';
 
+// Custom Component
+import Layout from './Layout';
+import Footer from './Footer';
+import DropFile from './DropFile';
+
 // Material UI
 import AppBar from '@material-ui/core/AppBar';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -9,8 +14,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-
-import DropFile from './DropFile';
 
 type Props = {};
 
@@ -32,19 +35,22 @@ class App extends React.Component<Props> {
   render() {
     return (
       <MuiThemeProvider theme={theme}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton color="inherit" aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="title" color="inherit">
-              Budget Tracker
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Paper square={true} style={{ padding: 16 }}>
-          <DropFile />
-        </Paper>
+        <Layout>
+          <AppBar position="static">
+            <Toolbar>
+              <IconButton color="inherit" aria-label="Menu">
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="title" color="inherit">
+                Budget Tracker
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Paper square={true} style={{ padding: 16 }}>
+            <DropFile />
+          </Paper>
+          <Footer />
+        </Layout>
       </MuiThemeProvider>
     );
   }

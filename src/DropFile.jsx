@@ -107,7 +107,13 @@ class DropFile extends React.Component<Props, State> {
             borderRadius: 10
           }}
         >
-          {dropzoneActive && <div>Drop files...</div>}
+          {dropzoneActive && (
+            <div>
+              <Typography variant="body1" align="center">
+                Drop files...
+              </Typography>
+            </div>
+          )}
           {!dropzoneActive && (
             <div
               style={{
