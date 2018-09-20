@@ -5,6 +5,7 @@
 
 # testing
 /coverage
+RawData.js
 
 # production
 /build

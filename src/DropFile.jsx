@@ -62,7 +62,7 @@ class DropFile extends React.Component<Props, State> {
       // Convert every row into an array of strings
       const transaction = row.split(',');
       return {
-        date: transaction[2],
+        date: new Date(transaction[2]),
         type: transaction[0],
         category: '',
         details: transaction[4],
