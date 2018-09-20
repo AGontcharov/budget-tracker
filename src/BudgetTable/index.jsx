@@ -139,16 +139,14 @@ class BudgetTable extends React.Component<Props, State> {
               <TableRow>
                 {rows.map(filter => {
                   return (
-                    <TableCell key={filter.id} style={{ padding: 8 }}>
-                      <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <Input
-                          placeholder="Search..."
-                          inputProps={{
-                            'aria-label': 'Description'
-                          }}
-                          onChange={event => this.onFilter(event, filter.id)}
-                        />
-                      </div>
+                    <TableCell padding="dense" key={filter.id}>
+                      <Input
+                        placeholder="Search..."
+                        inputProps={{
+                          'aria-label': 'Description'
+                        }}
+                        onChange={event => this.onFilter(event, filter.id)}
+                      />
                     </TableCell>
                   );
                 })}
@@ -160,12 +158,19 @@ class BudgetTable extends React.Component<Props, State> {
               .map((row, index) => {
                 return (
                   <TableRow key={`${row.date}-${index}`}>
-                    {/* <TableCell>{row.date.toDateString()}</TableCell> */}
-                    <TableCell>{row.date.toDateString()}</TableCell>
-                    <TableCell>{row.type}</TableCell>
-                    <TableCell>{row.category}</TableCell>
-                    <TableCell>{row.details}</TableCell>
-                    <TableCell numeric>
+                    <TableCell padding="dense">{row.date.toDateString()}</TableCell>
+                    <TableCell padding="dense">{row.type}</TableCell>
+                    <TableCell padding="dense">
+                      <Input
+                        placeholder="None"
+                        inputProps={{
+                          'aria-label': 'Description'
+                        }}
+                        style={{ fontSize: 13 }}
+                      />
+                    </TableCell>
+                    <TableCell padding="dense">{row.details}</TableCell>
+                    <TableCell padding="dense" numeric>
                       {row.price < 0 ? `(${Math.abs(row.price)})` : row.price}
                     </TableCell>
                   </TableRow>
@@ -174,6 +179,7 @@ class BudgetTable extends React.Component<Props, State> {
           </TableBody>
           <TableFooter>
             <TableRow>
+              {/* TODO: Increase page option size */}
               <TablePagination
                 count={filteredData.length}
                 page={page}

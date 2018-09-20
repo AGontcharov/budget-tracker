@@ -58,6 +58,7 @@ class DropFile extends React.Component<Props, State> {
 
   modifyFile = (csvFile: string) => {
     const results = csvFile.split('\n');
+    results.pop();
     const data = results.map((row, index) => {
       // Convert every row into an array of strings
       const transaction = row.split(',');
@@ -65,14 +66,13 @@ class DropFile extends React.Component<Props, State> {
         date: new Date(transaction[2]),
         type: transaction[0],
         category: '',
-        details: transaction[4],
+        details: transaction[4].replace(/^"(.*)"$/, '$1'),
         price: Number(transaction[6])
       };
     });
 
     // Remove the headers
     data.shift();
-    data.pop();
 
     this.setState({ data });
   };
