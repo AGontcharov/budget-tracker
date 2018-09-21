@@ -43,8 +43,8 @@ const EnhancedTableToolbar = (props: Props) => {
       <div style={styles.spacer} />
       <div style={styles.actions}>
         <Tooltip title="Filter list">
-          <IconButton aria-label="Filter list">
-            <FilterListIcon onClick={onFilterClicked} />
+          <IconButton aria-label="Filter list" onClick={onFilterClicked}>
+            <FilterListIcon />
           </IconButton>
         </Tooltip>
       </div>

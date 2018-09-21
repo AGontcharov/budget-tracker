@@ -1,3 +1,11 @@
+export const rows = [
+  { id: 'date', numeric: false, disablePadding: false, label: 'Date of Transaction' },
+  { id: 'type', numeric: false, disablePadding: false, label: 'Transcation Type' },
+  { id: 'category', numeric: false, disablePadding: false, label: 'Category' },
+  { id: 'details', numeric: false, disablePadding: false, label: 'Details' },
+  { id: 'price', numeric: true, disablePadding: false, label: 'Price $ (CAD)' }
+];
+
 export const desc = (a, b, orderBy) => {
   // a gets sorted to an index lower than b i.e. a comes first
   if (b[orderBy] < a[orderBy]) {

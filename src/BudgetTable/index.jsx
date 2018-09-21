@@ -11,7 +11,10 @@ import TableRow from '@material-ui/core/TableRow';
 import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 
+import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import InputLabel from '@material-ui/core/InputLabel';
 
 // Custom Components
 import EnhancedToolBar from './EnhancedToolBar';
@@ -19,16 +22,11 @@ import EnhancedTableHead from './EnhancedTableHead';
 import TablePaginationActions from './TablePaginationActions';
 
 // Helper Functions
-import { getSorting, stableSort } from '../utils';
+import { getSorting, stableSort, rows } from '../utils';
 import rawData from './RawData';
 
-export const rows = [
-  { id: 'date', numeric: false, disablePadding: false, label: 'Date of Transaction' },
-  { id: 'type', numeric: false, disablePadding: false, label: 'Transcation Type' },
-  { id: 'category', numeric: false, disablePadding: false, label: 'Category' },
-  { id: 'details', numeric: false, disablePadding: false, label: 'Details' },
-  { id: 'price', numeric: true, disablePadding: false, label: 'Price $ (CAD)' }
-];
+// Flow Type
+import type { Transaction } from '../DropFile';
 
 // TODO: Move to paginated component?
 const actionsStyles = theme => ({
@@ -44,16 +42,11 @@ const TablePaginationActionsWrapped = withStyles(actionsStyles, { withTheme: tru
 );
 
 type Props = {
-  data: Array<{
-    date: string,
-    type: string,
-    category: string,
-    details: string,
-    price: string
-  }>
+  data: Array<Transaction>
 };
 
 type State = {
+  transactions: Array<Transaction>,
   isFilter: boolean,
   filters: Array<{ name: string, value: string }>,
   order: string,
@@ -63,14 +56,20 @@ type State = {
 };
 
 class BudgetTable extends React.Component<Props, State> {
-  state = {
-    isFilter: false,
-    filters: [],
-    order: 'asc',
-    orderBy: 'date',
-    rowsPerPage: 10,
-    page: 0
-  };
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      // Test data
+      transactions: rawData,
+      isFilter: false,
+      filters: [],
+      order: 'asc',
+      orderBy: 'date',
+      rowsPerPage: 10,
+      page: 0
+    };
+  }
 
   onFilterClicked = () => {
     this.setState({ isFilter: !this.state.isFilter });
@@ -106,6 +105,12 @@ class BudgetTable extends React.Component<Props, State> {
     this.setState({ order, orderBy });
   };
 
+  onCategoryChange = (event: SyntheticEvent<>, index: any) => {
+    let transactions = [...this.state.transactions];
+    transactions[index].category = event.target.value;
+    this.setState({ transactions });
+  };
+
   onChangePage = (event: SyntheticEvent<>, page: number) => {
     this.setState({ page });
   };
@@ -115,18 +120,21 @@ class BudgetTable extends React.Component<Props, State> {
   };
 
   render() {
-    // const { data } = this.props;
-    const { filters, isFilter, order, orderBy, page, rowsPerPage } = this.state;
-
-    // Testing Data
-    const data = rawData;
+    const { transactions, filters, isFilter, order, orderBy, page, rowsPerPage } = this.state;
 
     // Filter the data
     const filteredData = filters.reduce((filteredSoFar, nextFilter) => {
       return filteredSoFar.filter(row => {
         return (row[nextFilter.name] + '').toLowerCase().includes(nextFilter.value.toLowerCase());
       });
-    }, data);
+    }, transactions);
+
+    // Get the total amount
+    const totalAmount = filteredData
+      .reduce((accumulator, row) => {
+        return accumulator + row.price;
+      }, 0)
+      .toFixed(2);
 
     return (
       <Paper style={{ margin: 16 }}>
@@ -146,6 +154,7 @@ class BudgetTable extends React.Component<Props, State> {
                           'aria-label': 'Description'
                         }}
                         onChange={event => this.onFilter(event, filter.id)}
+                        style={{ fontSize: 14 }}
                       />
                     </TableCell>
                   );
@@ -157,7 +166,7 @@ class BudgetTable extends React.Component<Props, State> {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => {
                 return (
-                  <TableRow key={`${row.date}-${index}`}>
+                  <TableRow hover key={`${row.date}-${index}`}>
                     <TableCell padding="dense">{row.date.toDateString()}</TableCell>
                     <TableCell padding="dense">{row.type}</TableCell>
                     <TableCell padding="dense">
@@ -166,6 +175,7 @@ class BudgetTable extends React.Component<Props, State> {
                         inputProps={{
                           'aria-label': 'Description'
                         }}
+                        onChange={event => this.onCategoryChange(event, row.id)}
                         style={{ fontSize: 13 }}
                       />
                     </TableCell>
@@ -178,13 +188,32 @@ class BudgetTable extends React.Component<Props, State> {
               })}
           </TableBody>
           <TableFooter>
+            {/* TODO: Do I need these extra TableCells? */}
             <TableRow>
-              {/* TODO: Increase page option size */}
+              <TableCell />
+              <TableCell />
+              <TableCell />
+              <TableCell />
+              <TableCell padding="dense">
+                <FormControl margin="dense">
+                  <InputLabel htmlFor="adornment-amount">Amount</InputLabel>
+                  <Input
+                    id="adornment-amount"
+                    value={totalAmount < 0 ? `(${Math.abs(totalAmount)})` : totalAmount}
+                    readOnly
+                    // onChange={this.handleChange('amount')}
+                    startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                  />
+                </FormControl>
+              </TableCell>
+            </TableRow>
+            <TableRow>
               <TablePagination
                 count={filteredData.length}
                 page={page}
                 onChangePage={this.onChangePage}
                 rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={[10, 25, 50]}
                 onChangeRowsPerPage={this.onChangeRowsPerPage}
                 ActionsComponent={TablePaginationActionsWrapped}
               />

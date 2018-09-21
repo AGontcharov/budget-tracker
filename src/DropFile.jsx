@@ -10,18 +10,21 @@ import BudgetTable from './BudgetTable';
 import Typography from '@material-ui/core/Typography';
 import Upload from '@material-ui/icons/CloudUpload';
 
+export type Transaction = {
+  id: number,
+  date: Date,
+  type: string,
+  category: string,
+  details: string,
+  price: number
+};
+
 type Props = {
   theme: Object
 };
 
 type State = {
-  data: Array<{
-    date: string,
-    type: string,
-    category: string,
-    details: string,
-    price: number
-  }>,
+  data: Array<Transaction>,
   dropzoneActive: boolean
 };
 
@@ -63,6 +66,7 @@ class DropFile extends React.Component<Props, State> {
       // Convert every row into an array of strings
       const transaction = row.split(',');
       return {
+        id: index - 1,
         date: new Date(transaction[2]),
         type: transaction[0],
         category: '',
@@ -73,7 +77,6 @@ class DropFile extends React.Component<Props, State> {
 
     // Remove the headers
     data.shift();
-
     this.setState({ data });
   };
 
