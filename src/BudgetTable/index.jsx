@@ -2,7 +2,6 @@
 import * as React from 'react';
 
 // Material UI
-import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -28,19 +27,6 @@ import rawData from './RawData';
 
 // Flow Type
 import type { Transaction } from '../DropFile';
-
-// TODO: Move to paginated component?
-const actionsStyles = theme => ({
-  root: {
-    flexShrink: 0,
-    color: theme.palette.text.secondary,
-    marginLeft: theme.spacing.unit * 2.5
-  }
-});
-
-const TablePaginationActionsWrapped = withStyles(actionsStyles, { withTheme: true })(
-  TablePaginationActions
-);
 
 type Props = {
   data: Array<Transaction>
@@ -226,7 +212,8 @@ class BudgetTable extends React.Component<Props, State> {
                 rowsPerPage={rowsPerPage}
                 rowsPerPageOptions={[10, 25, 50]}
                 onChangeRowsPerPage={this.onChangeRowsPerPage}
-                ActionsComponent={TablePaginationActionsWrapped}
+                // ActionsComponent={TablePaginationActionsWrapped}
+                ActionsComponent={TablePaginationActions}
               />
             </TableRow>
           </TableFooter>

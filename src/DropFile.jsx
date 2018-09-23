@@ -42,7 +42,6 @@ class DropFile extends React.Component<Props, State> {
       const reader = new FileReader();
       reader.onload = () => {
         const result = reader.result;
-        // Do whatever you want with the file content
         this.modifyFile(result.toString());
       };
       reader.onabort = () => console.log('file reading was aborted');
