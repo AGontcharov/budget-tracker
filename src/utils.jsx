@@ -1,4 +1,4 @@
-export const rows = [
+export const headers = [
   { id: 'date', numeric: false, disablePadding: false, label: 'Date of Transaction' },
   { id: 'type', numeric: false, disablePadding: false, label: 'Transcation Type' },
   { id: 'category', numeric: false, disablePadding: false, label: 'Category' },

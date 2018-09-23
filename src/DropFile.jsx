@@ -12,7 +12,7 @@ import Upload from '@material-ui/icons/CloudUpload';
 
 export type Transaction = {
   id: number,
-  date: Date,
+  date: string,
   type: string,
   category: string,
   details: string,
@@ -70,7 +70,7 @@ class DropFile extends React.Component<Props, State> {
       const transaction = row.split(',');
       return {
         id: index - 1,
-        date: new Date(transaction[2]),
+        date: new Date(transaction[2]).toDateString(),
         type: transaction[0],
         category: '',
         // Remove the quotes around the details

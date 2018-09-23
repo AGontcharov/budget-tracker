@@ -9,7 +9,7 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 
 // Helper Functions
-import { rows } from '../utils';
+import { headers } from '../Utils';
 
 type Props = {
   onRequestSort: Function,
@@ -30,7 +30,7 @@ class EnhancedTableHead extends React.Component<Props, State> {
     return (
       <TableHead>
         <TableRow>
-          {rows.map(row => {
+          {headers.map(row => {
             return (
               <TableCell
                 key={row.id}

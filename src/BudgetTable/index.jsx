@@ -23,7 +23,7 @@ import TablePaginationActions from './TablePaginationActions';
 import IntegrationReactSelect from '../Select';
 
 // Helper Functions
-import { getSorting, stableSort, rows } from '../utils';
+import { getSorting, stableSort, headers } from '../Utils';
 import rawData from './RawData';
 
 // Flow Type
@@ -122,7 +122,7 @@ class BudgetTable extends React.Component<Props, State> {
         overflowX: 'auto'
       },
       input: {
-        fontSize: '14'
+        fontSize: '13'
       }
     };
 
@@ -140,14 +140,18 @@ class BudgetTable extends React.Component<Props, State> {
 
     return (
       <Paper style={styles.paper}>
-        <EnhancedToolBar title={'Transactions'} onFilterClicked={this.onFilterClicked} />
+        <EnhancedToolBar
+          data={filteredData}
+          title={'Transactions'}
+          onFilterClicked={this.onFilterClicked}
+        />
         <Table aria-labelledby="tableTitle" style={styles.table}>
           <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={this.onRequestSort} />
           <TableBody>
             {/* TODO: Create custom filter component probably */}
             {isFilter && (
               <TableRow>
-                {rows.map(filter => {
+                {headers.map(filter => {
                   return (
                     <TableCell padding="dense" key={filter.id} numeric={filter.id === 'price'}>
                       <Input
@@ -156,7 +160,8 @@ class BudgetTable extends React.Component<Props, State> {
                           'aria-label': 'Description'
                         }}
                         onChange={event => this.onFilter(event, filter.id)}
-                        style={styles.input}
+                        // TODO: fontSize not matching
+                        // style={{ fontSize: 13 }}
                       />
                     </TableCell>
                   );
@@ -169,7 +174,7 @@ class BudgetTable extends React.Component<Props, State> {
               .map((row, index) => {
                 return (
                   <TableRow hover key={`${row.date}-${index}`}>
-                    <TableCell padding="dense">{row.date.toDateString()}</TableCell>
+                    <TableCell padding="dense">{row.date}</TableCell>
                     <TableCell>{row.type}</TableCell>
                     <TableCell>
                       {/* TODO: Column sizing and set category */}
