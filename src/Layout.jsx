@@ -6,11 +6,14 @@ type Props = {
 };
 
 const layout = (props: Props) => {
-  return (
-    <div style={{ height: '100%', width: '100%', display: 'flex', flexDirection: 'column' }}>
-      {props.children}
-    </div>
-  );
+  const styles = {
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column'
+  };
+
+  return <div style={styles}>{props.children}</div>;
 };
 
 export default layout;

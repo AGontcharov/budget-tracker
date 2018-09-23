@@ -2,6 +2,7 @@
 import * as React from 'react';
 
 // Material UI
+import { withTheme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -29,7 +30,8 @@ import rawData from './RawData';
 import type { Transaction } from '../DropFile';
 
 type Props = {
-  data: Array<Transaction>
+  data: Array<Transaction>,
+  theme: Object
 };
 
 type State = {
@@ -108,10 +110,21 @@ class BudgetTable extends React.Component<Props, State> {
   };
 
   render() {
-    const { transactions, filters, isFilter, order, orderBy, page, rowsPerPage } = this.state;
-    // const { filters, isFilter, order, orderBy, page, rowsPerPage } = this.state;
+    const { theme } = this.props;
+    const { filters, isFilter, order, orderBy, page, rowsPerPage, transactions } = this.state;
 
-    // const transactions = this.props.data;
+    const styles = {
+      paper: {
+        margin: theme.spacing.unit * 2
+      },
+      table: {
+        minWidth: 700,
+        overflowX: 'auto'
+      },
+      input: {
+        fontSize: '14'
+      }
+    };
 
     // Filter the data
     const filteredData = filters.reduce((filteredSoFar, nextFilter) => {
@@ -126,9 +139,9 @@ class BudgetTable extends React.Component<Props, State> {
     }, 0);
 
     return (
-      <Paper style={{ margin: 16 }}>
+      <Paper style={styles.paper}>
         <EnhancedToolBar title={'Transactions'} onFilterClicked={this.onFilterClicked} />
-        <Table aria-labelledby="tableTitle" style={{ minWidth: 700, overflowX: 'auto' }}>
+        <Table aria-labelledby="tableTitle" style={styles.table}>
           <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={this.onRequestSort} />
           <TableBody>
             {/* TODO: Create custom filter component probably */}
@@ -143,7 +156,7 @@ class BudgetTable extends React.Component<Props, State> {
                           'aria-label': 'Description'
                         }}
                         onChange={event => this.onFilter(event, filter.id)}
-                        style={{ fontSize: 14 }}
+                        style={styles.input}
                       />
                     </TableCell>
                   );
@@ -212,7 +225,6 @@ class BudgetTable extends React.Component<Props, State> {
                 rowsPerPage={rowsPerPage}
                 rowsPerPageOptions={[10, 25, 50]}
                 onChangeRowsPerPage={this.onChangeRowsPerPage}
-                // ActionsComponent={TablePaginationActionsWrapped}
                 ActionsComponent={TablePaginationActions}
               />
             </TableRow>
@@ -223,4 +235,4 @@ class BudgetTable extends React.Component<Props, State> {
   }
 }
 
-export default BudgetTable;
+export default withTheme()(BudgetTable);

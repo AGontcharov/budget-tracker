@@ -33,6 +33,12 @@ const theme = createMuiTheme({
 
 class App extends React.Component<Props> {
   render() {
+    const styles = {
+      paper: {
+        padding: theme.spacing.unit * 2
+      }
+    };
+
     return (
       <MuiThemeProvider theme={theme}>
         <Layout>
@@ -46,7 +52,7 @@ class App extends React.Component<Props> {
               </Typography>
             </Toolbar>
           </AppBar>
-          <Paper square={true} style={{ padding: 16 }}>
+          <Paper square={true} style={styles.paper}>
             <DropFile />
           </Paper>
           <Footer />

@@ -1,16 +1,13 @@
 // @flow
 import * as React from 'react';
-import { withTheme } from '@material-ui/core/styles';
 
 // Material UI
+import { withTheme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import FilterListIcon from '@material-ui/icons/FilterList';
-
-// import classNames from 'classnames';
-// import { lighten } from '@material-ui/core/styles/colorManipulator';
 
 type Props = {
   onFilterClicked: () => void,

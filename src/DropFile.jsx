@@ -88,6 +88,32 @@ class DropFile extends React.Component<Props, State> {
     const { data, dropzoneActive, loading } = this.state;
     const { theme } = this.props;
 
+    const styles = {
+      dropZone: {
+        width: 847,
+        height: 150,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        border: 'solid 1px',
+        borderColor: theme.palette.accent.main,
+        borderRadius: 10
+      },
+      dropZoneInactive: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+      },
+      dropZoneInactiveText: {
+        margin: theme.spacing.unit
+      },
+      upload: {
+        fontSize: theme.spacing.unit * 4
+      }
+    };
+
     return (
       <div
         style={{
@@ -102,17 +128,7 @@ class DropFile extends React.Component<Props, State> {
           onDragEnter={this.onDragEnter}
           onDragLeave={this.onDragLeave}
           multiple={false}
-          style={{
-            width: 847,
-            height: 150,
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            border: 'solid 1px',
-            borderColor: theme.palette.accent.main,
-            borderRadius: 10
-          }}
+          style={styles.dropZone}
         >
           {dropzoneActive && (
             <div>
@@ -122,18 +138,11 @@ class DropFile extends React.Component<Props, State> {
             </div>
           )}
           {!dropzoneActive && (
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              <Typography variant="body1" align="center" style={{ margin: 8 }}>
+            <div style={styles.dropZoneInactive}>
+              <Typography variant="body1" align="center" style={styles.dropZoneInactiveText}>
                 Drop your RBC CSV file here to get started!
               </Typography>
-              <Upload style={{ fontSize: 32 }} color="primary" />
+              <Upload style={styles.upload} color="primary" />
             </div>
           )}
         </Dropzone>

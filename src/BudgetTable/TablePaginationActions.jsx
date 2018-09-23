@@ -2,6 +2,7 @@
 import * as React from 'react';
 
 // Material UI
+import { withTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
@@ -13,12 +14,11 @@ type Props = {
   count: number,
   page: number,
   rowsPerPage: number,
-  classes: Object
+  classes: Object,
+  theme: Object
 };
 
-type State = {};
-
-class TablePaginationActions extends React.Component<Props, State> {
+class TablePaginationActions extends React.Component<Props> {
   handleFirstPageButtonClick = (event: SyntheticEvent<>) => {
     this.props.onChangePage(event, 0);
   };
@@ -39,10 +39,18 @@ class TablePaginationActions extends React.Component<Props, State> {
   };
 
   render() {
-    const { classes, count, page, rowsPerPage } = this.props;
+    const { count, page, rowsPerPage, theme } = this.props;
+
+    const styles = {
+      root: {
+        flexShrink: 0,
+        color: theme.palette.text.secondary,
+        marginLeft: theme.spacing.unit * 2.5
+      }
+    };
 
     return (
-      <div className={classes.root}>
+      <div style={styles.root}>
         <IconButton
           onClick={this.handleFirstPageButtonClick}
           disabled={page === 0}
@@ -76,4 +84,4 @@ class TablePaginationActions extends React.Component<Props, State> {
   }
 }
 
-export default TablePaginationActions;
+export default withTheme()(TablePaginationActions);
