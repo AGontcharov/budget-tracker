@@ -25,13 +25,16 @@ type Props = {
 
 type State = {
   data: Array<Transaction>,
-  dropzoneActive: boolean
+  dropzoneActive: boolean,
+  loading: boolean
 };
 
 class DropFile extends React.Component<Props, State> {
   state = {
     data: [],
-    dropzoneActive: false
+    dropzoneActive: false,
+    // TODO: Change back to true
+    loading: false
   };
 
   onDrop = (acceptedFiles: Array<Blob>, rejectedFiles: Array<Blob>) => {
@@ -62,6 +65,7 @@ class DropFile extends React.Component<Props, State> {
   modifyFile = (csvFile: string) => {
     const results = csvFile.split('\n');
     results.pop();
+
     const data = results.map((row, index) => {
       // Convert every row into an array of strings
       const transaction = row.split(',');
@@ -70,6 +74,7 @@ class DropFile extends React.Component<Props, State> {
         date: new Date(transaction[2]),
         type: transaction[0],
         category: '',
+        // Remove the quotes around the details
         details: transaction[4].replace(/^"(.*)"$/, '$1'),
         price: Number(transaction[6])
       };
@@ -77,11 +82,11 @@ class DropFile extends React.Component<Props, State> {
 
     // Remove the headers
     data.shift();
-    this.setState({ data });
+    this.setState({ data, loading: false });
   };
 
   render() {
-    const { data, dropzoneActive } = this.state;
+    const { data, dropzoneActive, loading } = this.state;
     const { theme } = this.props;
 
     return (
@@ -133,7 +138,8 @@ class DropFile extends React.Component<Props, State> {
             </div>
           )}
         </Dropzone>
-        <BudgetTable data={data} />
+
+        {!loading && <BudgetTable data={data} />}
       </div>
     );
   }

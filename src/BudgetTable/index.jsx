@@ -20,6 +20,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import EnhancedToolBar from './EnhancedToolBar';
 import EnhancedTableHead from './EnhancedTableHead';
 import TablePaginationActions from './TablePaginationActions';
+import IntegrationReactSelect from '../Select';
 
 // Helper Functions
 import { getSorting, stableSort, rows } from '../utils';
@@ -62,6 +63,7 @@ class BudgetTable extends React.Component<Props, State> {
     this.state = {
       // Test data
       transactions: rawData,
+      // transactions: props.data,
       isFilter: false,
       filters: [],
       order: 'asc',
@@ -75,7 +77,7 @@ class BudgetTable extends React.Component<Props, State> {
     this.setState({ isFilter: !this.state.isFilter });
   };
 
-  onFilter = (event: SyntheticEvent<>, name: string) => {
+  onFilter = (event: SyntheticInputEvent<HTMLInputElement>, name: string) => {
     let filters = [...this.state.filters];
     let index;
 
@@ -105,7 +107,7 @@ class BudgetTable extends React.Component<Props, State> {
     this.setState({ order, orderBy });
   };
 
-  onCategoryChange = (event: SyntheticEvent<>, index: any) => {
+  onCategoryChange = (event: SyntheticInputEvent<HTMLInputElement>, index: any) => {
     let transactions = [...this.state.transactions];
     transactions[index].category = event.target.value;
     this.setState({ transactions });
@@ -116,11 +118,14 @@ class BudgetTable extends React.Component<Props, State> {
   };
 
   onChangeRowsPerPage = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    this.setState({ rowsPerPage: event.target.value });
+    this.setState({ rowsPerPage: parseInt(event.target.value, 10) });
   };
 
   render() {
     const { transactions, filters, isFilter, order, orderBy, page, rowsPerPage } = this.state;
+    // const { filters, isFilter, order, orderBy, page, rowsPerPage } = this.state;
+
+    // const transactions = this.props.data;
 
     // Filter the data
     const filteredData = filters.reduce((filteredSoFar, nextFilter) => {
@@ -130,16 +135,14 @@ class BudgetTable extends React.Component<Props, State> {
     }, transactions);
 
     // Get the total amount
-    const totalAmount = filteredData
-      .reduce((accumulator, row) => {
-        return accumulator + row.price;
-      }, 0)
-      .toFixed(2);
+    const totalAmount = filteredData.reduce((accumulator, row) => {
+      return accumulator + row.price;
+    }, 0);
 
     return (
       <Paper style={{ margin: 16 }}>
         <EnhancedToolBar title={'Transactions'} onFilterClicked={this.onFilterClicked} />
-        <Table aria-labelledby="tableTitle">
+        <Table aria-labelledby="tableTitle" style={{ minWidth: 700, overflowX: 'auto' }}>
           <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={this.onRequestSort} />
           <TableBody>
             {/* TODO: Create custom filter component probably */}
@@ -147,7 +150,7 @@ class BudgetTable extends React.Component<Props, State> {
               <TableRow>
                 {rows.map(filter => {
                   return (
-                    <TableCell padding="dense" key={filter.id}>
+                    <TableCell padding="dense" key={filter.id} numeric={filter.id === 'price'}>
                       <Input
                         placeholder="Search..."
                         inputProps={{
@@ -168,19 +171,24 @@ class BudgetTable extends React.Component<Props, State> {
                 return (
                   <TableRow hover key={`${row.date}-${index}`}>
                     <TableCell padding="dense">{row.date.toDateString()}</TableCell>
-                    <TableCell padding="dense">{row.type}</TableCell>
-                    <TableCell padding="dense">
-                      <Input
+                    <TableCell>{row.type}</TableCell>
+                    <TableCell>
+                      {/* TODO: Column sizing and set category */}
+                      <IntegrationReactSelect
+                      // onChange={event => this.onCategoryChange(event, row.id)}
+                      />
+                      {/* <Input
                         placeholder="None"
                         inputProps={{
                           'aria-label': 'Description'
                         }}
+                        value={row.category}
                         onChange={event => this.onCategoryChange(event, row.id)}
                         style={{ fontSize: 13 }}
-                      />
+                      /> */}
                     </TableCell>
                     <TableCell padding="dense">{row.details}</TableCell>
-                    <TableCell padding="dense" numeric>
+                    <TableCell numeric>
                       {row.price < 0 ? `(${Math.abs(row.price)})` : row.price}
                     </TableCell>
                   </TableRow>
@@ -199,9 +207,12 @@ class BudgetTable extends React.Component<Props, State> {
                   <InputLabel htmlFor="adornment-amount">Amount</InputLabel>
                   <Input
                     id="adornment-amount"
-                    value={totalAmount < 0 ? `(${Math.abs(totalAmount)})` : totalAmount}
+                    value={
+                      totalAmount < 0
+                        ? `(${Math.abs(totalAmount).toFixed(2)})`
+                        : totalAmount.toFixed(2)
+                    }
                     readOnly
-                    // onChange={this.handleChange('amount')}
                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
                   />
                 </FormControl>
