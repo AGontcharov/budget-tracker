@@ -17,17 +17,17 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
 
 // Custom Components
-import EnhancedToolBar from './EnhancedToolBar';
-import EnhancedTableHead from './EnhancedTableHead';
-import TablePaginationActions from './TablePaginationActions';
-import IntegrationReactSelect from '../Select';
+import EnhancedToolBar from 'BudgetTable/EnhancedToolBar';
+import EnhancedTableHead from 'BudgetTable/EnhancedTableHead';
+import TablePaginationActions from 'BudgetTable/TablePaginationActions';
+import IntegrationReactSelect from 'Select';
 
 // Helper Functions
-import { getSorting, stableSort, headers } from '../Utils';
+import { getSorting, stableSort, headers } from 'Utils';
 import rawData from './RawData';
 
 // Flow Type
-import type { Transaction } from '../DropFile';
+import type { Transaction } from 'DropFile';
 
 type Props = {
   data: Array<Transaction>,
@@ -156,9 +156,7 @@ class BudgetTable extends React.Component<Props, State> {
                     <TableCell padding="dense" key={filter.id} numeric={filter.id === 'price'}>
                       <Input
                         placeholder="Search..."
-                        inputProps={{
-                          'aria-label': 'Description'
-                        }}
+                        inputProps={{ 'aria-label': 'Description' }}
                         onChange={event => this.onFilter(event, filter.id)}
                         // TODO: fontSize not matching
                         // style={{ fontSize: 13 }}

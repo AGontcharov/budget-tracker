@@ -2,9 +2,9 @@
 import * as React from 'react';
 
 // Custom Component
-import Layout from './Layout';
-import Footer from './Footer';
-import DropFile from './DropFile';
+import Layout from 'Layout';
+import Footer from 'Footer';
+import DropFile from 'DropFile';
 
 // Material UI
 import AppBar from '@material-ui/core/AppBar';

@@ -4,7 +4,7 @@ import { withTheme } from '@material-ui/core/styles';
 import Dropzone from 'react-dropzone';
 
 // Custom Component
-import BudgetTable from './BudgetTable';
+import BudgetTable from 'BudgetTable';
 
 // Material UI
 import Typography from '@material-ui/core/Typography';

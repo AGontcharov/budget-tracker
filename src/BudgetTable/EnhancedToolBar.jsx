@@ -14,10 +14,10 @@ import IconButton from '@material-ui/core/IconButton';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 // Flow Type
-import type { Transaction } from '../DropFile';
+import type { Transaction } from 'DropFile';
 
 // Helper Functions
-import { headers } from '../Utils';
+import { headers } from 'Utils';
 
 type Props = {
   data: Array<Transaction>,
