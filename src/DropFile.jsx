@@ -33,8 +33,8 @@ class DropFile extends React.Component<Props, State> {
   state = {
     data: [],
     dropzoneActive: false,
-    // TODO: Change back to true
-    loading: false
+    loading: true
+    // loading: false
   };
 
   onDrop = (acceptedFiles: Array<Blob>, rejectedFiles: Array<Blob>) => {

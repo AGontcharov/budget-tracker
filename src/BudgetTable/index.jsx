@@ -50,8 +50,8 @@ class BudgetTable extends React.Component<Props, State> {
 
     this.state = {
       // Test data
-      transactions: rawData,
-      // transactions: props.data,
+      // transactions: rawData,
+      transactions: props.data,
       isFilter: false,
       filters: [],
       order: 'asc',
@@ -95,9 +95,9 @@ class BudgetTable extends React.Component<Props, State> {
     this.setState({ order, orderBy });
   };
 
-  onCategoryChange = (event: SyntheticInputEvent<HTMLInputElement>, index: any) => {
+  onCategoryChange = (index: number) => (value: string) => {
     let transactions = [...this.state.transactions];
-    transactions[index].category = event.target.value;
+    transactions[index].category = value;
     this.setState({ transactions });
   };
 
@@ -175,19 +175,10 @@ class BudgetTable extends React.Component<Props, State> {
                     <TableCell padding="dense">{row.date}</TableCell>
                     <TableCell>{row.type}</TableCell>
                     <TableCell>
-                      {/* TODO: Column sizing and set category */}
                       <IntegrationReactSelect
-                      // onChange={event => this.onCategoryChange(event, row.id)}
+                        onChange={this.onCategoryChange(row.id)}
+                        value={row.category ? { value: row.category, label: row.category } : null}
                       />
-                      {/* <Input
-                        placeholder="None"
-                        inputProps={{
-                          'aria-label': 'Description'
-                        }}
-                        value={row.category}
-                        onChange={event => this.onCategoryChange(event, row.id)}
-                        style={{ fontSize: 13 }}
-                      /> */}
                     </TableCell>
                     <TableCell padding="dense">{row.details}</TableCell>
                     <TableCell numeric>
