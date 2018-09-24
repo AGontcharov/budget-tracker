@@ -5,7 +5,6 @@ import * as React from 'react';
 import { withTheme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TableFooter from '@material-ui/core/TableFooter';
@@ -19,12 +18,10 @@ import InputLabel from '@material-ui/core/InputLabel';
 // Custom Components
 import EnhancedToolBar from 'BudgetTable/EnhancedToolBar';
 import EnhancedTableHead from 'BudgetTable/EnhancedTableHead';
-import StringFilter from 'BudgetTable/StringFilter';
+import EnhancedTableBody from 'BudgetTable/EnhancedTableBody';
 import TablePaginationActions from 'BudgetTable/TablePaginationActions';
-import IntegrationReactSelect from 'Select';
 
 // Helper Functions
-import { getSorting, stableSort, headers } from 'Utils';
 import rawData from './RawData';
 
 // Flow Type
@@ -51,8 +48,8 @@ class BudgetTable extends React.Component<Props, State> {
 
     this.state = {
       // Test data
-      transactions: rawData,
-      // transactions: props.data,
+      // transactions: rawData,
+      transactions: props.data,
       isFilter: false,
       filters: [],
       order: 'asc',
@@ -60,6 +57,12 @@ class BudgetTable extends React.Component<Props, State> {
       rowsPerPage: 10,
       page: 0
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) {
+      this.setState({ transactions: this.props.data });
+    }
   }
 
   onFilterClicked = () => {
@@ -102,7 +105,7 @@ class BudgetTable extends React.Component<Props, State> {
     this.setState({ transactions });
   };
 
-  onChangePage = (page: number) => {
+  onChangePage = (event: SyntheticEvent<>, page: number) => {
     this.setState({ page });
   };
 
@@ -151,39 +154,16 @@ class BudgetTable extends React.Component<Props, State> {
         />
         <Table aria-labelledby="tableTitle" style={styles.table}>
           <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={this.onRequestSort} />
-          <TableBody>
-            {isFilter && (
-              <TableRow>
-                {headers.map(filter => {
-                  return (
-                    <TableCell padding="dense" key={filter.id} numeric={filter.id === 'price'}>
-                      <StringFilter onChange={this.onFilter(filter.id)} />
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            )}
-            {stableSort(filteredData, getSorting(order, orderBy))
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
-                return (
-                  <TableRow hover key={`${row.date}-${index}`}>
-                    <TableCell padding="dense">{row.date}</TableCell>
-                    <TableCell>{row.type}</TableCell>
-                    <TableCell>
-                      <IntegrationReactSelect
-                        onChange={this.onCategoryChange(row.id)}
-                        value={row.category ? { value: row.category, label: row.category } : null}
-                      />
-                    </TableCell>
-                    <TableCell padding="dense">{row.details}</TableCell>
-                    <TableCell numeric>
-                      {row.price < 0 ? `(${Math.abs(row.price)})` : row.price}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
+          <EnhancedTableBody
+            data={filteredData}
+            isFilter={isFilter}
+            onFilter={this.onFilter}
+            onCategoryChange={this.onCategoryChange}
+            order={order}
+            orderBy={orderBy}
+            page={page}
+            rowsPerPage={rowsPerPage}
+          />
           <TableFooter>
             {/* TODO: Do I need these extra TableCells? */}
             <TableRow>

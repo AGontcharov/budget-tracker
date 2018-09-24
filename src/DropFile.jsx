@@ -27,33 +27,28 @@ type Props = {
 type State = {
   data: Array<Transaction>,
   dropzoneActive: boolean,
-  isRejected: boolean,
-  loading: boolean
+  isRejected: boolean
 };
 
 class DropFile extends React.Component<Props, State> {
   state = {
     data: [],
     dropzoneActive: false,
-    isRejected: false,
-    // loading: true
-    loading: false
+    isRejected: false
   };
 
   onDrop = (acceptedFiles: Array<Blob>, rejectedFiles: Array<Blob>) => {
-    if (acceptedFiles.length) {
-      acceptedFiles.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const result = reader.result;
-          this.modifyFile(result.toString());
-        };
-        reader.onabort = () => console.log('file reading was aborted');
-        reader.onerror = () => console.log('file reading has failed');
+    acceptedFiles.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result;
+        this.modifyFile(result.toString());
+      };
+      reader.onabort = () => console.log('file reading was aborted');
+      reader.onerror = () => console.log('file reading has failed');
 
-        reader.readAsBinaryString(file);
-      });
-    }
+      reader.readAsBinaryString(file);
+    });
 
     this.setState({ dropzoneActive: false });
   };
@@ -86,11 +81,11 @@ class DropFile extends React.Component<Props, State> {
 
     // Remove the headers
     data.shift();
-    this.setState({ data, loading: false });
+    this.setState({ data });
   };
 
   render() {
-    const { data, dropzoneActive, isRejected, loading } = this.state;
+    const { data, dropzoneActive, isRejected } = this.state;
     const { theme } = this.props;
 
     const styles = {
@@ -161,7 +156,7 @@ class DropFile extends React.Component<Props, State> {
           )}
         </Dropzone>
 
-        {!loading && <BudgetTable data={data} />}
+        <BudgetTable data={data} />
 
         {isRejected && (
           <EnhancedSnackbar
