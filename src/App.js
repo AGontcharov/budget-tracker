@@ -11,7 +11,6 @@ import AppBar from '@material-ui/core/AppBar';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
@@ -33,12 +32,6 @@ const theme = createMuiTheme({
 
 class App extends React.Component<Props> {
   render() {
-    const styles = {
-      paper: {
-        padding: theme.spacing.unit * 2
-      }
-    };
-
     return (
       <MuiThemeProvider theme={theme}>
         <Layout>
@@ -52,9 +45,7 @@ class App extends React.Component<Props> {
               </Typography>
             </Toolbar>
           </AppBar>
-          <Paper square={true} style={styles.paper}>
-            <DropFile />
-          </Paper>
+          <DropFile />
           <Footer />
         </Layout>
       </MuiThemeProvider>

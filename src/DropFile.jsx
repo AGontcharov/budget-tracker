@@ -5,6 +5,7 @@ import Dropzone from 'react-dropzone';
 
 // Custom Component
 import BudgetTable from 'BudgetTable';
+import EnhancedSnackbar from 'components/EnhancedSnackbar';
 
 // Material UI
 import Typography from '@material-ui/core/Typography';
@@ -26,6 +27,7 @@ type Props = {
 type State = {
   data: Array<Transaction>,
   dropzoneActive: boolean,
+  isRejected: boolean,
   loading: boolean
 };
 
@@ -33,22 +35,27 @@ class DropFile extends React.Component<Props, State> {
   state = {
     data: [],
     dropzoneActive: false,
-    loading: true
-    // loading: false
+    isRejected: false,
+    // loading: true
+    loading: false
   };
 
   onDrop = (acceptedFiles: Array<Blob>, rejectedFiles: Array<Blob>) => {
-    acceptedFiles.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const result = reader.result;
-        this.modifyFile(result.toString());
-      };
-      reader.onabort = () => console.log('file reading was aborted');
-      reader.onerror = () => console.log('file reading has failed');
+    this.setState({ isRejected: false });
 
-      reader.readAsBinaryString(file);
-    });
+    if (acceptedFiles.length) {
+      acceptedFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result;
+          this.modifyFile(result.toString());
+        };
+        reader.onabort = () => console.log('file reading was aborted');
+        reader.onerror = () => console.log('file reading has failed');
+
+        reader.readAsBinaryString(file);
+      });
+    }
 
     this.setState({ dropzoneActive: false });
   };
@@ -85,7 +92,7 @@ class DropFile extends React.Component<Props, State> {
   };
 
   render() {
-    const { data, dropzoneActive, loading } = this.state;
+    const { data, dropzoneActive, isRejected, loading } = this.state;
     const { theme } = this.props;
 
     const styles = {
@@ -98,7 +105,9 @@ class DropFile extends React.Component<Props, State> {
         justifyContent: 'center',
         border: 'solid 1px',
         borderColor: theme.palette.accent.main,
-        borderRadius: 10
+        borderRadius: 10,
+        margin: theme.spacing.unit * 4.5,
+        marginBottom: theme.spacing.unit * 3.5
       },
       dropZoneInactive: {
         display: 'flex',
@@ -124,7 +133,10 @@ class DropFile extends React.Component<Props, State> {
         }}
       >
         <Dropzone
+          accept="text/csv"
           onDrop={this.onDrop}
+          onDropAccepted={() => this.setState({ isRejected: false })}
+          onDropRejected={() => this.setState({ isRejected: true })}
           onDragEnter={this.onDragEnter}
           onDragLeave={this.onDragLeave}
           multiple={false}
@@ -148,6 +160,14 @@ class DropFile extends React.Component<Props, State> {
         </Dropzone>
 
         {!loading && <BudgetTable data={data} />}
+
+        {isRejected && (
+          <EnhancedSnackbar
+            open={isRejected}
+            message="Only CSV files are accepted"
+            variant="error"
+          />
+        )}
       </div>
     );
   }

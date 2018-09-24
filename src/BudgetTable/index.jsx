@@ -19,6 +19,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 // Custom Components
 import EnhancedToolBar from 'BudgetTable/EnhancedToolBar';
 import EnhancedTableHead from 'BudgetTable/EnhancedTableHead';
+import StringFilter from 'BudgetTable/StringFilter';
 import TablePaginationActions from 'BudgetTable/TablePaginationActions';
 import IntegrationReactSelect from 'Select';
 
@@ -50,8 +51,8 @@ class BudgetTable extends React.Component<Props, State> {
 
     this.state = {
       // Test data
-      // transactions: rawData,
-      transactions: props.data,
+      transactions: rawData,
+      // transactions: props.data,
       isFilter: false,
       filters: [],
       order: 'asc',
@@ -65,7 +66,7 @@ class BudgetTable extends React.Component<Props, State> {
     this.setState({ isFilter: !this.state.isFilter });
   };
 
-  onFilter = (event: SyntheticInputEvent<HTMLInputElement>, name: string) => {
+  onFilter = (name: string) => (event: SyntheticInputEvent<HTMLInputElement>) => {
     let filters = [...this.state.filters];
     let index;
 
@@ -121,6 +122,9 @@ class BudgetTable extends React.Component<Props, State> {
         minWidth: 700,
         overflowX: 'auto'
       },
+      row: {
+        backgroundColor: theme.palette.background.default
+      },
       input: {
         fontSize: '13'
       }
@@ -154,13 +158,7 @@ class BudgetTable extends React.Component<Props, State> {
                 {headers.map(filter => {
                   return (
                     <TableCell padding="dense" key={filter.id} numeric={filter.id === 'price'}>
-                      <Input
-                        placeholder="Search..."
-                        inputProps={{ 'aria-label': 'Description' }}
-                        onChange={event => this.onFilter(event, filter.id)}
-                        // TODO: fontSize not matching
-                        // style={{ fontSize: 13 }}
-                      />
+                      <StringFilter onChange={this.onFilter(filter.id)} />
                     </TableCell>
                   );
                 })}
