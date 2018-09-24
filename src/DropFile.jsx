@@ -41,8 +41,6 @@ class DropFile extends React.Component<Props, State> {
   };
 
   onDrop = (acceptedFiles: Array<Blob>, rejectedFiles: Array<Blob>) => {
-    this.setState({ isRejected: false });
-
     if (acceptedFiles.length) {
       acceptedFiles.forEach(file => {
         const reader = new FileReader();
@@ -118,6 +116,9 @@ class DropFile extends React.Component<Props, State> {
       dropZoneInactiveText: {
         margin: theme.spacing.unit
       },
+      rejectedStyle: {
+        borderColor: theme.palette.error.dark
+      },
       upload: {
         fontSize: theme.spacing.unit * 4
       }
@@ -140,6 +141,7 @@ class DropFile extends React.Component<Props, State> {
           onDragEnter={this.onDragEnter}
           onDragLeave={this.onDragLeave}
           multiple={false}
+          rejectStyle={styles.rejectedStyle}
           style={styles.dropZone}
         >
           {dropzoneActive && (

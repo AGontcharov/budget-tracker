@@ -85,7 +85,7 @@ class BudgetTable extends React.Component<Props, State> {
     this.setState({ filters });
   };
 
-  onRequestSort = (event: SyntheticEvent<>, property: string) => {
+  onRequestSort = (property: string) => {
     const orderBy = property;
     let order = 'desc';
 
@@ -102,7 +102,7 @@ class BudgetTable extends React.Component<Props, State> {
     this.setState({ transactions });
   };
 
-  onChangePage = (event: SyntheticEvent<>, page: number) => {
+  onChangePage = (page: number) => {
     this.setState({ page });
   };
 
@@ -152,7 +152,6 @@ class BudgetTable extends React.Component<Props, State> {
         <Table aria-labelledby="tableTitle" style={styles.table}>
           <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={this.onRequestSort} />
           <TableBody>
-            {/* TODO: Create custom filter component probably */}
             {isFilter && (
               <TableRow>
                 {headers.map(filter => {
@@ -164,7 +163,6 @@ class BudgetTable extends React.Component<Props, State> {
                 })}
               </TableRow>
             )}
-
             {stableSort(filteredData, getSorting(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => {

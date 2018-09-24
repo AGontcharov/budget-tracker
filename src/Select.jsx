@@ -15,11 +15,16 @@ const suggestions = [
   { label: 'Entertainment' },
   { label: 'Eating Out' },
   { label: 'Food' },
+  { label: 'Health Care' },
   { label: 'Housing' },
+  { label: 'Income' },
+  { label: 'Investments' },
   { label: 'Other' },
+  { label: 'Personal Care' },
   { label: 'Transportation' },
   { label: 'Savings' },
-  { label: 'Subscription' }
+  { label: 'Subscriptions' },
+  { label: 'Utilities' }
 ].map(suggestion => ({
   value: suggestion.label,
   label: suggestion.label

@@ -12,16 +12,14 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { headers } from 'Utils';
 
 type Props = {
-  onRequestSort: Function,
+  onRequestSort: string => void,
   order: string,
   orderBy: string
 };
 
-type State = {};
-
-class EnhancedTableHead extends React.Component<Props, State> {
+class EnhancedTableHead extends React.Component<Props> {
   createSortHandler = (property: string) => (event: SyntheticEvent<>) => {
-    this.props.onRequestSort(event, property);
+    this.props.onRequestSort(property);
   };
 
   render() {
