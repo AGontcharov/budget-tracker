@@ -1,13 +1,14 @@
 // @flow
 import * as React from 'react';
-import { withTheme } from '@material-ui/core/styles';
 import Dropzone from 'react-dropzone';
 
 // Custom Component
+import Dashboard from 'Dashboard';
 import BudgetTable from 'BudgetTable';
-import EnhancedSnackbar from 'components/EnhancedSnackbar';
+import EnhancedSnackbar from 'Components/EnhancedSnackbar';
 
 // Material UI
+import { withTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Upload from '@material-ui/icons/CloudUpload';
 
@@ -90,8 +91,8 @@ class DropFile extends React.Component<Props, State> {
 
     const styles = {
       dropZone: {
-        width: 847,
-        height: 150,
+        width: 800,
+        height: 125,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -100,7 +101,7 @@ class DropFile extends React.Component<Props, State> {
         borderColor: theme.palette.accent.main,
         borderRadius: 10,
         margin: theme.spacing.unit * 4.5,
-        marginBottom: theme.spacing.unit * 3.5
+        marginBottom: theme.spacing.unit * 2
       },
       dropZoneInactive: {
         display: 'flex',
@@ -157,6 +158,7 @@ class DropFile extends React.Component<Props, State> {
         </Dropzone>
 
         <BudgetTable data={data} />
+        <Dashboard data={data} />
 
         {isRejected && (
           <EnhancedSnackbar

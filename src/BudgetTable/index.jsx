@@ -22,7 +22,7 @@ import EnhancedTableBody from 'BudgetTable/EnhancedTableBody';
 import TablePaginationActions from 'BudgetTable/TablePaginationActions';
 
 // Helper Functions
-import rawData from './RawData';
+import rawData from 'BudgetTable/RawData';
 
 // Flow Type
 import type { Transaction } from 'DropFile';
@@ -59,6 +59,7 @@ class BudgetTable extends React.Component<Props, State> {
     };
   }
 
+  // TODO: Might be hacky
   componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) {
       this.setState({ transactions: this.props.data });
@@ -146,6 +147,7 @@ class BudgetTable extends React.Component<Props, State> {
     }, 0);
 
     return (
+      // TODO: Alternating Table color scheme?
       <Paper style={styles.paper}>
         <EnhancedToolBar
           data={filteredData}
