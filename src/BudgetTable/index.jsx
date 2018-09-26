@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import { connect } from 'react-redux';
 
 // Material UI
 import { withTheme } from '@material-ui/core/styles';
@@ -25,7 +26,7 @@ import TablePaginationActions from 'BudgetTable/TablePaginationActions';
 import rawData from 'BudgetTable/RawData';
 
 // Flow Type
-import type { Transaction } from 'DropFile';
+import type { Transaction } from 'ducks/data';
 
 type Props = {
   data: Array<Transaction>,
@@ -207,4 +208,10 @@ class BudgetTable extends React.Component<Props, State> {
   }
 }
 
-export default withTheme()(BudgetTable);
+const mapStateToProps = state => {
+  return {
+    data: state.data
+  };
+};
+
+export default withTheme()(connect(mapStateToProps)(BudgetTable));

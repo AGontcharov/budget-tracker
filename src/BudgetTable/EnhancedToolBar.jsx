@@ -14,7 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 // Flow Type
-import type { Transaction } from 'DropFile';
+import type { Transaction } from 'ducks/data';
 
 // Helper Functions
 import { headers } from 'Utils';

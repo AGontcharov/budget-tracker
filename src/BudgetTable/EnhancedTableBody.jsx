@@ -14,7 +14,7 @@ import StringFilter from 'BudgetTable/StringFilter';
 import { getSorting, stableSort, headers } from 'Utils';
 
 // Flow Type
-import type { Transaction } from 'DropFile';
+import type { Transaction } from 'ducks/data';
 
 type Props = {
   data: Array<Transaction>,

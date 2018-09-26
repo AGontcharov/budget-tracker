@@ -1,10 +1,9 @@
 // @flow
 import * as React from 'react';
+import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 
 // Custom Component
-import Dashboard from 'Dashboard';
-import BudgetTable from 'BudgetTable';
 import EnhancedSnackbar from 'Components/EnhancedSnackbar';
 
 // Material UI
@@ -12,28 +11,24 @@ import { withTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Upload from '@material-ui/icons/CloudUpload';
 
-export type Transaction = {
-  id: number,
-  date: string,
-  type: string,
-  category: string,
-  details: string,
-  price: number
-};
+// Helper Functions
+import { loadData } from 'ducks/data';
+
+// Flow Type
+import type { Transaction } from 'ducks/data';
 
 type Props = {
-  theme: Object
+  theme: Object,
+  loadData: (Array<Transaction>) => void
 };
 
 type State = {
-  data: Array<Transaction>,
   dropzoneActive: boolean,
   isRejected: boolean
 };
 
 class DropFile extends React.Component<Props, State> {
   state = {
-    data: [],
     dropzoneActive: false,
     isRejected: false
   };
@@ -82,11 +77,11 @@ class DropFile extends React.Component<Props, State> {
 
     // Remove the headers
     data.shift();
-    this.setState({ data });
+    this.props.loadData(data);
   };
 
   render() {
-    const { data, dropzoneActive, isRejected } = this.state;
+    const { dropzoneActive, isRejected } = this.state;
     const { theme } = this.props;
 
     const styles = {
@@ -121,14 +116,7 @@ class DropFile extends React.Component<Props, State> {
     };
 
     return (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
+      <React.Fragment>
         <Dropzone
           accept="text/csv"
           onDrop={this.onDrop}
@@ -157,9 +145,6 @@ class DropFile extends React.Component<Props, State> {
           )}
         </Dropzone>
 
-        <BudgetTable data={data} />
-        <Dashboard data={data} />
-
         {isRejected && (
           <EnhancedSnackbar
             open={isRejected}
@@ -167,9 +152,14 @@ class DropFile extends React.Component<Props, State> {
             variant="error"
           />
         )}
-      </div>
+      </React.Fragment>
     );
   }
 }
 
-export default withTheme()(DropFile);
+export default withTheme()(
+  connect(
+    null,
+    { loadData }
+  )(DropFile)
+);

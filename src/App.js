@@ -2,6 +2,8 @@
 import * as React from 'react';
 
 // Custom Component
+import BudgetTable from 'BudgetTable';
+import Dashboard from 'Dashboard';
 import Layout from 'Layout';
 import Footer from 'Footer';
 import DropFile from 'DropFile';
@@ -45,7 +47,18 @@ class App extends React.Component<Props> {
               </Typography>
             </Toolbar>
           </AppBar>
-          <DropFile />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <DropFile />
+            <BudgetTable />
+            <Dashboard />
+          </div>
           <Footer />
         </Layout>
       </MuiThemeProvider>
