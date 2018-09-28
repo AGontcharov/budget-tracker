@@ -69,7 +69,7 @@ class EnhancedTableBody extends React.Component<Props> {
           .map((row, index) => {
             return (
               <TableRow hover key={`${row.date}-${index}`}>
-                <TableCell padding="dense">{row.date}</TableCell>
+                <TableCell padding="dense">{row.date.toDateString()}</TableCell>
                 <TableCell>{row.type}</TableCell>
                 <TableCell>
                   <IntegrationReactSelect

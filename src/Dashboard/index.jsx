@@ -43,7 +43,6 @@ class Dashboard extends React.Component<Props> {
     };
 
     return (
-      /* TODO: Might be time for Redux */
       <Paper style={styles.paper}>
         <Toolbar>
           <Typography variant="title" id="tableTitle">

@@ -66,7 +66,7 @@ class DropFile extends React.Component<Props, State> {
       const transaction = row.split(',');
       return {
         id: index - 1,
-        date: new Date(transaction[2]).toDateString(),
+        date: new Date(transaction[2]),
         type: transaction[0],
         category: '',
         // Remove the quotes around the details

@@ -153,7 +153,6 @@ type State = {
   value: { value: string, label: string }
 };
 
-// TODO: Understand WithStyle and classes
 class IntegrationReactSelect extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
