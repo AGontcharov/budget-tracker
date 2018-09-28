@@ -5,6 +5,7 @@ import * as React from 'react';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import Typography from '@material-ui/core/Typography';
 
 // Custom Components
 import IntegrationReactSelect from 'Select';
@@ -12,6 +13,7 @@ import StringFilter from 'BudgetTable/StringFilter';
 
 // Helper Functions
 import { getSorting, stableSort, headers } from 'Utils';
+import getCategoryColor from 'BudgetTable/CategoryColors';
 
 // Flow Type
 import type { Transaction } from 'ducks/data';
@@ -40,16 +42,13 @@ class EnhancedTableBody extends React.Component<Props> {
       rowsPerPage
     } = this.props;
 
-    // TODO: No Data text or something
-    // if (!data.length) {
-    //   return (
-    //     <TableBody>
-    //       <TableRow>
-    //         <TableCell>{'adsfdsfasdf'}</TableCell>
-    //       </TableRow>
-    //     </TableBody>
-    //   );
-    // }
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+
+    const styles = {
+      emptyRow: {
+        height: 49 * emptyRows
+      }
+    };
 
     return (
       <TableBody>
@@ -68,7 +67,13 @@ class EnhancedTableBody extends React.Component<Props> {
           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
           .map((row, index) => {
             return (
-              <TableRow hover key={`${row.date}-${index}`}>
+              <TableRow
+                hover
+                key={`${row.date}-${index}`}
+                style={{
+                  background: row.category ? getCategoryColor(row.category) : undefined
+                }}
+              >
                 <TableCell padding="dense">{row.date.toDateString()}</TableCell>
                 <TableCell>{row.type}</TableCell>
                 <TableCell>
@@ -84,6 +89,13 @@ class EnhancedTableBody extends React.Component<Props> {
               </TableRow>
             );
           })}
+        {emptyRows > 0 && (
+          <TableRow style={styles.emptyRow}>
+            <TableCell colSpan={6} style={{ textAlign: 'center' }}>
+              <Typography align="center">{'No data...'}</Typography>
+            </TableCell>
+          </TableRow>
+        )}
       </TableBody>
     );
   }

@@ -1,8 +1,11 @@
 // @flow
 
+// Helper Functions
+import rawData from 'BudgetTable/RawData';
+
 export type Transaction = {
   id: number,
-  date: string,
+  date: Date,
   type: string,
   category: string,
   details: string,
@@ -13,6 +16,7 @@ const LOAD = 'LOAD';
 
 export const initialState = {
   data: []
+  // data: rawData
 };
 
 // Reducer

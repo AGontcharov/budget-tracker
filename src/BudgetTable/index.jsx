@@ -22,9 +22,6 @@ import EnhancedTableHead from 'BudgetTable/EnhancedTableHead';
 import EnhancedTableBody from 'BudgetTable/EnhancedTableBody';
 import TablePaginationActions from 'BudgetTable/TablePaginationActions';
 
-// Helper Functions
-import rawData from 'BudgetTable/RawData';
-
 // Flow Type
 import type { Transaction } from 'ducks/data';
 
@@ -48,8 +45,6 @@ class BudgetTable extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      // Test data
-      // transactions: rawData,
       transactions: props.data,
       isFilter: false,
       filters: [],
@@ -132,6 +127,9 @@ class BudgetTable extends React.Component<Props, State> {
       },
       input: {
         fontSize: '13'
+      },
+      amount: {
+        textAlign: 'right'
       }
     };
 
@@ -168,13 +166,8 @@ class BudgetTable extends React.Component<Props, State> {
             rowsPerPage={rowsPerPage}
           />
           <TableFooter>
-            {/* TODO: Do I need these extra TableCells? */}
             <TableRow>
-              <TableCell />
-              <TableCell />
-              <TableCell />
-              <TableCell />
-              <TableCell padding="dense">
+              <TableCell colSpan={5} padding="dense" style={styles.amount}>
                 <FormControl margin="dense">
                   <InputLabel htmlFor="adornment-amount">Amount</InputLabel>
                   <Input
