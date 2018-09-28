@@ -1,6 +1,10 @@
 import { createStore } from 'redux';
-import data from 'ducks/data';
+import rootReducer, { initialStoreState } from 'ducks';
 
-const store = createStore(data);
+const store = createStore(
+  rootReducer,
+  initialStoreState,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 export default store;

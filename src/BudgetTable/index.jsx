@@ -210,7 +210,7 @@ class BudgetTable extends React.Component<Props, State> {
 
 const mapStateToProps = state => {
   return {
-    data: state.data
+    data: state.transactions.data
   };
 };
 

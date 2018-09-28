@@ -11,6 +11,7 @@ RawData.js
 /build
 
 # misc
+roadmap
 .DS_Store
 .env.local
 .env.development.local

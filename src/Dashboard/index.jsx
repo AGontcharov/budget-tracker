@@ -61,7 +61,7 @@ class Dashboard extends React.Component<Props> {
 
 const mapStateToProps = state => {
   return {
-    data: state.data
+    data: state.transactions.data
   };
 };
 
