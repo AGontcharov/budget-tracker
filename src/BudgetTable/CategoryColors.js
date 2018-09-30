@@ -1,24 +1,24 @@
 // Material UI
 import {
   red,
-  pink,
+  // pink,
   purple,
   deepPurple,
   indigo,
   blue,
-  lightBlue,
+  // lightBlue,
   cyan,
   teal,
   green,
   lightGreen,
-  lime,
+  // lime,
   yellow,
   amber,
   orange,
-  deepOrange,
+  // deepOrange,
   brown,
-  grey,
-  blueGrey
+  grey
+  // blueGrey
 } from '@material-ui/core/colors';
 
 const categoryColors = {

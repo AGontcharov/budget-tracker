@@ -119,7 +119,7 @@ class BudgetTable extends React.Component<Props, State> {
         margin: theme.spacing.unit * 2
       },
       table: {
-        minWidth: 700,
+        minWidth: 900,
         overflowX: 'auto'
       },
       row: {
