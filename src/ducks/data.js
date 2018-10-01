@@ -15,8 +15,8 @@ export type Transaction = {
 const LOAD = 'LOAD';
 
 export const initialState = {
-  data: []
-  // data: rawData
+  // data: []
+  data: rawData
 };
 
 // Reducer
