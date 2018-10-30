@@ -92,7 +92,7 @@ class EnhancedTableBody extends React.Component<Props> {
         {emptyRows > 0 && (
           <TableRow style={styles.emptyRow}>
             <TableCell colSpan={6} style={{ textAlign: 'center' }}>
-              <Typography align="center">{'No data...'}</Typography>
+              {!data.length && <Typography align="center">{'No data...'}</Typography>}
             </TableCell>
           </TableRow>
         )}

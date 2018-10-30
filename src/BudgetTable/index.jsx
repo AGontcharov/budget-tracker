@@ -4,17 +4,16 @@ import { connect } from 'react-redux';
 
 // Material UI
 import { withTheme } from '@material-ui/core/styles';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import InputLabel from '@material-ui/core/InputLabel';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
-
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import InputLabel from '@material-ui/core/InputLabel';
 
 // Custom Components
 import EnhancedToolBar from 'BudgetTable/EnhancedToolBar';
@@ -43,6 +42,8 @@ type State = {
 class BudgetTable extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
+
+    this.tableRef = React.createRef();
 
     this.state = {
       transactions: props.data,
@@ -103,11 +104,19 @@ class BudgetTable extends React.Component<Props, State> {
   };
 
   onChangePage = (event: SyntheticEvent<>, page: number) => {
-    this.setState({ page });
+    this.setState({ page }, () => {
+      this.tableRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    });
   };
 
   onChangeRowsPerPage = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    // TODO: Scroll to top of table on table size change. It seems like the heigh pushes the scrollbar
+    // down after it has scrolled into view.
     this.setState({ rowsPerPage: parseInt(event.target.value, 10) });
+
+    // this.setState({ rowsPerPage: parseInt(event.target.value, 10) }, () => {
+    //   this.tableRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    // });
   };
 
   render() {
@@ -148,11 +157,14 @@ class BudgetTable extends React.Component<Props, State> {
     return (
       // TODO: Alternating Table color scheme?
       <Paper style={styles.paper}>
-        <EnhancedToolBar
-          data={filteredData}
-          title={'Transactions'}
-          onFilterClicked={this.onFilterClicked}
-        />
+        <div ref={this.tableRef}>
+          <EnhancedToolBar
+            data={filteredData}
+            title={'Transactions'}
+            onFilterClicked={this.onFilterClicked}
+          />
+        </div>
+
         <Table aria-labelledby="tableTitle" style={styles.table}>
           <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={this.onRequestSort} />
           <EnhancedTableBody

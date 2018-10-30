@@ -18,12 +18,12 @@ const suggestions = [
   { label: 'Health Care' },
   { label: 'Housing' },
   { label: 'Income' },
-  { label: 'Investments' },
+  { label: 'Investment' },
   { label: 'Other' },
   { label: 'Personal Care' },
   { label: 'Transportation' },
   { label: 'Savings' },
-  { label: 'Subscriptions' },
+  { label: 'Subscription' },
   { label: 'Utilities' }
 ].map(suggestion => ({
   value: suggestion.label,

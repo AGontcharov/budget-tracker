@@ -40,8 +40,10 @@ const EnhancedTableToolbar = (props: Props) => {
       }, '')
       .concat('\r\n');
 
+    // TODO: Flow
     data.forEach(row => {
       delete row.id;
+      row.date = row.date.toDateString();
       let transaction = Object.values(row).join(',');
       csvContent = csvContent.concat(transaction) + '\r\n';
     });
