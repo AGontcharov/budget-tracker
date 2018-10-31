@@ -12,21 +12,29 @@ export type Transaction = {
   price: number
 };
 
+type Action = { type: string, payload: any };
+
+type InitialState = {
+  data: Array<Transaction>,
+  filters: Array<{ name: string, value: string }>
+};
+
 const LOAD = 'LOAD';
+const LOAD_FILTERS = 'LOAD_FILTERS';
 
 export const initialState = {
-  // data: []
-  data: rawData
+  // data: [],
+  data: rawData,
+  filters: []
 };
 
 // Reducer
-export default (
-  state: { data: Array<?Transaction> } = initialState,
-  action: { type?: string, payload?: any } = {}
-) => {
+export default (state: InitialState = initialState, action: Action) => {
   switch (action.type) {
     case LOAD:
-      return { data: action.payload };
+      return { ...state, data: action.payload };
+    case LOAD_FILTERS:
+      return { ...state, filters: action.payload };
     default:
       return state;
   }
@@ -35,4 +43,19 @@ export default (
 // Action Creator
 export const loadData = (data: Array<Transaction>) => {
   return { type: LOAD, payload: data };
+};
+
+export const loadFilters = (data: Array<{ name: string, value: string }>) => {
+  return { type: LOAD_FILTERS, payload: data };
+};
+
+// Selectors
+export const getFilteredData = transactions => {
+  const filteredData = transactions.filters.reduce((filteredSoFar, nextFilter) => {
+    return filteredSoFar.filter(row => {
+      return (row[nextFilter.name] + '').toLowerCase().includes(nextFilter.value.toLowerCase());
+    });
+  }, transactions.data);
+
+  return filteredData;
 };

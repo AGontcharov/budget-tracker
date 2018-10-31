@@ -21,11 +21,15 @@ import EnhancedTableHead from 'BudgetTable/EnhancedTableHead';
 import EnhancedTableBody from 'BudgetTable/EnhancedTableBody';
 import TablePaginationActions from 'BudgetTable/TablePaginationActions';
 
+// Helper Functions
+import { loadFilters } from 'ducks/data';
+
 // Flow Type
 import type { Transaction } from 'ducks/data';
 
 type Props = {
   data: Array<Transaction>,
+  loadFilters: (Array<{ name: string, value: string }>) => void,
   theme: Object
 };
 
@@ -84,6 +88,8 @@ class BudgetTable extends React.Component<Props, State> {
     }
 
     this.setState({ filters });
+    console.log(filters);
+    this.props.loadFilters(filters);
   };
 
   onRequestSort = (property: string) => {
@@ -219,4 +225,9 @@ const mapStateToProps = state => {
   };
 };
 
-export default withTheme()(connect(mapStateToProps)(BudgetTable));
+export default withTheme()(
+  connect(
+    mapStateToProps,
+    { loadFilters }
+  )(BudgetTable)
+);
