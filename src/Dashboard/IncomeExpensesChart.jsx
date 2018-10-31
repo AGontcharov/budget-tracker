@@ -1,9 +1,13 @@
 // @flow
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { BarChart, Bar, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 
 // Material UI
 import { withTheme } from '@material-ui/core/styles';
+
+// Helper Functions
+import { getFilteredData } from 'ducks/data';
 
 // Flow Type
 import type { Transaction } from 'ducks/data';
@@ -15,7 +19,7 @@ type Props = {
 
 class IncomeExpensesChart extends React.Component<Props> {
   render() {
-    const { theme } = this.props;
+    const { theme, data } = this.props;
 
     const styles = {
       margin: theme.spacing.unit * 4
@@ -26,7 +30,7 @@ class IncomeExpensesChart extends React.Component<Props> {
     let income = 0;
     let expenses = 0;
 
-    this.props.data.forEach(transaction => {
+    data.forEach(transaction => {
       if (transaction.price > 0) {
         income = income + transaction.price;
       } else {
@@ -60,4 +64,10 @@ class IncomeExpensesChart extends React.Component<Props> {
   }
 }
 
-export default withTheme()(IncomeExpensesChart);
+const mapStateToProps = state => {
+  return {
+    data: getFilteredData(state.transactions)
+  };
+};
+
+export default withTheme()(connect(mapStateToProps)(IncomeExpensesChart));

@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react';
-import { connect } from 'react-redux';
 
 // Custom Component
 import IncomeExpensesChart from 'Dashboard/IncomeExpensesChart';
@@ -13,19 +12,13 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
-// Flow Type
-import type { Transaction } from 'ducks/data';
-
 type Props = {
-  data: Array<Transaction>,
   theme: Object
 };
 
 class Dashboard extends React.Component<Props> {
   render() {
     const { theme } = this.props;
-
-    const data = this.props.data;
 
     const styles = {
       paper: {
@@ -47,8 +40,8 @@ class Dashboard extends React.Component<Props> {
           </Typography>
         </Toolbar>
         <div style={styles.wrapper}>
-          <IncomeExpensesChart data={data} />
-          <CategoryChart data={data} />
+          <IncomeExpensesChart />
+          <CategoryChart />
           {/* <DoughnutChart data={data} /> */}
         </div>
       </Paper>
@@ -56,10 +49,4 @@ class Dashboard extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    data: state.transactions.data
-  };
-};
-
-export default withTheme()(connect(mapStateToProps)(Dashboard));
+export default withTheme()(Dashboard);

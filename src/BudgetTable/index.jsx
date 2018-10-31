@@ -22,13 +22,14 @@ import EnhancedTableBody from 'BudgetTable/EnhancedTableBody';
 import TablePaginationActions from 'BudgetTable/TablePaginationActions';
 
 // Helper Functions
-import { loadFilters } from 'ducks/data';
+import { loadData, loadFilters } from 'ducks/data';
 
 // Flow Type
 import type { Transaction } from 'ducks/data';
 
 type Props = {
   data: Array<Transaction>,
+  loadData: (Array<Transaction>) => void,
   loadFilters: (Array<{ name: string, value: string }>) => void,
   theme: Object
 };
@@ -88,7 +89,6 @@ class BudgetTable extends React.Component<Props, State> {
     }
 
     this.setState({ filters });
-    console.log(filters);
     this.props.loadFilters(filters);
   };
 
@@ -107,6 +107,7 @@ class BudgetTable extends React.Component<Props, State> {
     let transactions = [...this.state.transactions];
     transactions[index].category = value;
     this.setState({ transactions });
+    this.props.loadData(transactions);
   };
 
   onChangePage = (event: SyntheticEvent<>, page: number) => {
@@ -228,6 +229,6 @@ const mapStateToProps = state => {
 export default withTheme()(
   connect(
     mapStateToProps,
-    { loadFilters }
+    { loadData, loadFilters }
   )(BudgetTable)
 );
