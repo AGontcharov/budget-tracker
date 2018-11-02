@@ -9,11 +9,11 @@ import Typography from '@material-ui/core/Typography';
 
 // Custom Components
 import IntegrationReactSelect from 'Select';
-import StringFilter from 'BudgetTable/StringFilter';
+import StringFilter from 'budgetTable/StringFilter';
 
 // Helper Functions
-import { getSorting, stableSort, headers } from 'Utils';
-import getCategoryColor from 'BudgetTable/CategoryColors';
+import { getSorting, stableSort, headers } from 'lib/Utils';
+import getCategoryColor from 'lib/CategoryColors';
 
 // Flow Type
 import type { Transaction } from 'ducks/data';

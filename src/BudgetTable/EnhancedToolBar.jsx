@@ -17,7 +17,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import type { Transaction } from 'ducks/data';
 
 // Helper Functions
-import { headers } from 'Utils';
+import { headers } from 'lib/Utils';
 
 type Props = {
   data: Array<Transaction>,

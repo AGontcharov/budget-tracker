@@ -29,12 +29,12 @@ const categoryColors = {
   'Health Care': cyan,
   Housing: orange,
   Income: grey,
-  Investments: purple,
+  Investment: purple,
   Other: blue,
   'Personal Care': deepPurple,
   Transportation: yellow,
   Savings: indigo,
-  Subscriptions: amber,
+  Subscription: amber,
   Utilities: teal
 };
 

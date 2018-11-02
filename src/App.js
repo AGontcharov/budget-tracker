@@ -2,10 +2,10 @@
 import * as React from 'react';
 
 // Custom Component
-import BudgetTable from 'BudgetTable';
-import Dashboard from 'Dashboard';
-import Layout from 'Layout';
-import Footer from 'Footer';
+import BudgetTable from 'budgetTable';
+import Dashboard from 'dashboard';
+import Layout from 'layout/Layout';
+import Footer from 'layout/Footer';
 import DropFile from 'DropFile';
 
 // Material UI

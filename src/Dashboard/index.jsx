@@ -2,8 +2,8 @@
 import * as React from 'react';
 
 // Custom Component
-import IncomeExpensesChart from 'Dashboard/IncomeExpensesChart';
-import CategoryChart from 'Dashboard/CategoryChart';
+import IncomeExpensesChart from 'dashboard/IncomeExpensesChart';
+import CategoryChart from 'dashboard/CategoryChart';
 // import DoughnutChart from 'Dashboard/DoughnutChart';
 
 // Material UI

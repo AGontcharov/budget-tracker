@@ -9,7 +9,7 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 
 // Helper Functions
-import { headers } from 'Utils';
+import { headers } from 'lib/Utils';
 
 type Props = {
   onRequestSort: string => void,

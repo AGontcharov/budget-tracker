@@ -1,7 +1,7 @@
 // @flow
 
 // Helper Functions
-import rawData from 'BudgetTable/RawData';
+import rawData from 'lib/RawData';
 
 export type Transaction = {
   id: number,
