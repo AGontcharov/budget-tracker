@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 
 // Custom Component
-import EnhancedSnackbar from 'Components/EnhancedSnackbar';
+import EnhancedSnackbar from 'components/EnhancedSnackbar';
 
 // Material UI
 import { withTheme } from '@material-ui/core/styles';
