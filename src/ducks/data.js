@@ -23,8 +23,8 @@ const LOAD = 'LOAD';
 const LOAD_FILTERS = 'LOAD_FILTERS';
 
 export const initialState = {
-  // data: [],
-  data: rawData,
+  data: [],
+  // data: rawData,
   filters: []
 };
 

@@ -208,7 +208,7 @@ class BudgetTable extends React.Component<Props, State> {
                 page={page}
                 onChangePage={this.onChangePage}
                 rowsPerPage={rowsPerPage}
-                rowsPerPageOptions={[10, 25, 50]}
+                rowsPerPageOptions={[10, 25, 50, 100]}
                 onChangeRowsPerPage={this.onChangeRowsPerPage}
                 ActionsComponent={TablePaginationActions}
               />

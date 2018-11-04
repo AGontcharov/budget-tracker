@@ -4,7 +4,6 @@ import * as React from 'react';
 // Custom Component
 import IncomeExpensesChart from 'dashboard/IncomeExpensesChart';
 import CategoryChart from 'dashboard/CategoryChart';
-// import DoughnutChart from 'Dashboard/DoughnutChart';
 
 // Material UI
 import { withTheme } from '@material-ui/core/styles';
@@ -42,7 +41,6 @@ class Dashboard extends React.Component<Props> {
         <div style={styles.wrapper}>
           <IncomeExpensesChart />
           <CategoryChart />
-          {/* <DoughnutChart data={data} /> */}
         </div>
       </Paper>
     );
