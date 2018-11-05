@@ -22,7 +22,7 @@ import EnhancedTableBody from 'budgetTable/EnhancedTableBody';
 import TablePaginationActions from 'budgetTable/TablePaginationActions';
 
 // Helper Functions
-import { loadData, loadFilters } from 'ducks/data';
+import { getFilteredData, loadData, loadFilters } from 'ducks/data';
 
 // Flow Type
 import type { Transaction } from 'ducks/data';
@@ -127,8 +127,8 @@ class BudgetTable extends React.Component<Props, State> {
   };
 
   render() {
-    const { theme } = this.props;
-    const { filters, isFilter, order, orderBy, page, rowsPerPage, transactions } = this.state;
+    const { theme, data } = this.props;
+    const { isFilter, order, orderBy, page, rowsPerPage } = this.state;
 
     const styles = {
       paper: {
@@ -149,15 +149,8 @@ class BudgetTable extends React.Component<Props, State> {
       }
     };
 
-    // Filter the data
-    const filteredData = filters.reduce((filteredSoFar, nextFilter) => {
-      return filteredSoFar.filter(row => {
-        return (row[nextFilter.name] + '').toLowerCase().includes(nextFilter.value.toLowerCase());
-      });
-    }, transactions);
-
     // Get the total amount
-    const totalAmount = filteredData.reduce((accumulator, row) => {
+    const totalAmount = data.reduce((accumulator, row) => {
       return accumulator + row.price;
     }, 0);
 
@@ -166,7 +159,7 @@ class BudgetTable extends React.Component<Props, State> {
       <Paper style={styles.paper}>
         <div ref={this.tableRef}>
           <EnhancedToolBar
-            data={filteredData}
+            data={data}
             title={'Transactions'}
             onFilterClicked={this.onFilterClicked}
           />
@@ -175,7 +168,7 @@ class BudgetTable extends React.Component<Props, State> {
         <Table aria-labelledby="tableTitle" style={styles.table}>
           <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={this.onRequestSort} />
           <EnhancedTableBody
-            data={filteredData}
+            data={data}
             isFilter={isFilter}
             onFilter={this.onFilter}
             onCategoryChange={this.onCategoryChange}
@@ -204,7 +197,7 @@ class BudgetTable extends React.Component<Props, State> {
             </TableRow>
             <TableRow>
               <TablePagination
-                count={filteredData.length}
+                count={data.length}
                 page={page}
                 onChangePage={this.onChangePage}
                 rowsPerPage={rowsPerPage}
@@ -222,7 +215,7 @@ class BudgetTable extends React.Component<Props, State> {
 
 const mapStateToProps = state => {
   return {
-    data: state.transactions.data
+    data: getFilteredData(state.transactions)
   };
 };
 

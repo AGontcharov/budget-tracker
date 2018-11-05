@@ -40,12 +40,14 @@ const EnhancedTableToolbar = (props: Props) => {
       }, '')
       .concat('\r\n');
 
-    // TODO: Flow
-    data.forEach(row => {
+    // TODO: Flow Error
+    // Design the object itself?
+    data.forEach(transaction => {
+      let row = { ...transaction };
+
       delete row.id;
       row.date = row.date.toDateString();
-      let transaction = Object.values(row).join(',');
-      csvContent = csvContent.concat(transaction) + '\r\n';
+      csvContent = csvContent.concat(Object.values(row).join(',')) + '\r\n';
     });
 
     download(csvContent, `transactions-${Date.now()}`, 'text/csv');

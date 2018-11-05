@@ -50,6 +50,7 @@ export const loadFilters = (data: Array<{ name: string, value: string }>) => {
 };
 
 // Selectors
+// TODO: Flow error
 export const getFilteredData = transactions => {
   const filteredData = transactions.filters.reduce((filteredSoFar, nextFilter) => {
     return filteredSoFar.filter(row => {
