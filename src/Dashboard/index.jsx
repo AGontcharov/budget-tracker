@@ -34,7 +34,7 @@ class Dashboard extends React.Component<Props> {
     return (
       <Paper style={styles.paper}>
         <Toolbar>
-          <Typography variant="title" id="tableTitle">
+          <Typography variant="h6" id="tableTitle">
             {'Dashboard'}
           </Typography>
         </Toolbar>

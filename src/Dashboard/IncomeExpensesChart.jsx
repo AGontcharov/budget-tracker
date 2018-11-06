@@ -23,8 +23,6 @@ class IncomeExpensesChart extends React.Component<Props> {
 
     const styles = {
       margin: theme.spacing.unit * 4
-      // border: '1px solid',
-      // borderColor: theme.palette.accent.main
     };
 
     let income = 0;

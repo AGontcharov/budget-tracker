@@ -23,8 +23,8 @@ const LOAD = 'LOAD';
 const LOAD_FILTERS = 'LOAD_FILTERS';
 
 export const initialState = {
-  data: [],
-  // data: rawData,
+  // data: [],
+  data: rawData,
   filters: []
 };
 
@@ -50,13 +50,14 @@ export const loadFilters = (data: Array<{ name: string, value: string }>) => {
 };
 
 // Selectors
-// TODO: Flow error
-export const getFilteredData = transactions => {
-  const filteredData = transactions.filters.reduce((filteredSoFar, nextFilter) => {
+export const getFilteredData = (transactions: InitialState): Array<Transaction> => {
+  const { data, filters } = transactions;
+
+  const filteredData = filters.reduce((filteredSoFar, nextFilter) => {
     return filteredSoFar.filter(row => {
       return (row[nextFilter.name] + '').toLowerCase().includes(nextFilter.value.toLowerCase());
     });
-  }, transactions.data);
+  }, data);
 
   return filteredData;
 };

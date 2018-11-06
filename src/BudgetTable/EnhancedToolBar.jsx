@@ -40,13 +40,12 @@ const EnhancedTableToolbar = (props: Props) => {
       }, '')
       .concat('\r\n');
 
-    // TODO: Flow Error
-    // Design the object itself?
     data.forEach(transaction => {
-      let row = { ...transaction };
+      const row = { ...transaction };
 
       delete row.id;
-      row.date = row.date.toDateString();
+      // TODO: Why do I have to flow it like this?
+      row.date = new Date(row.date).toDateString();
       csvContent = csvContent.concat(Object.values(row).join(',')) + '\r\n';
     });
 
@@ -69,7 +68,7 @@ const EnhancedTableToolbar = (props: Props) => {
   return (
     <Toolbar>
       <div style={styles.title}>
-        <Typography variant="title" id="tableTitle">
+        <Typography variant="h6" id="tableTitle">
           {title}
         </Typography>
       </div>

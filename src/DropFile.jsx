@@ -130,14 +130,12 @@ class DropFile extends React.Component<Props, State> {
         >
           {dropzoneActive && (
             <div>
-              <Typography variant="body1" align="center">
-                Drop files...
-              </Typography>
+              <Typography align="center">Drop files...</Typography>
             </div>
           )}
           {!dropzoneActive && (
             <div style={styles.dropZoneInactive}>
-              <Typography variant="body1" align="center" style={styles.dropZoneInactiveText}>
+              <Typography align="center" style={styles.dropZoneInactiveText}>
                 Drop your RBC CSV file here to get started!
               </Typography>
               <Upload style={styles.upload} color="primary" />

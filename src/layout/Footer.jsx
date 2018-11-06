@@ -17,9 +17,7 @@ const Footer = (props: Props) => {
 
   return (
     <div style={styles}>
-      <Typography variant="body1" align="center">
-        Footer goes here
-      </Typography>
+      <Typography align="center">Footer goes here</Typography>
     </div>
   );
 };

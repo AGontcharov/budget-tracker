@@ -29,6 +29,9 @@ const theme = createMuiTheme({
     accent: {
       main: '#E0E0E0'
     }
+  },
+  typography: {
+    useNextVariants: true
   }
 });
 
@@ -42,7 +45,7 @@ class App extends React.Component<Props> {
               <IconButton color="inherit" aria-label="Menu">
                 <MenuIcon />
               </IconButton>
-              <Typography variant="title" color="inherit">
+              <Typography variant="h6" color="inherit">
                 Budget Tracker
               </Typography>
             </Toolbar>
