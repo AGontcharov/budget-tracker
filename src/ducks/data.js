@@ -2,7 +2,11 @@
 
 // Helper Functions
 import rawData from 'lib/RawData';
+// import { stableSort } from 'lib/Utils';
 
+export type Filter = { name: string, value: string };
+// TODO: Review flow type
+export type Sort = { orderBy: string, order: 'acs' | 'desc' };
 export type Transaction = {
   id: number,
   date: Date,
@@ -13,19 +17,21 @@ export type Transaction = {
 };
 
 type Action = { type: string, payload: any };
-
 type InitialState = {
   data: Array<Transaction>,
-  filters: Array<{ name: string, value: string }>
+  filters: Array<Filter>,
+  sort: Sort
 };
 
 const LOAD = 'LOAD';
 const LOAD_FILTERS = 'LOAD_FILTERS';
+const LOAD_ORDER = 'LOAD_ORDER';
 
 export const initialState = {
   // data: [],
   data: rawData,
-  filters: []
+  filters: [],
+  sort: {}
 };
 
 // Reducer
@@ -35,6 +41,8 @@ export default (state: InitialState = initialState, action: Action) => {
       return { ...state, data: action.payload };
     case LOAD_FILTERS:
       return { ...state, filters: action.payload };
+    case LOAD_ORDER:
+      return { ...state, sort: action.payload };
     default:
       return state;
   }
@@ -45,11 +53,20 @@ export const loadData = (data: Array<Transaction>) => {
   return { type: LOAD, payload: data };
 };
 
-export const loadFilters = (data: Array<{ name: string, value: string }>) => {
+export const loadFilters = (data: Array<Filter>) => {
   return { type: LOAD_FILTERS, payload: data };
 };
 
+export const loadSort = (data: Sort) => {
+  return { type: LOAD_ORDER, payload: data };
+};
+
 // Selectors
+// TODO: Sorted + Filtered Data selector
+// export const getData = (transactions: InitialState) => {
+//   const { data, filters, sort } = transactions;
+// };
+
 export const getFilteredData = (transactions: InitialState): Array<Transaction> => {
   const { data, filters } = transactions;
 

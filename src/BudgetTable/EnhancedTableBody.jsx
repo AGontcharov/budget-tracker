@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import { connect } from 'react-redux';
 
 // Material Ui
 import TableBody from '@material-ui/core/TableBody';
@@ -12,6 +13,7 @@ import IntegrationReactSelect from 'Select';
 import StringFilter from 'budgetTable/StringFilter';
 
 // Helper Functions
+import { getFilteredData } from 'ducks/data';
 import { getSorting, stableSort, headers } from 'lib/Utils';
 import getCategoryColor from 'lib/CategoryColors';
 
@@ -103,4 +105,10 @@ class EnhancedTableBody extends React.Component<Props> {
   }
 }
 
-export default EnhancedTableBody;
+const mapStateToProps = state => {
+  return {
+    data: getFilteredData(state.transactions)
+  };
+};
+
+export default connect(mapStateToProps)(EnhancedTableBody);

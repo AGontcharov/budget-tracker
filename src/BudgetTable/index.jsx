@@ -25,12 +25,12 @@ import TablePaginationActions from 'budgetTable/TablePaginationActions';
 import { getFilteredData, loadData, loadFilters } from 'ducks/data';
 
 // Flow Type
-import type { Transaction } from 'ducks/data';
+import type { Filter, Transaction } from 'ducks/data';
 
 type Props = {
   data: Array<Transaction>,
   loadData: (Array<Transaction>) => void,
-  loadFilters: (Array<{ name: string, value: string }>) => void,
+  loadFilters: (Array<Filter>) => void,
   theme: Object
 };
 
@@ -158,17 +158,12 @@ class BudgetTable extends React.Component<Props, State> {
       // TODO: Alternating Table color scheme?
       <Paper style={styles.paper}>
         <div ref={this.tableRef}>
-          <EnhancedToolBar
-            data={data}
-            title={'Transactions'}
-            onFilterClicked={this.onFilterClicked}
-          />
+          <EnhancedToolBar title={'Transactions'} onFilterClicked={this.onFilterClicked} />
         </div>
 
         <Table aria-labelledby="tableTitle" style={styles.table}>
           <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={this.onRequestSort} />
           <EnhancedTableBody
-            data={data}
             isFilter={isFilter}
             onFilter={this.onFilter}
             onCategoryChange={this.onCategoryChange}
