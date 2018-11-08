@@ -17,6 +17,7 @@ type Props = {
   orderBy: string
 };
 
+// TODO: Functional component
 class EnhancedTableHead extends React.Component<Props> {
   createSortHandler = (property: string) => (event: SyntheticEvent<>) => {
     this.props.onRequestSort(property);

@@ -2,11 +2,10 @@
 
 // Helper Functions
 import rawData from 'lib/RawData';
-// import { stableSort } from 'lib/Utils';
+import { getSorting, stableSort } from 'lib/Utils';
 
 export type Filter = { name: string, value: string };
-// TODO: Review flow type
-export type Sort = { orderBy: string, order: 'acs' | 'desc' };
+export type Sort = { orderBy: string, order: 'asc' | 'desc' };
 export type Transaction = {
   id: number,
   date: Date,
@@ -31,7 +30,7 @@ export const initialState = {
   // data: [],
   data: rawData,
   filters: [],
-  sort: {}
+  sort: { orderBy: 'date', order: 'asc' }
 };
 
 // Reducer
@@ -62,11 +61,21 @@ export const loadSort = (data: Sort) => {
 };
 
 // Selectors
-// TODO: Sorted + Filtered Data selector
-// export const getData = (transactions: InitialState) => {
-//   const { data, filters, sort } = transactions;
-// };
+export const getData = (transactions: InitialState): Array<Transaction> => {
+  const { data, filters, sort } = transactions;
 
+  const sortedData: Array<Transaction> = stableSort(data, getSorting(sort.order, sort.orderBy));
+
+  const filteredData = filters.reduce((filteredSoFar, nextFilter) => {
+    return filteredSoFar.filter(row => {
+      return (row[nextFilter.name] + '').toLowerCase().includes(nextFilter.value.toLowerCase());
+    });
+  }, sortedData);
+
+  return filteredData;
+};
+
+// TODO: Keep it around for now
 export const getFilteredData = (transactions: InitialState): Array<Transaction> => {
   const { data, filters } = transactions;
 

@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react';
-import { connect } from 'react-redux';
 
 // Material Ui
 import TableBody from '@material-ui/core/TableBody';
@@ -13,8 +12,7 @@ import IntegrationReactSelect from 'Select';
 import StringFilter from 'budgetTable/StringFilter';
 
 // Helper Functions
-import { getFilteredData } from 'ducks/data';
-import { getSorting, stableSort, headers } from 'lib/Utils';
+import { headers } from 'lib/Utils';
 import getCategoryColor from 'lib/CategoryColors';
 
 // Flow Type
@@ -31,18 +29,10 @@ type Props = {
   rowsPerPage: number
 };
 
+// TODO: Functional component
 class EnhancedTableBody extends React.Component<Props> {
   render() {
-    const {
-      data,
-      isFilter,
-      onFilter,
-      onCategoryChange,
-      order,
-      orderBy,
-      page,
-      rowsPerPage
-    } = this.props;
+    const { data, isFilter, onFilter, onCategoryChange, page, rowsPerPage } = this.props;
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
@@ -67,32 +57,30 @@ class EnhancedTableBody extends React.Component<Props> {
         )}
 
         {/* TODO: Sorting done only here, but we want it to apply on the export too, and maybe everywhere else */}
-        {stableSort(data, getSorting(order, orderBy))
-          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-          .map((row, index) => {
-            return (
-              <TableRow
-                hover
-                key={`${row.date}-${index}`}
-                style={{
-                  background: row.category ? getCategoryColor(row.category) : undefined
-                }}
-              >
-                <TableCell padding="dense">{row.date.toDateString()}</TableCell>
-                <TableCell>{row.type}</TableCell>
-                <TableCell>
-                  <IntegrationReactSelect
-                    onChange={onCategoryChange(row.id)}
-                    value={row.category ? { value: row.category, label: row.category } : null}
-                  />
-                </TableCell>
-                <TableCell padding="dense">{row.details}</TableCell>
-                <TableCell numeric>
-                  {row.price < 0 ? `(${Math.abs(row.price)})` : row.price}
-                </TableCell>
-              </TableRow>
-            );
-          })}
+        {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+          return (
+            <TableRow
+              hover
+              key={row.id}
+              style={{
+                background: row.category ? getCategoryColor(row.category) : undefined
+              }}
+            >
+              <TableCell padding="dense">{row.date.toDateString()}</TableCell>
+              <TableCell>{row.type}</TableCell>
+              <TableCell>
+                <IntegrationReactSelect
+                  onChange={onCategoryChange(row.id)}
+                  value={row.category ? { value: row.category, label: row.category } : null}
+                />
+              </TableCell>
+              <TableCell padding="dense">{row.details}</TableCell>
+              <TableCell numeric>
+                {row.price < 0 ? `(${Math.abs(row.price)})` : row.price}
+              </TableCell>
+            </TableRow>
+          );
+        })}
         {emptyRows > 0 && (
           <TableRow style={styles.emptyRow}>
             <TableCell colSpan={6} style={{ textAlign: 'center' }}>
@@ -105,10 +93,4 @@ class EnhancedTableBody extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    data: getFilteredData(state.transactions)
-  };
-};
-
-export default connect(mapStateToProps)(EnhancedTableBody);
+export default EnhancedTableBody;

@@ -22,15 +22,18 @@ import EnhancedTableBody from 'budgetTable/EnhancedTableBody';
 import TablePaginationActions from 'budgetTable/TablePaginationActions';
 
 // Helper Functions
-import { getFilteredData, loadData, loadFilters } from 'ducks/data';
+import { getData, loadData, loadFilters, loadSort } from 'ducks/data';
 
 // Flow Type
-import type { Filter, Transaction } from 'ducks/data';
+import type { Filter, Sort, Transaction } from 'ducks/data';
 
 type Props = {
   data: Array<Transaction>,
   loadData: (Array<Transaction>) => void,
   loadFilters: (Array<Filter>) => void,
+  loadSort: Sort => void,
+  orderBy: string,
+  order: 'asc' | 'desc',
   theme: Object
 };
 
@@ -38,8 +41,6 @@ type State = {
   transactions: Array<Transaction>,
   isFilter: boolean,
   filters: Array<{ name: string, value: string }>,
-  order: string,
-  orderBy: string,
   rowsPerPage: number,
   page: number
 };
@@ -54,8 +55,6 @@ class BudgetTable extends React.Component<Props, State> {
       transactions: props.data,
       isFilter: false,
       filters: [],
-      order: 'asc',
-      orderBy: 'date',
       rowsPerPage: 10,
       page: 0
     };
@@ -96,11 +95,11 @@ class BudgetTable extends React.Component<Props, State> {
     const orderBy = property;
     let order = 'desc';
 
-    if (this.state.orderBy === property && this.state.order === 'desc') {
+    if (this.props.orderBy === property && this.props.order === 'desc') {
       order = 'asc';
     }
 
-    this.setState({ order, orderBy });
+    this.props.loadSort({ orderBy, order });
   };
 
   onCategoryChange = (index: number) => (value: string) => {
@@ -127,8 +126,8 @@ class BudgetTable extends React.Component<Props, State> {
   };
 
   render() {
-    const { theme, data } = this.props;
-    const { isFilter, order, orderBy, page, rowsPerPage } = this.state;
+    const { theme, data, order, orderBy } = this.props;
+    const { isFilter, page, rowsPerPage } = this.state;
 
     const styles = {
       paper: {
@@ -158,12 +157,17 @@ class BudgetTable extends React.Component<Props, State> {
       // TODO: Alternating Table color scheme?
       <Paper style={styles.paper}>
         <div ref={this.tableRef}>
-          <EnhancedToolBar title={'Transactions'} onFilterClicked={this.onFilterClicked} />
+          <EnhancedToolBar
+            data={data}
+            title={'Transactions'}
+            onFilterClicked={this.onFilterClicked}
+          />
         </div>
 
         <Table aria-labelledby="tableTitle" style={styles.table}>
           <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={this.onRequestSort} />
           <EnhancedTableBody
+            data={data}
             isFilter={isFilter}
             onFilter={this.onFilter}
             onCategoryChange={this.onCategoryChange}
@@ -210,13 +214,15 @@ class BudgetTable extends React.Component<Props, State> {
 
 const mapStateToProps = state => {
   return {
-    data: getFilteredData(state.transactions)
+    data: getData(state.transactions),
+    order: state.transactions.sort.order,
+    orderBy: state.transactions.sort.orderBy
   };
 };
 
 export default withTheme()(
   connect(
     mapStateToProps,
-    { loadData, loadFilters }
+    { loadData, loadFilters, loadSort }
   )(BudgetTable)
 );
