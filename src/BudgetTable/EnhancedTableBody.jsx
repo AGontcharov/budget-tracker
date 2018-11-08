@@ -56,7 +56,6 @@ class EnhancedTableBody extends React.Component<Props> {
           </TableRow>
         )}
 
-        {/* TODO: Sorting done only here, but we want it to apply on the export too, and maybe everywhere else */}
         {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
           return (
             <TableRow

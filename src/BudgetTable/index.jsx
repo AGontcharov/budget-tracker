@@ -102,8 +102,13 @@ class BudgetTable extends React.Component<Props, State> {
     this.props.loadSort({ orderBy, order });
   };
 
-  onCategoryChange = (index: number) => (value: string) => {
+  onCategoryChange = (id: number) => (value: string) => {
     let transactions = [...this.state.transactions];
+
+    const index = transactions.findIndex(transaction => {
+      return transaction.id === id;
+    });
+
     transactions[index].category = value;
     this.setState({ transactions });
     this.props.loadData(transactions);

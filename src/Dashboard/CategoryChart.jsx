@@ -45,7 +45,7 @@ class CategoryChart extends React.Component<Props, State> {
 
         return isCategoryExist
           ? accumulator
-          : accumulator.concat({ name: row.category, value: Math.abs(row.price) });
+          : accumulator.concat({ id: row.id, name: row.category, value: Math.abs(row.price) });
       } else {
         return accumulator;
       }
@@ -56,9 +56,9 @@ class CategoryChart extends React.Component<Props, State> {
     return (
       <div style={styles}>
         <PieChart width={500} height={500}>
-          <Pie data={categories} innerRadius={100} outerRadius={200}>
+          <Pie data={categories} dataKey="value" innerRadius={100} outerRadius={200}>
             {categories.map((entry, index) => (
-              <Cell fill={colors[index % colors.length]} />
+              <Cell key={entry.id} fill={colors[index % colors.length]} />
             ))}
           </Pie>
           <Legend />
