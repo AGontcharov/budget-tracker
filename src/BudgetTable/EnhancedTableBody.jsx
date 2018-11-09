@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 
 // Custom Components
-import IntegrationReactSelect from 'Select';
+import IntegrationReactSelect from 'budgetTable/Select';
 import StringFilter from 'budgetTable/StringFilter';
 
 // Helper Functions

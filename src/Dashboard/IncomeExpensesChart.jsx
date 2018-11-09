@@ -1,9 +1,9 @@
 // @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { BarChart, Bar, XAxis, YAxis, Legend, Tooltip } from 'recharts';
+import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 
-// Material UI
+// Material UI,
 import { withTheme } from '@material-ui/core/styles';
 
 // Helper Functions
@@ -45,13 +45,14 @@ class IncomeExpensesChart extends React.Component<Props> {
           data={[
             {
               name: 'Total Amount',
-              Income: income,
-              Expenses: Math.abs(expenses)
+              Income: income.toFixed(2),
+              Expenses: Math.abs(expenses).toFixed(2)
             }
           ]}
         >
+          <CartesianGrid strokeDasharray="3 3" />
           <XAxis type="category" dataKey="name" />
-          <YAxis type="number" />
+          <YAxis type="number" unit="$" />
           <Tooltip />
           <Bar dataKey="Income" fill="#8884d8" />
           <Bar dataKey="Expenses" fill="#82ca9d" />
