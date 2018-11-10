@@ -15,7 +15,6 @@ type Props = {
   theme: Object
 };
 
-// TODO: Get data from connect here and pass it down?
 class Dashboard extends React.Component<Props> {
   render() {
     const { theme } = this.props;

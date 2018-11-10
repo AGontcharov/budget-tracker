@@ -22,7 +22,7 @@ import EnhancedTableBody from 'budgetTable/EnhancedTableBody';
 import TablePaginationActions from 'budgetTable/TablePaginationActions';
 
 // Helper Functions
-import { getData, loadData, loadFilters, loadSort } from 'ducks/data';
+import { getFilteredData, loadData, loadFilters, loadSort } from 'ducks/data';
 
 // Flow Type
 import type { Filter, Sort, Transaction } from 'ducks/data';
@@ -102,12 +102,8 @@ class BudgetTable extends React.Component<Props, State> {
     this.props.loadSort({ orderBy, order });
   };
 
-  onCategoryChange = (id: number) => (value: string) => {
+  onCategoryChange = (index: number) => (value: string) => {
     let transactions = [...this.state.transactions];
-
-    const index = transactions.findIndex(transaction => {
-      return transaction.id === id;
-    });
 
     transactions[index].category = value;
     this.setState({ transactions });
@@ -172,7 +168,6 @@ class BudgetTable extends React.Component<Props, State> {
         <Table aria-labelledby="tableTitle" style={styles.table}>
           <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={this.onRequestSort} />
           <EnhancedTableBody
-            data={data}
             isFilter={isFilter}
             onFilter={this.onFilter}
             onCategoryChange={this.onCategoryChange}
@@ -219,7 +214,7 @@ class BudgetTable extends React.Component<Props, State> {
 
 const mapStateToProps = state => {
   return {
-    data: getData(state.transactions),
+    data: getFilteredData(state.transactions),
     order: state.transactions.sort.order,
     orderBy: state.transactions.sort.orderBy
   };

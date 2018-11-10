@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import { connect } from 'react-redux';
 import download from 'downloadjs';
 
 // Custom Components
@@ -14,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 // Helper Functions
+import { getData } from 'ducks/data';
 import { headers } from 'lib/Utils';
 
 // Flow Type
@@ -26,7 +28,6 @@ type Props = {
   theme: Object
 };
 
-// TODO: Functional component - remove connect
 const EnhancedTableToolbar = (props: Props) => {
   const { onFilterClicked, title, theme } = props;
 
@@ -89,4 +90,10 @@ const EnhancedTableToolbar = (props: Props) => {
   );
 };
 
-export default withTheme()(EnhancedTableToolbar);
+const mapStateToProps = state => {
+  return {
+    data: getData(state.transactions)
+  };
+};
+
+export default connect(mapStateToProps)(withTheme()(EnhancedTableToolbar));

@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import { connect } from 'react-redux';
 
 // Material Ui
 import TableBody from '@material-ui/core/TableBody';
@@ -12,6 +13,7 @@ import IntegrationReactSelect from 'budgetTable/Select';
 import StringFilter from 'budgetTable/StringFilter';
 
 // Helper Functions
+import { getData } from 'ducks/data';
 import { headers } from 'lib/Utils';
 import getCategoryColor from 'lib/CategoryColors';
 
@@ -29,7 +31,6 @@ type Props = {
   rowsPerPage: number
 };
 
-// TODO: Functional component
 class EnhancedTableBody extends React.Component<Props> {
   render() {
     const { data, isFilter, onFilter, onCategoryChange, page, rowsPerPage } = this.props;
@@ -92,4 +93,10 @@ class EnhancedTableBody extends React.Component<Props> {
   }
 }
 
-export default EnhancedTableBody;
+const mapStateToProps = state => {
+  return {
+    data: getData(state.transactions)
+  };
+};
+
+export default connect(mapStateToProps)(EnhancedTableBody);
