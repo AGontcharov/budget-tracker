@@ -25,6 +25,9 @@ class IncomeExpensesChart extends React.Component<Props> {
       margin: theme.spacing.unit * 4
     };
 
+    // TODO: Initial Display?
+    if (!data.length) return null;
+
     let income = 0;
     let expenses = 0;
 
@@ -50,13 +53,13 @@ class IncomeExpensesChart extends React.Component<Props> {
             }
           ]}
         >
-          <CartesianGrid strokeDasharray="3 3" />
           <XAxis type="category" dataKey="name" />
-          <YAxis type="number" unit="$" />
+          <YAxis type="number" tickFormatter={tick => `$${tick}`} />
+          <CartesianGrid strokeDasharray="3 3" />
           <Tooltip />
-          <Bar dataKey="Income" fill="#8884d8" />
-          <Bar dataKey="Expenses" fill="#82ca9d" />
-          <Legend align="left" />
+          <Bar dataKey="Income" fill="#8884d8" name="Income" />
+          <Bar dataKey="Expenses" fill="#82ca9d" name="Expense" />
+          <Legend />
         </BarChart>
       </div>
     );

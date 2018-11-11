@@ -24,10 +24,14 @@ class Dashboard extends React.Component<Props> {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        margin: theme.spacing.unit * 2
+        margin: theme.spacing.unit * 2,
+        minWidth: 900
       },
       wrapper: {
-        display: 'flex'
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center'
       }
     };
 
@@ -39,6 +43,7 @@ class Dashboard extends React.Component<Props> {
           </Typography>
         </Toolbar>
         <div style={styles.wrapper}>
+          {/* TODO: Maybe check when rendering is needed here instead? */}
           <IncomeExpensesChart />
           <CategoryChart />
         </div>
