@@ -12,13 +12,14 @@ import Typography from '@material-ui/core/Typography';
 import Upload from '@material-ui/icons/CloudUpload';
 
 // Helper Functions
-import { loadData } from 'ducks/data';
+import { isLoading, loadData } from 'ducks/data';
 
 // Flow Type
 import type { Transaction } from 'ducks/data';
 
 type Props = {
   theme: Object,
+  isLoading: boolean => void,
   loadData: (Array<Transaction>) => void
 };
 
@@ -38,6 +39,7 @@ class DropFile extends React.Component<Props, State> {
       const reader = new FileReader();
       reader.onload = () => {
         const result = reader.result;
+        this.props.isLoading(true);
         this.modifyFile(result.toString());
       };
       reader.onabort = () => console.log('file reading was aborted');
@@ -58,6 +60,7 @@ class DropFile extends React.Component<Props, State> {
   };
 
   modifyFile = (csvFile: string) => {
+    const { isLoading, loadData } = this.props;
     const results = csvFile.split('\n');
     results.pop();
 
@@ -77,7 +80,8 @@ class DropFile extends React.Component<Props, State> {
 
     // Remove the headers
     data.shift();
-    this.props.loadData(data);
+    isLoading(false);
+    loadData(data);
   };
 
   render() {
@@ -158,6 +162,6 @@ class DropFile extends React.Component<Props, State> {
 export default withTheme()(
   connect(
     null,
-    { loadData }
+    { isLoading, loadData }
   )(DropFile)
 );

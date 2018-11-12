@@ -18,17 +18,20 @@ export type Transaction = {
 type Action = { type: string, payload: any };
 type InitialState = {
   data: Array<Transaction>,
+  isLoading: false,
   filters: Array<Filter>,
   sort: Sort
 };
 
+const IS_LOADING = 'IS_LOADING';
 const LOAD = 'LOAD';
 const LOAD_FILTERS = 'LOAD_FILTERS';
 const LOAD_ORDER = 'LOAD_ORDER';
 
 export const initialState = {
-  // data: [],
-  data: rawData,
+  data: [],
+  // data: rawData,
+  isLoading: false,
   filters: [],
   sort: { orderBy: 'date', order: 'asc' }
 };
@@ -36,6 +39,8 @@ export const initialState = {
 // Reducer
 export default (state: InitialState = initialState, action: Action) => {
   switch (action.type) {
+    case IS_LOADING:
+      return { ...state, isLoading: action.payload };
     case LOAD:
       return { ...state, data: action.payload };
     case LOAD_FILTERS:
@@ -48,16 +53,21 @@ export default (state: InitialState = initialState, action: Action) => {
 };
 
 // Action Creator
-export const loadData = (data: Array<Transaction>) => {
-  return { type: LOAD, payload: data };
+// TODO: Maybe we can combine this...
+export const isLoading = (payload: boolean) => {
+  return { type: IS_LOADING, payload };
 };
 
-export const loadFilters = (data: Array<Filter>) => {
-  return { type: LOAD_FILTERS, payload: data };
+export const loadData = (payload: Array<Transaction>) => {
+  return { type: LOAD, payload };
 };
 
-export const loadSort = (data: Sort) => {
-  return { type: LOAD_ORDER, payload: data };
+export const loadFilters = (payload: Array<Filter>) => {
+  return { type: LOAD_FILTERS, payload };
+};
+
+export const loadSort = (payload: Sort) => {
+  return { type: LOAD_ORDER, payload };
 };
 
 // Selectors

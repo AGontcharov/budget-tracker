@@ -3,6 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 // Material Ui
+import LinearProgress from '@material-ui/core/LinearProgress';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -22,6 +23,7 @@ import type { Transaction } from 'ducks/data';
 
 type Props = {
   data: Array<Transaction>,
+  isLoading: boolean,
   isFilter: boolean,
   onFilter: string => Function,
   onCategoryChange: number => Function,
@@ -33,12 +35,13 @@ type Props = {
 
 class EnhancedTableBody extends React.Component<Props> {
   render() {
-    const { data, isFilter, onFilter, onCategoryChange, page, rowsPerPage } = this.props;
+    const { data, isFilter, isLoading, onFilter, onCategoryChange, page, rowsPerPage } = this.props;
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     const styles = {
       emptyRow: {
+        // 49px is the size of one row
         height: 49 * emptyRows
       }
     };
@@ -81,10 +84,12 @@ class EnhancedTableBody extends React.Component<Props> {
             </TableRow>
           );
         })}
+
         {emptyRows > 0 && (
           <TableRow style={styles.emptyRow}>
             <TableCell colSpan={6} style={{ textAlign: 'center' }}>
-              {!data.length && <Typography align="center">{'No data...'}</Typography>}
+              {!data.length && !isLoading && <Typography align="center">{'No data...'}</Typography>}
+              {isLoading && <LinearProgress />}
             </TableCell>
           </TableRow>
         )}
@@ -95,7 +100,8 @@ class EnhancedTableBody extends React.Component<Props> {
 
 const mapStateToProps = state => {
   return {
-    data: getData(state.transactions)
+    data: getData(state.transactions),
+    isLoading: state.transactions.isLoading
   };
 };
 

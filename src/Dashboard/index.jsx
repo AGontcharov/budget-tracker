@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import { connect } from 'react-redux';
 
 // Custom Component
 import IncomeExpensesChart from 'dashboard/IncomeExpensesChart';
@@ -12,12 +13,13 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
 type Props = {
+  isEmpty: boolean,
   theme: Object
 };
 
 class Dashboard extends React.Component<Props> {
   render() {
-    const { theme } = this.props;
+    const { isEmpty, theme } = this.props;
 
     const styles = {
       paper: {
@@ -32,6 +34,9 @@ class Dashboard extends React.Component<Props> {
         flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center'
+      },
+      empty: {
+        margin: theme.spacing.unit * 2
       }
     };
 
@@ -43,13 +48,26 @@ class Dashboard extends React.Component<Props> {
           </Typography>
         </Toolbar>
         <div style={styles.wrapper}>
-          {/* TODO: Maybe check when rendering is needed here instead? */}
-          <IncomeExpensesChart />
-          <CategoryChart />
+          {isEmpty ? (
+            <Typography style={styles.empty}>
+              {'To view the Dashboard load some data...'}{' '}
+            </Typography>
+          ) : (
+            <React.Fragment>
+              <IncomeExpensesChart />
+              <CategoryChart />
+            </React.Fragment>
+          )}
         </div>
       </Paper>
     );
   }
 }
 
-export default withTheme()(Dashboard);
+const mapStateToProps = state => {
+  return {
+    isEmpty: !state.transactions.data.length
+  };
+};
+
+export default withTheme()(connect(mapStateToProps)(Dashboard));
