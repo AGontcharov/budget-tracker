@@ -30,6 +30,7 @@ const categoryColors = {
   Housing: orange,
   Income: grey,
   Investment: purple,
+  'No Categories': grey,
   Other: blue,
   'Personal Care': deepPurple,
   Transportation: yellow,

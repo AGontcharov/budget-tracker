@@ -103,31 +103,29 @@ class CategoryChart extends React.Component<Props, State> {
       margin: theme.spacing.unit * 4
     };
 
-    // TODO: Initial display?
-    // We will have 0 categories need some text.
-    if (!data.length) return null;
-
     // TODO: Using abs so the pie chart can display, how to deal with computing positive
     // and negative data together?
     // ALSO kind of ugly function
-    const categories = data.reduce((accumulator, row, index) => {
+    let categories = data.reduce((accumulator, row, index) => {
       if (row.category && accumulator) {
-        let isCategoryExist = false;
+        let categoryExists = false;
 
         accumulator.forEach(category => {
           if (category.name === row.category) {
-            isCategoryExist = true;
             category.value += Math.abs(row.price);
+            categoryExists = true;
           }
         });
 
-        return isCategoryExist
+        return categoryExists
           ? accumulator
           : accumulator.concat({ id: row.id, name: row.category, value: Math.abs(row.price) });
       } else {
         return accumulator;
       }
     }, []);
+
+    categories = categories.length ? categories : [{ id: 'none', name: 'No Categories', value: 1 }];
 
     const colors = categories.map(category => getCategoryColor(category.name));
 
