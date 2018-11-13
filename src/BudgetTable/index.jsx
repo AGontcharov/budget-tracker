@@ -169,6 +169,7 @@ class BudgetTable extends React.Component<Props, State> {
           <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={this.onRequestSort} />
           <EnhancedTableBody
             isFilter={isFilter}
+            minRows={10}
             onFilter={this.onFilter}
             onCategoryChange={this.onCategoryChange}
             order={order}

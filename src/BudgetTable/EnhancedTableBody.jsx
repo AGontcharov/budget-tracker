@@ -25,6 +25,7 @@ type Props = {
   data: Array<Transaction>,
   isLoading: boolean,
   isFilter: boolean,
+  minRows: number,
   onFilter: string => Function,
   onCategoryChange: number => Function,
   order: string,
@@ -35,14 +36,24 @@ type Props = {
 
 class EnhancedTableBody extends React.Component<Props> {
   render() {
-    const { data, isFilter, isLoading, onFilter, onCategoryChange, page, rowsPerPage } = this.props;
+    const {
+      data,
+      isFilter,
+      isLoading,
+      minRows,
+      onFilter,
+      onCategoryChange,
+      page,
+      rowsPerPage
+    } = this.props;
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    const currentRows = Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - currentRows;
 
     const styles = {
       emptyRow: {
         // 49px is the size of one row
-        height: 49 * emptyRows
+        height: minRows > emptyRows ? 49 * emptyRows : 49 * (minRows - currentRows)
       }
     };
 
@@ -85,7 +96,7 @@ class EnhancedTableBody extends React.Component<Props> {
           );
         })}
 
-        {emptyRows > 0 && (
+        {currentRows < minRows && (
           <TableRow style={styles.emptyRow}>
             <TableCell colSpan={6} style={{ textAlign: 'center' }}>
               {!data.length && !isLoading && <Typography align="center">{'No data...'}</Typography>}
