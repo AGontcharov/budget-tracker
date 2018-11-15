@@ -11,13 +11,23 @@ type Props = {
 
 const Footer = (props: Props) => {
   const styles = {
-    height: 100,
-    background: props.theme.palette.accent.main
+    wrapper: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 75,
+      background: props.theme.palette.accent.main
+    },
+    copyRight: {
+      fontSize: 13
+    }
   };
 
   return (
-    <div style={styles}>
-      <Typography align="center">Footer goes here</Typography>
+    <div style={styles.wrapper}>
+      <Typography style={styles.copyRight}>
+        Copyright © {new Date().getFullYear()} Alexander Gontcharov. All right reserved.
+      </Typography>
     </div>
   );
 };

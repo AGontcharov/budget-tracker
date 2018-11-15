@@ -29,8 +29,8 @@ const LOAD_FILTERS = 'LOAD_FILTERS';
 const LOAD_ORDER = 'LOAD_ORDER';
 
 export const initialState = {
-  data: [],
-  // data: rawData,
+  // data: [],
+  data: rawData,
   isLoading: false,
   filters: [],
   sort: { orderBy: 'date', order: 'asc' }

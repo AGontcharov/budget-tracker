@@ -35,6 +35,13 @@ const theme = createMuiTheme({
   }
 });
 
+const styles = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center'
+};
+
 class App extends React.Component<Props> {
   render() {
     return (
@@ -50,14 +57,7 @@ class App extends React.Component<Props> {
               </Typography>
             </Toolbar>
           </AppBar>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          >
+          <div style={styles}>
             <DropFile />
             <BudgetTable />
             <Dashboard />
