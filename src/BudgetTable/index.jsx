@@ -117,13 +117,9 @@ class BudgetTable extends React.Component<Props, State> {
   };
 
   onChangeRowsPerPage = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    // TODO: Scroll to top of table on table size change. It seems like the heigh pushes the scrollbar
-    // down after it has scrolled into view.
-    this.setState({ rowsPerPage: parseInt(event.target.value, 10) });
-
-    // this.setState({ rowsPerPage: parseInt(event.target.value, 10) }, () => {
-    //   this.tableRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
-    // });
+    this.setState({ rowsPerPage: parseInt(event.target.value, 10) }, () => {
+      this.tableRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    });
   };
 
   render() {

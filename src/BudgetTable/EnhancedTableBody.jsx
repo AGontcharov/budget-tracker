@@ -51,8 +51,8 @@ class EnhancedTableBody extends React.Component<Props> {
     const emptyRows = rowsPerPage - currentRows;
 
     const styles = {
+      // 49px is the size of one row
       emptyRow: {
-        // 49px is the size of one row
         height: minRows > emptyRows ? 49 * emptyRows : 49 * (minRows - currentRows)
       }
     };
