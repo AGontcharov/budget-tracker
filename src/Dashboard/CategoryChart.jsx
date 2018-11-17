@@ -1,7 +1,8 @@
 // @flow
 import * as React from 'react';
-import { Cell, Legend, PieChart, Pie, Sector } from 'recharts';
 import { connect } from 'react-redux';
+
+import { Cell, Legend, PieChart, Pie, Sector } from 'recharts';
 
 // Material UI
 import { withTheme } from '@material-ui/core/styles';

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 // Custom Component
 import IncomeExpensesChart from 'dashboard/IncomeExpensesChart';
+import ExpenseTimeChart from 'dashboard/ExpenseTimeChart';
 import CategoryChart from 'dashboard/CategoryChart';
 
 // Material UI
@@ -54,6 +55,7 @@ class Dashboard extends React.Component<Props> {
             </Typography>
           ) : (
             <React.Fragment>
+              <ExpenseTimeChart />
               <IncomeExpensesChart />
               <CategoryChart />
             </React.Fragment>
