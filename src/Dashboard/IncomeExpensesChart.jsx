@@ -22,13 +22,6 @@ class IncomeExpensesChart extends React.Component<Props> {
   render() {
     const { theme, data } = this.props;
 
-    const styles = {
-      margin: theme.spacing.unit * 4
-    };
-
-    // TODO: Initial Display?
-    if (!data.length) return null;
-
     let income = 0;
     let expenses = 0;
 
@@ -42,27 +35,31 @@ class IncomeExpensesChart extends React.Component<Props> {
 
     // TODO: Standardize colors
     return (
-      <div style={styles}>
-        <BarChart
-          width={500}
-          height={500}
-          data={[
-            {
-              name: 'Total Amount',
-              Income: income.toFixed(2),
-              Expenses: Math.abs(expenses).toFixed(2)
-            }
-          ]}
-        >
-          <XAxis type="category" dataKey="name" />
-          <YAxis type="number" tickFormatter={tick => `$${tick}`} />
-          <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip />
-          <Bar dataKey="Income" fill="#8884d8" name="Income" />
-          <Bar dataKey="Expenses" fill="#82ca9d" name="Expense" />
-          <Legend />
-        </BarChart>
-      </div>
+      <BarChart
+        width={600}
+        height={500}
+        margin={{
+          top: theme.spacing.unit * 4,
+          right: theme.spacing.unit * 4,
+          bottom: theme.spacing.unit * 4,
+          left: theme.spacing.unit * 4
+        }}
+        data={[
+          {
+            name: 'Total Amount',
+            Income: income.toFixed(2),
+            Expenses: Math.abs(expenses).toFixed(2)
+          }
+        ]}
+      >
+        <XAxis type="category" dataKey="name" />
+        <YAxis type="number" tickFormatter={tick => `$${tick}`} />
+        <CartesianGrid strokeDasharray="3 3" />
+        <Tooltip />
+        <Bar dataKey="Income" fill="#8884d8" name="Income" />
+        <Bar dataKey="Expenses" fill="#82ca9d" name="Expense" />
+        <Legend />
+      </BarChart>
     );
   }
 }

@@ -38,6 +38,13 @@ class Dashboard extends React.Component<Props> {
       },
       empty: {
         margin: theme.spacing.unit * 2
+      },
+      grid: {
+        width: 1200,
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, 600px)',
+        justifyContent: 'center',
+        alignItems: 'center'
       }
     };
 
@@ -54,11 +61,11 @@ class Dashboard extends React.Component<Props> {
               {'To view the Dashboard load some data...'}{' '}
             </Typography>
           ) : (
-            <React.Fragment>
-              <ExpenseTimeChart />
+            <div style={styles.grid}>
               <IncomeExpensesChart />
               <CategoryChart />
-            </React.Fragment>
+              <ExpenseTimeChart />
+            </div>
           )}
         </div>
       </Paper>

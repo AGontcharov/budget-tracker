@@ -100,10 +100,6 @@ class CategoryChart extends React.Component<Props, State> {
   render() {
     const { theme, data } = this.props;
 
-    const styles = {
-      margin: theme.spacing.unit * 4
-    };
-
     // TODO: Using abs so the pie chart can display, how to deal with computing positive
     // and negative data together?
     // ALSO kind of ugly function
@@ -131,24 +127,31 @@ class CategoryChart extends React.Component<Props, State> {
     const colors = categories.map(category => getCategoryColor(category.name));
 
     return (
-      <div style={styles}>
-        <PieChart width={600} height={500}>
-          <Pie
-            data={categories}
-            dataKey="value"
-            innerRadius={80}
-            outerRadius={160}
-            activeIndex={this.state.activeCategory}
-            activeShape={ActiveShape}
-            onMouseEnter={this.onCategorySelect}
-          >
-            {categories.map((entry, index) => (
-              <Cell key={entry.id} fill={colors[index % colors.length]} />
-            ))}
-          </Pie>
-          <Legend />
-        </PieChart>
-      </div>
+      <PieChart
+        width={600}
+        height={500}
+        margin={{
+          top: theme.spacing.unit * 4,
+          right: theme.spacing.unit * 4,
+          bottom: theme.spacing.unit * 4,
+          left: theme.spacing.unit * 4
+        }}
+      >
+        <Pie
+          data={categories}
+          dataKey="value"
+          innerRadius={80}
+          outerRadius={160}
+          activeIndex={this.state.activeCategory}
+          activeShape={ActiveShape}
+          onMouseEnter={this.onCategorySelect}
+        >
+          {categories.map((entry, index) => (
+            <Cell key={entry.id} fill={colors[index % colors.length]} />
+          ))}
+        </Pie>
+        <Legend />
+      </PieChart>
     );
   }
 }

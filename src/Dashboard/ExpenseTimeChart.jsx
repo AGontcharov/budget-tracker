@@ -14,22 +14,35 @@ import { getFilteredData } from 'ducks/data';
 import type { Transaction } from 'ducks/data';
 
 type Props = {
-  data: Array<Transaction>
+  data: Array<Transaction>,
+  theme: Object
 };
 
 type State = {};
 
 class ExpenseTimeChart extends React.Component<Props, State> {
   render() {
+    const { theme } = this.props;
+
     // TODO: Accumulate price for same date
     const data = this.props.data.map(transaction => {
       return { name: transaction.date.getDate(), value: transaction.price };
     });
 
-    console.log(data);
+    // console.log(data);
 
     return (
-      <AreaChart width={1200} height={500} data={data}>
+      <AreaChart
+        width={600}
+        height={500}
+        data={data}
+        margin={{
+          top: theme.spacing.unit * 4,
+          right: theme.spacing.unit * 4,
+          bottom: theme.spacing.unit * 4,
+          left: theme.spacing.unit * 4
+        }}
+      >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis />
