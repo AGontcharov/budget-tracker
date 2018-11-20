@@ -24,15 +24,17 @@ class Dashboard extends React.Component<Props> {
 
     const styles = {
       paper: {
+        // TODO: This causes the paper growth, however removing it also shrinks paper to grid width
+        // width: '100%',
+        width: '90%',
+        maxWidth: 1200,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
-        margin: theme.spacing.unit * 2,
-        minWidth: 900
+        justifyContent: 'center',
+        margin: theme.spacing.unit * 2
       },
       wrapper: {
         display: 'flex',
-        flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center'
       },
@@ -40,26 +42,29 @@ class Dashboard extends React.Component<Props> {
         margin: theme.spacing.unit * 2
       },
       grid: {
-        width: 1200,
+        // TODO: Maybe this is a solution for material design grids
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, 600px)',
+        // Each grid is a minimum of 600px or a maximum of 1 fraction unit
+        gridTemplateColumns: 'repeat(auto-fill, minmax(600px, 1fr))',
         justifyContent: 'center',
         alignItems: 'center'
       }
     };
 
     return (
-      <Paper style={styles.paper}>
-        <Toolbar>
-          <Typography variant="h6" id="tableTitle">
-            {'Dashboard'}
-          </Typography>
-        </Toolbar>
-        <div style={styles.wrapper}>
-          {isEmpty ? (
-            <Typography style={styles.empty}>
-              {'To view the Dashboard load some data...'}{' '}
+      <React.Fragment>
+        <Paper style={styles.paper}>
+          <Toolbar>
+            <Typography variant="h6" id="tableTitle">
+              {'Dashboard'}
             </Typography>
+          </Toolbar>
+          {isEmpty ? (
+            <div style={styles.wrapper}>
+              <Typography style={styles.empty}>
+                {'To view the Dashboard load some data...'}{' '}
+              </Typography>
+            </div>
           ) : (
             <div style={styles.grid}>
               <IncomeExpensesChart />
@@ -67,8 +72,8 @@ class Dashboard extends React.Component<Props> {
               <ExpenseTimeChart />
             </div>
           )}
-        </div>
-      </Paper>
+        </Paper>
+      </React.Fragment>
     );
   }
 }

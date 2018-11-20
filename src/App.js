@@ -62,6 +62,7 @@ class App extends React.Component<Props> {
             <BudgetTable />
             <Dashboard />
           </div>
+
           <Footer />
         </Layout>
       </MuiThemeProvider>

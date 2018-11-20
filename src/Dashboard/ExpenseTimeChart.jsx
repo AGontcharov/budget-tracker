@@ -42,6 +42,7 @@ class ExpenseTimeChart extends React.Component<Props, State> {
           bottom: theme.spacing.unit * 4,
           left: theme.spacing.unit * 4
         }}
+        style={{ justifySelf: 'center' }}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />

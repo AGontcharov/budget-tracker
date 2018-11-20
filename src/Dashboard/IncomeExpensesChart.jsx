@@ -44,6 +44,7 @@ class IncomeExpensesChart extends React.Component<Props> {
           bottom: theme.spacing.unit * 4,
           left: theme.spacing.unit * 4
         }}
+        style={{ justifySelf: 'center' }}
         data={[
           {
             name: 'Total Amount',
