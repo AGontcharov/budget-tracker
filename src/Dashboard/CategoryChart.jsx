@@ -66,12 +66,9 @@ const ActiveShape = props => {
       />
       <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
       <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-      <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        textAnchor={textAnchor}
-        fill="#333"
-      >{`$${value}`}</text>
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">
+        {payload.isNegative ? `$${value}` : `$(${value})`}
+      </text>
       <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
         {`(${(percent * 100).toFixed(2)}%)`}
       </text>
@@ -100,26 +97,30 @@ class CategoryChart extends React.Component<Props, State> {
   render() {
     const { theme, data } = this.props;
 
-    // TODO: Using abs so the pie chart can display, how to deal with computing positive
-    // and negative data together?
     // ALSO kind of ugly function
+    // Maybe I can map this beforehand
     let categories = data.reduce((accumulator, row, index) => {
       if (row.category && accumulator) {
         let categoryExists = false;
 
         accumulator.forEach(category => {
           if (category.name === row.category) {
-            category.value += Math.abs(row.price);
+            category.value += row.price;
             categoryExists = true;
           }
         });
 
         return categoryExists
           ? accumulator
-          : accumulator.concat({ id: row.id, name: row.category, value: Math.abs(row.price) });
-      } else {
-        return accumulator;
+          : accumulator.concat({
+              id: row.id,
+              isNegative: row.price < 0 ? true : false,
+              name: row.category,
+              value: Math.abs(row.price)
+            });
       }
+
+      return accumulator;
     }, []);
 
     categories = categories.length ? categories : [{ id: 'none', name: 'No Categories', value: 1 }];
