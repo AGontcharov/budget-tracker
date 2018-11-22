@@ -68,7 +68,8 @@ class BudgetTable extends React.Component<Props, State> {
   }
 
   onFilterClicked = () => {
-    this.setState({ isFilter: !this.state.isFilter });
+    this.setState({ isFilter: !this.state.isFilter, filters: [] });
+    this.props.loadFilters([]);
   };
 
   onFilter = (name: string) => (event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -211,7 +212,7 @@ class BudgetTable extends React.Component<Props, State> {
 
 const mapStateToProps = state => {
   return {
-    data: getFilteredData(state.transactions),
+    data: state.transactions.data,
     order: state.transactions.sort.order,
     orderBy: state.transactions.sort.orderBy
   };
