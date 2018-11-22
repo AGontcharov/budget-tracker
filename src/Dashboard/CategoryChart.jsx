@@ -97,10 +97,9 @@ class CategoryChart extends React.Component<Props, State> {
   render() {
     const { theme, data } = this.props;
 
-    // ALSO kind of ugly function
-    // Maybe I can map this beforehand
+    //TODO: Maybe I can map this beforehand
     let categories = data.reduce((accumulator, row, index) => {
-      if (row.category && accumulator) {
+      if (accumulator && row.category) {
         let categoryExists = false;
 
         accumulator.forEach(category => {
@@ -116,15 +115,14 @@ class CategoryChart extends React.Component<Props, State> {
               id: row.id,
               isNegative: row.price < 0 ? true : false,
               name: row.category,
-              value: Math.abs(row.price)
+              value: row.price
             });
       }
 
       return accumulator;
     }, []);
 
-    categories = categories.length ? categories : [{ id: 'none', name: 'No Categories', value: 1 }];
-
+    categories.forEach(row => (row.value = Math.abs(row.value)));
     const colors = categories.map(category => getCategoryColor(category.name));
 
     return (
@@ -140,7 +138,7 @@ class CategoryChart extends React.Component<Props, State> {
         style={{ justifySelf: 'center' }}
       >
         <Pie
-          data={categories}
+          data={categories.length ? categories : [{ id: 'none', name: 'No Categories', value: 1 }]}
           dataKey="value"
           innerRadius={80}
           outerRadius={160}
