@@ -24,13 +24,29 @@ type Props = {
 };
 
 type State = {
+  availableMonths: Array<string>,
   month: number
 };
 
 class ExpenseTimeChart extends React.Component<Props, State> {
   state = {
+    availableMonths: [],
     month: ''
   };
+
+  componentDidMount = () => {
+    const availableMonths = [...new Set(this.props.data.map(item => item.date.getMonth()))];
+    this.setState({ month: availableMonths[0], availableMonths });
+  };
+
+  // TODO: Not a big fan of doing it this way
+  // componentDidUpdate({ data }) {
+  //   const availableMonths = [...new Set(this.props.data.map(item => item.date.getMonth()))];
+
+  //   if (JSON.stringify(data) !== JSON.stringify(this.props.data)) {
+  //     this.setState({ data, month: availableMonths[0], availableMonths });
+  //   }
+  // }
 
   onChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({ month: event.target.value });
@@ -38,7 +54,7 @@ class ExpenseTimeChart extends React.Component<Props, State> {
 
   render() {
     const { theme } = this.props;
-    const { month } = this.state;
+    const { availableMonths, month } = this.state;
 
     const styles = {
       wrapper: {
@@ -53,8 +69,6 @@ class ExpenseTimeChart extends React.Component<Props, State> {
         justifySelf: 'center'
       }
     };
-
-    const availableMonths = [...new Set(this.props.data.map(item => item.date.getMonth()))];
 
     const data = [
       { name: 'Week 1', value: 0 },
