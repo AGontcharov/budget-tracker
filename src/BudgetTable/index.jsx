@@ -60,8 +60,8 @@ class BudgetTable extends React.Component<Props, State> {
     };
   }
 
-  // TODO: Might be hacky
-  componentDidUpdate(prevProps) {
+  // TODO: Might be hacky or anti pattern
+  componentDidUpdate(prevProps: Props) {
     if (JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) {
       this.setState({ transactions: this.props.data, page: 0 });
     }

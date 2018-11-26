@@ -1,14 +1,10 @@
 // @flow
 import * as React from 'react';
-import { connect } from 'react-redux';
 
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 
 // Material UI,
 import { withTheme } from '@material-ui/core/styles';
-
-// Helper Functions
-import { getFilteredData } from 'ducks/data';
 
 // Flow Type
 import type { Transaction } from 'ducks/data';
@@ -33,7 +29,6 @@ class IncomeExpensesChart extends React.Component<Props> {
       }
     });
 
-    // TODO: Standardize colors
     return (
       <BarChart
         width={600}
@@ -57,18 +52,12 @@ class IncomeExpensesChart extends React.Component<Props> {
         <YAxis type="number" tickFormatter={tick => `$${tick}`} />
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip />
-        <Bar dataKey="Income" fill="#8884d8" name="Income" />
-        <Bar dataKey="Expenses" fill="#82ca9d" name="Expense" />
+        <Bar dataKey="Income" fill="green" name="Income" />
+        <Bar dataKey="Expenses" fill="red" name="Expense" />
         <Legend />
       </BarChart>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    data: getFilteredData(state.transactions)
-  };
-};
-
-export default withTheme()(connect(mapStateToProps)(IncomeExpensesChart));
+export default withTheme()(IncomeExpensesChart);

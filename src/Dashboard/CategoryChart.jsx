@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react';
-import { connect } from 'react-redux';
 
 import { Cell, Legend, PieChart, Pie, Sector } from 'recharts';
 
@@ -8,7 +7,6 @@ import { Cell, Legend, PieChart, Pie, Sector } from 'recharts';
 import { withTheme } from '@material-ui/core/styles';
 
 // Helper Functions
-import { getFilteredData } from 'ducks/data';
 import getCategoryColor from 'lib/CategoryColors';
 
 // Flow Type
@@ -156,10 +154,4 @@ class CategoryChart extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    data: getFilteredData(state.transactions)
-  };
-};
-
-export default withTheme()(connect(mapStateToProps)(CategoryChart));
+export default withTheme()(CategoryChart);

@@ -13,14 +13,20 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
+// Helper Functions
+import { getFilteredData } from 'ducks/data';
+
+// Flow Type
+import type { Transaction } from 'ducks/data';
+
 type Props = {
-  isEmpty: boolean,
+  data: Array<Transaction>,
   theme: Object
 };
 
 class Dashboard extends React.Component<Props> {
   render() {
-    const { isEmpty, theme } = this.props;
+    const { data, theme } = this.props;
 
     const styles = {
       paper: {
@@ -51,6 +57,9 @@ class Dashboard extends React.Component<Props> {
       }
     };
 
+    // Get the available months
+    const availableMonths = [...new Set(this.props.data.map(item => item.date.getMonth()))];
+
     return (
       <React.Fragment>
         <Paper style={styles.paper}>
@@ -59,7 +68,7 @@ class Dashboard extends React.Component<Props> {
               {'Dashboard'}
             </Typography>
           </Toolbar>
-          {isEmpty ? (
+          {!data.length ? (
             <div style={styles.wrapper}>
               <Typography style={styles.empty}>
                 {'To view the Dashboard load some data...'}{' '}
@@ -67,9 +76,9 @@ class Dashboard extends React.Component<Props> {
             </div>
           ) : (
             <div style={styles.grid}>
-              <IncomeExpensesChart />
-              <CategoryChart />
-              <ExpenseTimeChart />
+              <IncomeExpensesChart data={data} />
+              <CategoryChart data={data} />
+              <ExpenseTimeChart availableMonths={availableMonths} data={data} />
             </div>
           )}
         </Paper>
@@ -80,8 +89,13 @@ class Dashboard extends React.Component<Props> {
 
 const mapStateToProps = state => {
   return {
-    isEmpty: !state.transactions.data.length
+    data: getFilteredData(state.transactions)
   };
 };
 
-export default withTheme()(connect(mapStateToProps)(Dashboard));
+export default withTheme()(
+  connect(
+    mapStateToProps,
+    { getFilteredData }
+  )(Dashboard)
+);
