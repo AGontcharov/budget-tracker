@@ -22,7 +22,7 @@ import EnhancedTableBody from 'budgetTable/EnhancedTableBody';
 import TablePaginationActions from 'budgetTable/TablePaginationActions';
 
 // Helper Functions
-import { getFilteredData, loadData, loadFilters, loadSort } from 'ducks/data';
+import { loadData, loadFilters, loadSort } from 'ducks/data';
 
 // Flow Type
 import type { Filter, Sort, Transaction } from 'ducks/data';

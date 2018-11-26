@@ -24,6 +24,7 @@
     ]
   },
   "scripts": {
+    "analyze": "source-map-explorer build/static/js/main.*",
     "precommit": "lint-staged",
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -35,7 +36,8 @@
     "flow-bin": "^0.86.0",
     "husky": "^1.2.0",
     "lint-staged": "^8.1.0",
-    "prettier": "^1.15.2"
+    "prettier": "^1.15.2",
+    "source-map-explorer": "^1.6.0"
   },
   "browserslist": [
     ">0.2%",
