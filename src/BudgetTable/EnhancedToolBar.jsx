@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import download from 'downloadjs';
 
 // Custom Components
-import FileDownloadIcon from '../FileDownload';
+import FileDownloadIcon from 'components/svgIcons/FileDownload';
 
 // Material UI
 import { withTheme } from '@material-ui/core/styles';

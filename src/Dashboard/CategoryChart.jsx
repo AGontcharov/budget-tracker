@@ -95,7 +95,9 @@ class CategoryChart extends React.Component<Props, State> {
   render() {
     const { theme, data } = this.props;
 
-    //TODO: Maybe I can map this beforehand
+    // TODO: Maybe I can map this beforehand,
+    // but I need to watch out for custom categories too. Store the map in redux?
+    // Need to calculate the runtime complexity
     let categories = data.reduce((accumulator, row, index) => {
       if (accumulator && row.category) {
         let categoryExists = false;

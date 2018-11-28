@@ -16,31 +16,29 @@ type Props = {
   onChange: (event: SyntheticInputEvent<HTMLInputElement>) => void
 };
 
-class SelectMonth extends React.Component<Props> {
-  render() {
-    const { availableMonths, month, onChange } = this.props;
+const SelectMonth = (props: Props) => {
+  const { availableMonths, month, onChange } = props;
 
-    const styles = {
-      form: {
-        width: 150
-      }
-    };
+  const styles = {
+    form: {
+      width: 150
+    }
+  };
 
-    return (
-      <FormControl style={styles.form}>
-        <InputLabel>Month</InputLabel>
-        <Select value={month} onChange={onChange}>
-          {availableMonths.map(month => {
-            return (
-              <MenuItem id={month} key={month} value={month}>
-                {MONTHS[month]}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
-    );
-  }
-}
+  return (
+    <FormControl style={styles.form}>
+      <InputLabel>Month</InputLabel>
+      <Select value={month} onChange={onChange}>
+        {availableMonths.map(month => {
+          return (
+            <MenuItem id={month} key={month} value={month}>
+              {MONTHS[month]}
+            </MenuItem>
+          );
+        })}
+      </Select>
+    </FormControl>
+  );
+};
 
 export default SelectMonth;

@@ -6,7 +6,7 @@ import BudgetTable from 'budgetTable';
 import Dashboard from 'dashboard';
 import Layout from 'layout/Layout';
 import Footer from 'layout/Footer';
-import DropFile from 'DropFile';
+import DropFile from 'components/DropFile';
 
 // Material UI
 import AppBar from '@material-ui/core/AppBar';
