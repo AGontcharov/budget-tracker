@@ -76,7 +76,11 @@ const EnhancedTableToolbar = (props: Props) => {
       <div style={styles.spacer} />
       <div style={styles.actions}>
         <Tooltip title="Export">
-          <IconButton aria-label="Export List" onClick={onExportClicked}>
+          <IconButton
+            aria-label="Export List"
+            disabled={!props.data.length}
+            onClick={onExportClicked}
+          >
             <FileDownloadIcon />
           </IconButton>
         </Tooltip>

@@ -27,13 +27,6 @@ class ExpenseTimeChart extends React.Component<Props, State> {
     month: this.props.availableMonths[0]
   };
 
-  // TODO: Might be hacky or anti pattern
-  componentDidUpdate(prevProps: Props) {
-    if (JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) {
-      this.setState({ month: this.props.availableMonths[0] });
-    }
-  }
-
   onMonthChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({ month: Number(event.target.value) });
   };

@@ -57,7 +57,6 @@ class Dashboard extends React.Component<Props> {
       }
     };
 
-    // Get the available months
     const availableMonths = [...new Set(this.props.data.map(item => item.date.getMonth()))];
 
     return (
@@ -78,7 +77,12 @@ class Dashboard extends React.Component<Props> {
             <div style={styles.grid}>
               <IncomeExpensesChart data={data} />
               <CategoryChart data={data} />
-              <ExpenseTimeChart availableMonths={availableMonths} data={data} />
+              <ExpenseTimeChart
+                // Specifying a key allows for the component to reset whenever the starting month changes
+                key={availableMonths[0]}
+                availableMonths={availableMonths}
+                data={data}
+              />
             </div>
           )}
         </Paper>
