@@ -38,7 +38,6 @@ type Props = {
 };
 
 type State = {
-  transactions: Array<Transaction>,
   isFilter: boolean,
   filters: Array<{ name: string, value: string }>,
   rowsPerPage: number,
@@ -52,7 +51,6 @@ class BudgetTable extends React.Component<Props, State> {
     this.tableRef = React.createRef();
 
     this.state = {
-      transactions: props.data,
       isFilter: false,
       filters: [],
       rowsPerPage: 10,
@@ -60,10 +58,12 @@ class BudgetTable extends React.Component<Props, State> {
     };
   }
 
-  // TODO: Might be hacky or anti pattern
+  // TODO: This causes an extra render.
+  // Is there a better way to reset the page or even the whole table?
+  // Key again?
   componentDidUpdate(prevProps: Props) {
     if (JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data)) {
-      this.setState({ transactions: this.props.data, page: 0 });
+      this.setState({ page: 0 });
     }
   }
 
@@ -104,10 +104,9 @@ class BudgetTable extends React.Component<Props, State> {
   };
 
   onCategoryChange = (index: number) => (value: string) => {
-    let transactions = [...this.state.transactions];
+    let transactions = [...this.props.data];
 
     transactions[index].category = value;
-    this.setState({ transactions });
     this.props.loadData(transactions);
   };
 

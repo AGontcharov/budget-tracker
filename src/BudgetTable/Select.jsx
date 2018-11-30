@@ -10,6 +10,7 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 
+// TODO: Refactor and look into this component
 const suggestions = [
   { label: 'Debt' },
   { label: 'Entertainment' },
@@ -62,11 +63,11 @@ const styles = theme => ({
   }
 });
 
-function inputComponent({ inputRef, ...props }) {
+const inputComponent = ({ inputRef, ...props }) => {
   return <div ref={inputRef} {...props} />;
-}
+};
 
-function Control(props) {
+const Control = props => {
   return (
     <TextField
       fullWidth
@@ -82,9 +83,9 @@ function Control(props) {
       {...props.selectProps.textFieldProps}
     />
   );
-}
+};
 
-function Option(props) {
+const Option = props => {
   return (
     <MenuItem
       buttonRef={props.innerRef}
@@ -99,9 +100,9 @@ function Option(props) {
       {props.children}
     </MenuItem>
   );
-}
+};
 
-function Placeholder(props) {
+const Placeholder = props => {
   return (
     <Typography
       color="textSecondary"
@@ -111,27 +112,27 @@ function Placeholder(props) {
       {props.children}
     </Typography>
   );
-}
+};
 
-function SingleValue(props) {
+const SingleValue = props => {
   return (
     <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
       {props.children}
     </Typography>
   );
-}
+};
 
-function ValueContainer(props) {
+const ValueContainer = props => {
   return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>;
-}
+};
 
-function Menu(props) {
+const Menu = props => {
   return (
     <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
       {props.children}
     </Paper>
   );
-}
+};
 
 const components = {
   Control,

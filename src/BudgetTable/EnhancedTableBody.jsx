@@ -10,7 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 
 // Custom Components
-import IntegrationReactSelect from 'budgetTable/Select';
+import Select from 'budgetTable/Select';
 import StringFilter from 'budgetTable/StringFilter';
 
 // Helper Functions
@@ -83,7 +83,9 @@ class EnhancedTableBody extends React.Component<Props> {
               <TableCell padding="dense">{row.date.toDateString()}</TableCell>
               <TableCell>{row.type}</TableCell>
               <TableCell>
-                <IntegrationReactSelect
+                <Select
+                  // Specifying key allows the select component to reset whenever the category  changes
+                  key={row.category}
                   onChange={onCategoryChange(row.id)}
                   value={row.category ? { value: row.category, label: row.category } : null}
                 />
