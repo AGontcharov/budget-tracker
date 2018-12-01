@@ -31,6 +31,19 @@ class ExpenseTimeChart extends React.Component<Props, State> {
     this.setState({ month: Number(event.target.value) });
   };
 
+  gradientOffset = data => {
+    const dataMax = Math.max(...data.map(week => week.value));
+    const dataMin = Math.min(...data.map(week => week.value));
+
+    if (dataMax <= 0) {
+      return 0;
+    } else if (dataMin >= 0) {
+      return 1;
+    } else {
+      return dataMax / (dataMax - dataMin);
+    }
+  };
+
   render() {
     const { availableMonths, theme } = this.props;
     const { month } = this.state;
@@ -49,6 +62,7 @@ class ExpenseTimeChart extends React.Component<Props, State> {
       }
     };
 
+    // Better to move elsewhere or keep logic here?
     const data = [
       { name: 'Week 1', value: 0 },
       { name: 'Week 2', value: 0 },
@@ -73,6 +87,8 @@ class ExpenseTimeChart extends React.Component<Props, State> {
         }
       });
 
+    const off = this.gradientOffset(data);
+
     return (
       <div style={styles.wrapper}>
         <SelectMonth
@@ -93,11 +109,17 @@ class ExpenseTimeChart extends React.Component<Props, State> {
           }}
           style={styles.chart}
         >
+          <defs>
+            <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
+              <stop offset={off} stopColor="green" stopOpacity={1} />
+              <stop offset={off} stopColor="red" stopOpacity={1} />
+            </linearGradient>
+          </defs>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Area type="monotone" dataKey="value" stroke="#000" />
+          <Area type="monotone" dataKey="value" stroke="#000" fill="url(#splitColor)" />
         </AreaChart>
       </div>
     );
