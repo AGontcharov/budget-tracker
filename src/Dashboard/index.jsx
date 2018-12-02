@@ -3,9 +3,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 // Custom Component
-import IncomeExpensesChart from 'dashboard/IncomeExpensesChart';
-import ExpenseTimeChart from 'dashboard/ExpenseTimeChart';
-import CategoryChart from 'dashboard/CategoryChart';
+import IncomeExpensesChart from 'dashboard/components/IncomeExpensesChart';
+import ExpenseTimeChart from 'dashboard/components/ExpenseTimeChart';
+import CategoryChart from 'dashboard/components/CategoryChart';
 
 // Material UI
 import { withTheme } from '@material-ui/core/styles';

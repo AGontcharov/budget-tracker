@@ -10,8 +10,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 
 // Custom Components
-import Select from 'budgetTable/Select';
-import StringFilter from 'budgetTable/StringFilter';
+import Select from 'budgetTable//components/Select';
+import StringFilter from 'budgetTable//components/StringFilter';
 
 // Helper Functions
 import { getData } from 'ducks/data';

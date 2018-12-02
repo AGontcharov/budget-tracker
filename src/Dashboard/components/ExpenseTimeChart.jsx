@@ -4,7 +4,7 @@ import * as React from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
 // Custom Component
-import SelectMonth from 'dashboard/SelectMonth';
+import SelectMonth from 'dashboard/components/SelectMonth';
 
 // Material UI
 import { withTheme } from '@material-ui/core/styles';
@@ -88,6 +88,11 @@ class ExpenseTimeChart extends React.Component<Props, State> {
       });
 
     const off = this.gradientOffset(data);
+
+    // TODO: Map instead of ForEach?
+    data.forEach(week => {
+      week.value = week.value.toFixed(2);
+    });
 
     return (
       <div style={styles.wrapper}>

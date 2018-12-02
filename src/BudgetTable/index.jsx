@@ -16,10 +16,10 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 
 // Custom Components
-import EnhancedToolBar from 'budgetTable/EnhancedToolBar';
-import EnhancedTableHead from 'budgetTable/EnhancedTableHead';
-import EnhancedTableBody from 'budgetTable/EnhancedTableBody';
-import TablePaginationActions from 'budgetTable/TablePaginationActions';
+import EnhancedToolBar from 'budgetTable/components/EnhancedToolBar';
+import EnhancedTableHead from 'budgetTable/components/EnhancedTableHead';
+import EnhancedTableBody from 'budgetTable/components/EnhancedTableBody';
+import TablePaginationActions from 'budgetTable/components/TablePaginationActions';
 
 // Helper Functions
 import { loadData, loadFilters, loadSort } from 'ducks/data';
