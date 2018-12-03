@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react';
-
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
 // Custom Component
@@ -8,6 +7,7 @@ import SelectMonth from 'dashboard/components/SelectMonth';
 
 // Material UI
 import { withTheme } from '@material-ui/core/styles';
+import { red, green } from '@material-ui/core/colors';
 
 // Flow Type
 import type { Transaction } from 'ducks/data';
@@ -62,8 +62,8 @@ class ExpenseTimeChart extends React.Component<Props, State> {
       }
     };
 
-    // Better to move elsewhere or keep logic here?
-    const data = [
+    //TODO: Better to move elsewhere or keep logic here?
+    const data: Array<{ name: string, value: number }> = [
       { name: 'Week 1', value: 0 },
       { name: 'Week 2', value: 0 },
       { name: 'Week 3', value: 0 },
@@ -89,7 +89,6 @@ class ExpenseTimeChart extends React.Component<Props, State> {
 
     const off = this.gradientOffset(data);
 
-    // TODO: Map instead of ForEach?
     data.forEach(week => {
       week.value = week.value.toFixed(2);
     });
@@ -116,13 +115,13 @@ class ExpenseTimeChart extends React.Component<Props, State> {
         >
           <defs>
             <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
-              <stop offset={off} stopColor="green" stopOpacity={1} />
-              <stop offset={off} stopColor="red" stopOpacity={1} />
+              <stop offset={off} stopColor={green[400]} stopOpacity={1} />
+              <stop offset={off} stopColor={red[400]} stopOpacity={1} />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
-          <YAxis />
+          <YAxis tickFormatter={tick => `$${tick}`} />
           <Tooltip />
           <Area type="monotone" dataKey="value" stroke="#000" fill="url(#splitColor)" />
         </AreaChart>

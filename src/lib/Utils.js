@@ -1,12 +1,47 @@
+// @flow
+
+// Flow Type
+import type { Transaction } from 'ducks/data';
+
 export const headers = [
-  { id: 'date', numeric: false, disablePadding: false, label: 'Date of Transaction' },
-  { id: 'type', numeric: false, disablePadding: false, label: 'Transcation Type' },
-  { id: 'category', numeric: false, disablePadding: false, label: 'Category' },
-  { id: 'details', numeric: false, disablePadding: false, label: 'Details' },
-  { id: 'price', numeric: true, disablePadding: false, label: 'Price $ (CAD)' }
+  {
+    id: 'date',
+    numeric: false,
+    disablePadding: false,
+    label: 'Date',
+    tooltip: 'Date of Transaction'
+  },
+  {
+    id: 'type',
+    numeric: false,
+    disablePadding: false,
+    label: 'Type',
+    tooltip: 'The category which the transaction falls under'
+  },
+  {
+    id: 'category',
+    numeric: false,
+    disablePadding: false,
+    label: 'Category',
+    tooltip: 'The category of the transaction'
+  },
+  {
+    id: 'details',
+    numeric: false,
+    disablePadding: false,
+    label: 'Details',
+    tooltip: 'More information about the transaction'
+  },
+  {
+    id: 'price',
+    numeric: true,
+    disablePadding: false,
+    label: 'Price $ (CAD)',
+    tooltip: 'The price of the transaction'
+  }
 ];
 
-export const desc = (a, b, orderBy) => {
+export const desc = (a: Transaction, b: Transaction, orderBy: string) => {
   // a gets sorted to an index lower than b i.e. a comes first
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -21,7 +56,7 @@ export const desc = (a, b, orderBy) => {
   return 0;
 };
 
-export const stableSort = (array, cmp) => {
+export const stableSort = (array: Array<Transaction>, cmp: Function) => {
   const stabilizedThis = array.map((el, index) => [el, index]);
 
   stabilizedThis.sort((a, b) => {
@@ -36,6 +71,8 @@ export const stableSort = (array, cmp) => {
 // Curry function
 // If descending return desc(a, b, orderBy)
 // Otherwise, return -desc(a, b, orderBy)
-export const getSorting = (order, orderBy) => {
-  return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
+export const getSorting = (order: string, orderBy: string) => {
+  return order === 'desc'
+    ? (a: Transaction, b: Transaction) => desc(a, b, orderBy)
+    : (a: Transaction, b: Transaction) => -desc(a, b, orderBy);
 };

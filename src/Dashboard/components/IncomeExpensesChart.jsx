@@ -1,10 +1,10 @@
 // @flow
 import * as React from 'react';
-
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 
 // Material UI,
 import { withTheme } from '@material-ui/core/styles';
+import { red, green } from '@material-ui/core/colors';
 
 // Flow Type
 import type { Transaction } from 'ducks/data';
@@ -52,8 +52,8 @@ class IncomeExpensesChart extends React.Component<Props> {
         <YAxis type="number" tickFormatter={tick => `$${tick}`} />
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip />
-        <Bar dataKey="Income" fill="green" name="Income" />
-        <Bar dataKey="Expenses" fill="red" name="Expense" />
+        <Bar dataKey="Income" fill={green[400]} name="Income" />
+        <Bar dataKey="Expenses" fill={red[400]} name="Expense" />
         <Legend />
       </BarChart>
     );

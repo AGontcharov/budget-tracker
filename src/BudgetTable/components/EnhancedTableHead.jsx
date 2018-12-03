@@ -17,46 +17,43 @@ type Props = {
   orderBy: string
 };
 
-// TODO: Functional component
-class EnhancedTableHead extends React.Component<Props> {
-  createSortHandler = (property: string) => (event: SyntheticEvent<>) => {
-    this.props.onRequestSort(property);
+const EnhancedTableHead = (props: Props) => {
+  const createSortHandler = (property: string) => (event: SyntheticEvent<>) => {
+    props.onRequestSort(property);
   };
 
-  render() {
-    const { order, orderBy } = this.props;
+  const { order, orderBy } = props;
 
-    return (
-      <TableHead>
-        <TableRow>
-          {headers.map(row => {
-            return (
-              <TableCell
-                key={row.id}
-                numeric={row.numeric}
-                padding={row.disablePadding ? 'none' : 'default'}
-                sortDirection={orderBy === row.id ? order : false}
+  return (
+    <TableHead>
+      <TableRow>
+        {headers.map(row => {
+          return (
+            <TableCell
+              key={row.id}
+              numeric={row.numeric}
+              padding={row.disablePadding ? 'none' : 'default'}
+              sortDirection={orderBy === row.id ? order : false}
+            >
+              <Tooltip
+                title={row.tooltip}
+                placement={row.numeric ? 'bottom-end' : 'bottom-start'}
+                enterDelay={300}
               >
-                <Tooltip
-                  title="Sort"
-                  placement={row.numeric ? 'bottom-end' : 'bottom-start'}
-                  enterDelay={300}
+                <TableSortLabel
+                  active={orderBy === row.id}
+                  direction={order}
+                  onClick={createSortHandler(row.id)}
                 >
-                  <TableSortLabel
-                    active={orderBy === row.id}
-                    direction={order}
-                    onClick={this.createSortHandler(row.id)}
-                  >
-                    {row.label}
-                  </TableSortLabel>
-                </Tooltip>
-              </TableCell>
-            );
-          }, this)}
-        </TableRow>
-      </TableHead>
-    );
-  }
-}
+                  {row.label}
+                </TableSortLabel>
+              </Tooltip>
+            </TableCell>
+          );
+        }, this)}
+      </TableRow>
+    </TableHead>
+  );
+};
 
 export default EnhancedTableHead;
