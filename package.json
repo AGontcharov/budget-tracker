@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^3.5.1",
+    "@material-ui/core": "^3.6.1",
     "@material-ui/icons": "^3.0.1",
     "add": "^2.0.6",
     "downloadjs": "^1.4.7",
@@ -33,10 +33,10 @@
     "flow": "flow"
   },
   "devDependencies": {
-    "flow-bin": "^0.86.0",
+    "flow-bin": "^0.87.0",
     "husky": "^1.2.0",
     "lint-staged": "^8.1.0",
-    "prettier": "^1.15.2",
+    "prettier": "^1.15.3",
     "source-map-explorer": "^1.6.0"
   },
   "browserslist": [
