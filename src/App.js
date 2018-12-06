@@ -46,25 +46,27 @@ class App extends React.Component<Props> {
   render() {
     return (
       <MuiThemeProvider theme={theme}>
-        <Layout>
-          <AppBar position="static">
-            <Toolbar>
-              <IconButton color="inherit" aria-label="Menu">
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" color="inherit">
-                Budget Tracker
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <div style={styles}>
-            <DropFile />
-            <BudgetTable />
-            <Dashboard />
-          </div>
+        <React.StrictMode>
+          <Layout>
+            <AppBar position="static">
+              <Toolbar>
+                <IconButton color="inherit" aria-label="Menu">
+                  <MenuIcon />
+                </IconButton>
+                <Typography variant="h6" color="inherit">
+                  Budget Tracker
+                </Typography>
+              </Toolbar>
+            </AppBar>
+            <div style={styles}>
+              <DropFile />
+              <BudgetTable />
+              <Dashboard />
+            </div>
 
-          <Footer />
-        </Layout>
+            <Footer />
+          </Layout>
+        </React.StrictMode>
       </MuiThemeProvider>
     );
   }
