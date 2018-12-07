@@ -53,7 +53,7 @@ class BudgetTable extends React.Component<Props, State> {
     this.state = {
       isFilter: false,
       filters: [],
-      rowsPerPage: 10,
+      rowsPerPage: Number(localStorage.getItem('rowsPerPage')) || 10,
       page: 0
     };
   }
@@ -117,6 +117,7 @@ class BudgetTable extends React.Component<Props, State> {
   };
 
   onChangeRowsPerPage = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    localStorage.setItem('rowsPerPage', event.target.value);
     this.setState({ rowsPerPage: parseInt(event.target.value, 10) }, () => {
       this.tableRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
     });
