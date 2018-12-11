@@ -71,7 +71,7 @@ class EnhancedTableBody extends React.Component<Props> {
           </TableRow>
         )}
 
-        {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+        {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
           return (
             <TableRow
               hover
@@ -84,8 +84,9 @@ class EnhancedTableBody extends React.Component<Props> {
               <TableCell>{row.type}</TableCell>
               <TableCell>
                 <Select
-                  // Specifying key allows the select component to reset whenever the category  changes
-                  key={row.category}
+                  // Specifying key allows the select component to reset whenever the category changes
+                  // TODO: Lose autofocus on remount, add React lifecycle to select
+                  // key={row.category}
                   onChange={onCategoryChange(row.id)}
                   value={row.category ? { value: row.category, label: row.category } : null}
                 />

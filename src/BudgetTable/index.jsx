@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
+import debounce from 'lodash.debounce';
 
 // Material UI
 import { withTheme } from '@material-ui/core/styles';
@@ -73,6 +74,7 @@ class BudgetTable extends React.Component<Props, State> {
   };
 
   onFilter = (name: string) => (event: SyntheticInputEvent<HTMLInputElement>) => {
+    const value = event.target.value;
     let filters = [...this.state.filters];
     let index;
 
@@ -83,14 +85,22 @@ class BudgetTable extends React.Component<Props, State> {
     });
 
     if (index === undefined) {
-      filters.push({ name, value: event.target.value });
+      filters.push({ name, value });
     } else {
-      filters[index] = { name, value: event.target.value };
+      filters[index] = { name, value };
     }
 
-    this.setState({ filters });
-    this.props.loadFilters(filters);
+    console.log(filters);
+
+    this.setFilters(filters)();
   };
+
+  // TODO: Is there a better way to do this?
+  setFilters = filters =>
+    debounce(() => {
+      this.setState({ filters });
+      this.props.loadFilters(filters);
+    }, 5000);
 
   onRequestSort = (property: string) => {
     const orderBy = property;
