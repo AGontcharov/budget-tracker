@@ -29,6 +29,7 @@ import { loadData, loadFilters, loadSort } from 'ducks/data';
 import type { Filter, Sort, Transaction } from 'ducks/data';
 
 type Props = {
+  filters: Array<{ name: string, value: string }>,
   data: Array<Transaction>,
   loadData: (Array<Transaction>) => void,
   loadFilters: (Array<Filter>) => void,
@@ -40,7 +41,6 @@ type Props = {
 
 type State = {
   isFilter: boolean,
-  filters: Array<{ name: string, value: string }>,
   rowsPerPage: number,
   page: number
 };
@@ -69,13 +69,16 @@ class BudgetTable extends React.Component<Props, State> {
   }
 
   onFilterClicked = () => {
-    this.setState({ isFilter: !this.state.isFilter, filters: [] });
+    this.setState({ isFilter: !this.state.isFilter });
     this.props.loadFilters([]);
   };
 
   onFilter = (name: string) => (event: SyntheticInputEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    let filters = [...this.state.filters];
+    this.setFilters(name, event.target.value);
+  };
+
+  setFilters: (name: string, value: string) => void = debounce((name, value) => {
+    let filters = [...this.props.filters];
     let index;
 
     filters.forEach((filter, position) => {
@@ -90,17 +93,8 @@ class BudgetTable extends React.Component<Props, State> {
       filters[index] = { name, value };
     }
 
-    console.log(filters);
-
-    this.setFilters(filters)();
-  };
-
-  // TODO: Is there a better way to do this?
-  setFilters = filters =>
-    debounce(() => {
-      this.setState({ filters });
-      this.props.loadFilters(filters);
-    }, 5000);
+    this.props.loadFilters(filters);
+  }, 200);
 
   onRequestSort = (property: string) => {
     const orderBy = property;
@@ -222,6 +216,7 @@ class BudgetTable extends React.Component<Props, State> {
 
 const mapStateToProps = state => {
   return {
+    filters: state.transactions.filters,
     data: state.transactions.data,
     order: state.transactions.sort.order,
     orderBy: state.transactions.sort.orderBy

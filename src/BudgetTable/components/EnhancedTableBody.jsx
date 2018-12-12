@@ -3,6 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 // Material Ui
+import Input from '@material-ui/core/Input';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -11,7 +12,6 @@ import Typography from '@material-ui/core/Typography';
 
 // Custom Components
 import Select from 'budgetTable//components/Select';
-import StringFilter from 'budgetTable//components/StringFilter';
 
 // Helper Functions
 import { getData } from 'ducks/data';
@@ -51,6 +51,10 @@ class EnhancedTableBody extends React.Component<Props> {
     const emptyRows = rowsPerPage - currentRows;
 
     const styles = {
+      input: {
+        minWidth: 200,
+        fontSize: 14
+      },
       // 49px is the size of one row
       emptyRow: {
         height: minRows > emptyRows ? 49 * emptyRows : 49 * (minRows - currentRows)
@@ -64,7 +68,12 @@ class EnhancedTableBody extends React.Component<Props> {
             {headers.map(filter => {
               return (
                 <TableCell padding="dense" key={filter.id} numeric={filter.id === 'price'}>
-                  <StringFilter onChange={onFilter(filter.id)} />
+                  <Input
+                    placeholder="Search..."
+                    inputProps={{ 'aria-label': 'Description' }}
+                    onChange={onFilter(filter.id)}
+                    style={styles.input}
+                  />
                 </TableCell>
               );
             })}
