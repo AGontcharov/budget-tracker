@@ -30,13 +30,10 @@ class Dashboard extends React.Component<Props> {
 
     const styles = {
       paper: {
-        // TODO: This causes the paper growth, however removing it also shrinks paper to grid width
-        // width: '100%',
-        width: '90%',
+        width: '100%',
         maxWidth: 1200,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
         margin: theme.spacing.unit * 2
       },
       wrapper: {

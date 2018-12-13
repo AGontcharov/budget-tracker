@@ -31,24 +31,15 @@ const theme = createMuiTheme({
   }
 });
 
-const styles = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center'
-};
-
 const App = (props: Props) => {
   return (
     <MuiThemeProvider theme={theme}>
       {/* <React.StrictMode> */}
       <Layout>
         <Navbar />
-        <div style={styles}>
-          <DropFile />
-          <BudgetTable />
-          <Dashboard />
-        </div>
+        <DropFile />
+        <BudgetTable />
+        <Dashboard />
         <Footer />
       </Layout>
       {/* </React.StrictMode> */}

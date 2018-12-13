@@ -12,6 +12,7 @@ type Props = {
 const Footer = (props: Props) => {
   const styles = {
     wrapper: {
+      width: '100%',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',

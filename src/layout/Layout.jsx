@@ -10,7 +10,8 @@ const layout = (props: Props) => {
     height: '100%',
     width: '100%',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    alignItems: 'center'
   };
 
   return <div style={styles}>{props.children}</div>;
