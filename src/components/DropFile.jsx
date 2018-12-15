@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 
@@ -7,7 +7,7 @@ import Dropzone from 'react-dropzone';
 import EnhancedSnackbar from 'components/EnhancedSnackbar';
 
 // Material UI
-import { withTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Upload from '@material-ui/icons/CloudUpload';
 
@@ -18,27 +18,62 @@ import { isLoading, loadData } from 'ducks/data';
 import type { Transaction } from 'ducks/data';
 
 type Props = {
+  classes: {
+    root: string,
+    dropZoneInactive: string,
+    dropZoneInactiveText: string,
+    rejected: string,
+    upload: string
+  },
   theme: Object,
   isLoading: boolean => void,
   loadData: (Array<Transaction>) => void
 };
 
-type State = {
-  isRejected: boolean
-};
+const styles = theme => ({
+  root: {
+    width: '100%',
+    maxWidth: 800,
+    height: 125,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: 'solid 1px',
+    borderColor: theme.palette.accent.main,
+    borderRadius: 10,
+    margin: theme.spacing.unit * 4.5,
+    marginBottom: theme.spacing.unit * 2
+  },
+  dropZoneInactive: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  dropZoneInactiveText: {
+    margin: theme.spacing.unit
+  },
+  // TODO: Accepted styles?
+  rejected: {
+    borderColor: theme.palette.error.dark
+  },
+  upload: {
+    fontSize: theme.spacing.unit * 4
+  }
+});
 
-class DropFile extends React.Component<Props, State> {
-  state = {
-    isRejected: false
-  };
+const DropFile = (props: Props) => {
+  const { classes, isLoading, loadData } = props;
+  const [isRejected, setIsRejected] = useState(false);
 
-  onDrop = (acceptedFiles: Array<Blob>, rejectedFiles: Array<Blob>) => {
+  const onDrop = (acceptedFiles: Array<Blob>, rejectedFiles: Array<Blob>) => {
     acceptedFiles.forEach(file => {
       const reader = new FileReader();
+
       reader.onload = () => {
         const result = reader.result;
-        this.props.isLoading(true);
-        this.modifyFile(result.toString());
+        props.isLoading(true);
+        modifyFile(result.toString());
       };
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
@@ -47,8 +82,7 @@ class DropFile extends React.Component<Props, State> {
     });
   };
 
-  modifyFile = (csvFile: string) => {
-    const { isLoading, loadData } = this.props;
+  const modifyFile = (csvFile: string) => {
     const results = csvFile.split('\n');
     results.pop();
 
@@ -72,89 +106,55 @@ class DropFile extends React.Component<Props, State> {
     loadData(data);
   };
 
-  render() {
-    const { isRejected } = this.state;
-    const { theme } = this.props;
+  const onSnackbarClose = () => {
+    setIsRejected(false);
+  };
 
-    const styles = {
-      root: {
-        width: '100%',
-        maxWidth: 800,
-        height: 125,
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        border: 'solid 1px',
-        borderColor: theme.palette.accent.main,
-        borderRadius: 10,
-        margin: theme.spacing.unit * 4.5,
-        marginBottom: theme.spacing.unit * 2
-      },
-      dropZoneInactive: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-      },
-      dropZoneInactiveText: {
-        margin: theme.spacing.unit
-      },
-      rejected: {
-        borderColor: theme.palette.error.dark
-      },
-      upload: {
-        fontSize: theme.spacing.unit * 4
-      }
-    };
+  return (
+    <React.Fragment>
+      <Dropzone
+        accept="text/csv"
+        onDropAccepted={() => setIsRejected(false)}
+        onDropRejected={() => setIsRejected(true)}
+        onDrop={onDrop}
+        multiple={false}
+      >
+        {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
+          return (
+            <div
+              {...getRootProps()}
+              className={isDragReject ? `${classes.root} ${classes.rejected}` : classes.root}
+            >
+              <input {...getInputProps()} />
 
-    return (
-      <React.Fragment>
-        <Dropzone
-          accept="text/csv"
-          onDropAccepted={() => this.setState({ isRejected: false })}
-          onDropRejected={() => this.setState({ isRejected: true })}
-          onDrop={this.onDrop}
-          multiple={false}
-        >
-          {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
-            const rootStyles = isDragReject
-              ? { ...styles.root, ...styles.rejected }
-              : { ...styles.root };
-
-            return (
-              <div {...getRootProps()} style={rootStyles}>
-                <input {...getInputProps()} />
-
-                <div style={styles.dropZoneInactive}>
-                  {isDragActive ? (
-                    <Typography align="center">Drop files...</Typography>
-                  ) : (
-                    <React.Fragment>
-                      <Typography align="center" style={styles.dropZoneInactiveText}>
-                        Drop your RBC CSV file here to get started!
-                      </Typography>
-                      <Upload style={styles.upload} color="primary" />
-                    </React.Fragment>
-                  )}
-                </div>
+              <div className={classes.dropZoneInactive}>
+                {isDragActive ? (
+                  <Typography align="center">Drop files...</Typography>
+                ) : (
+                  <React.Fragment>
+                    <Typography align="center" className={classes.dropZoneInactiveText}>
+                      Drop your RBC CSV file here to get started!
+                    </Typography>
+                    <Upload className={classes.upload} color="primary" />
+                  </React.Fragment>
+                )}
               </div>
-            );
-          }}
-        </Dropzone>
+            </div>
+          );
+        }}
+      </Dropzone>
 
-        {isRejected && (
-          <EnhancedSnackbar
-            open={isRejected}
-            message="Only CSV files are accepted"
-            variant="error"
-          />
-        )}
-      </React.Fragment>
-    );
-  }
-}
+      <EnhancedSnackbar
+        open={isRejected}
+        onClose={onSnackbarClose}
+        message="Only CSV files are accepted"
+        variant="error"
+      />
+    </React.Fragment>
+  );
+};
 
-export default withTheme()(
+export default withStyles(styles, { withTheme: true })(
   connect(
     null,
     { isLoading, loadData }

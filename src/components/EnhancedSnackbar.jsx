@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { withTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 // Material UI
 import IconButton from '@material-ui/core/IconButton';
@@ -21,75 +21,62 @@ const variantIcon = {
 };
 
 type Props = {
+  classes: {
+    error: string,
+    info: string,
+    icon: string,
+    iconVariant: string,
+    message: string
+  },
   message: string,
+  onClose: () => void,
   open: boolean,
-  theme: Object,
   variant: string
 };
 
-type State = {
-  open: boolean
+// TODO: Look over colors later
+const styles = theme => ({
+  error: {
+    backgroundColor: theme.palette.error.dark
+  },
+  info: {
+    backgroundColor: theme.palette.primary.dark
+  },
+  icon: {
+    fontSize: 20
+  },
+  iconVariant: {
+    opacity: 0.9,
+    marginRight: theme.spacing.unit
+  },
+  message: {
+    display: 'flex',
+    alignItems: 'center'
+  }
+});
+
+const EnhancedSnackbar = (props: Props) => {
+  const { classes, message, onClose, open, variant } = props;
+  const Icon = variantIcon[variant];
+
+  return (
+    <Snackbar autoHideDuration={6000} open={open} onClose={onClose}>
+      <SnackbarContent
+        message={
+          <span className={classes.message}>
+            <Icon className={`${classes.icon}, ${classes.iconVariant}`} />
+            {message}
+          </span>
+        }
+        action={[
+          <IconButton key="close" aria-label="Close" color="inherit" onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
+        ]}
+        className={classes[variant]}
+      />
+    </Snackbar>
+  );
 };
 
-class EnhancedSnackbar extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      open: props.open
-    };
-  }
-
-  onClose = () => {
-    this.setState({ open: false });
-  };
-
-  render() {
-    const { message, theme, variant } = this.props;
-    const { open } = this.state;
-
-    // TODO: Look over colors later
-    const styles = {
-      error: {
-        backgroundColor: theme.palette.error.dark
-      },
-      info: {
-        backgroundColor: theme.palette.primary.dark
-      },
-      icon: {
-        fontSize: 20
-      },
-      iconVariant: {
-        opacity: 0.9,
-        marginRight: theme.spacing.unit
-      },
-      message: {
-        display: 'flex',
-        alignItems: 'center'
-      }
-    };
-
-    const Icon = variantIcon[variant];
-
-    return (
-      <Snackbar autoHideDuration={6000} open={open} onClose={this.onClose}>
-        <SnackbarContent
-          message={
-            <span style={{ ...styles.message }}>
-              <Icon style={{ ...styles.icon, ...styles.iconVariant }} />
-              {message}
-            </span>
-          }
-          action={[
-            <IconButton key="close" aria-label="Close" color="inherit" onClick={this.onClose}>
-              <CloseIcon />
-            </IconButton>
-          ]}
-          style={styles[variant]}
-        />
-      </Snackbar>
-    );
-  }
-}
-
-export default withTheme()(EnhancedSnackbar);
+export default withStyles(styles, { withTheme: true })(EnhancedSnackbar);
