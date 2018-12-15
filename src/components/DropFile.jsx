@@ -24,13 +24,11 @@ type Props = {
 };
 
 type State = {
-  dropzoneActive: boolean,
   isRejected: boolean
 };
 
 class DropFile extends React.Component<Props, State> {
   state = {
-    dropzoneActive: false,
     isRejected: false
   };
 
@@ -47,16 +45,6 @@ class DropFile extends React.Component<Props, State> {
 
       reader.readAsBinaryString(file);
     });
-
-    this.setState({ dropzoneActive: false });
-  };
-
-  onDragEnter = () => {
-    this.setState({ dropzoneActive: true });
-  };
-
-  onDragLeave = () => {
-    this.setState({ dropzoneActive: false });
   };
 
   modifyFile = (csvFile: string) => {
@@ -85,12 +73,13 @@ class DropFile extends React.Component<Props, State> {
   };
 
   render() {
-    const { dropzoneActive, isRejected } = this.state;
+    const { isRejected } = this.state;
     const { theme } = this.props;
 
     const styles = {
-      dropZone: {
-        width: 800,
+      root: {
+        width: '100%',
+        maxWidth: 800,
         height: 125,
         display: 'flex',
         flexDirection: 'row',
@@ -105,13 +94,12 @@ class DropFile extends React.Component<Props, State> {
       dropZoneInactive: {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center'
+        alignItems: 'center'
       },
       dropZoneInactiveText: {
         margin: theme.spacing.unit
       },
-      rejectedStyle: {
+      rejected: {
         borderColor: theme.palette.error.dark
       },
       upload: {
@@ -123,28 +111,35 @@ class DropFile extends React.Component<Props, State> {
       <React.Fragment>
         <Dropzone
           accept="text/csv"
-          onDrop={this.onDrop}
           onDropAccepted={() => this.setState({ isRejected: false })}
           onDropRejected={() => this.setState({ isRejected: true })}
-          onDragEnter={this.onDragEnter}
-          onDragLeave={this.onDragLeave}
+          onDrop={this.onDrop}
           multiple={false}
-          rejectStyle={styles.rejectedStyle}
-          style={styles.dropZone}
         >
-          {dropzoneActive && (
-            <div>
-              <Typography align="center">Drop files...</Typography>
-            </div>
-          )}
-          {!dropzoneActive && (
-            <div style={styles.dropZoneInactive}>
-              <Typography align="center" style={styles.dropZoneInactiveText}>
-                Drop your RBC CSV file here to get started!
-              </Typography>
-              <Upload style={styles.upload} color="primary" />
-            </div>
-          )}
+          {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
+            const rootStyles = isDragReject
+              ? { ...styles.root, ...styles.rejected }
+              : { ...styles.root };
+
+            return (
+              <div {...getRootProps()} style={rootStyles}>
+                <input {...getInputProps()} />
+
+                <div style={styles.dropZoneInactive}>
+                  {isDragActive ? (
+                    <Typography align="center">Drop files...</Typography>
+                  ) : (
+                    <React.Fragment>
+                      <Typography align="center" style={styles.dropZoneInactiveText}>
+                        Drop your RBC CSV file here to get started!
+                      </Typography>
+                      <Upload style={styles.upload} color="primary" />
+                    </React.Fragment>
+                  )}
+                </div>
+              </div>
+            );
+          }}
         </Dropzone>
 
         {isRejected && (
