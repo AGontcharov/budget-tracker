@@ -17,6 +17,7 @@ roadmap
 .env.development.local
 .env.test.local
 .env.production.local
+cSpell.json
 
 npm-debug.log*
 yarn-debug.log*

@@ -50,10 +50,11 @@ class EnhancedTableBody extends React.Component<Props> {
     const currentRows = Math.min(rowsPerPage, data.length - page * rowsPerPage);
     const emptyRows = rowsPerPage - currentRows;
 
+    // TODO: How to transition this to withStyles?
     const styles = {
       input: {
-        minWidth: 200,
-        fontSize: 14
+        fontSize: 14,
+        minWidth: 200
       },
       // 49px is the size of one row
       emptyRow: {

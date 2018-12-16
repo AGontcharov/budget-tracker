@@ -32,7 +32,7 @@ class IncomeExpensesChart extends React.Component<Props> {
     return (
       <BarChart
         width={600}
-        height={500}
+        height={600}
         margin={{
           top: theme.spacing.unit * 4,
           right: theme.spacing.unit * 4,

@@ -32,11 +32,10 @@ type Props = {
 
 const styles = theme => ({
   root: {
-    width: '100%',
-    maxWidth: 800,
-    height: 125,
+    height: 110,
+    padding: '0 15%',
+    alignSelf: 'center',
     display: 'flex',
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     border: 'solid 1px',

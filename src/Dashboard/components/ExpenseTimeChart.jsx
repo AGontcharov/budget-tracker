@@ -103,7 +103,7 @@ class ExpenseTimeChart extends React.Component<Props, State> {
 
         <AreaChart
           width={600}
-          height={500}
+          height={600}
           data={data}
           margin={{
             top: theme.spacing.unit * 4,

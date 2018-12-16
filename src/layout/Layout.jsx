@@ -1,20 +1,27 @@
 // @flow
 import * as React from 'react';
 
+// Material UI
+import { withStyles } from '@material-ui/core/styles';
+
 type Props = {
-  children: React.Node
+  children: React.Node,
+  classes: {
+    root: string
+  }
 };
 
-const layout = (props: Props) => {
-  const styles = {
+const styles = {
+  root: {
     height: '100%',
     width: '100%',
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  };
-
-  return <div style={styles}>{props.children}</div>;
+    flexDirection: 'column'
+  }
 };
 
-export default layout;
+const layout = (props: Props) => {
+  return <div className={props.classes.root}>{props.children}</div>;
+};
+
+export default withStyles(styles)(layout);

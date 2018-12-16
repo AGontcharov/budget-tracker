@@ -7,7 +7,7 @@ import download from 'downloadjs';
 import FileDownloadIcon from 'components/svgIcons/FileDownload';
 
 // Material UI
-import { withTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -22,14 +22,32 @@ import { headers } from 'lib/Utils';
 import type { Transaction } from 'ducks/data';
 
 type Props = {
+  classes: {
+    spacer: string,
+    actions: string,
+    title: string
+  },
   data: Array<Transaction>,
   onFilterClicked: () => void,
   title: string,
   theme: Object
 };
 
+const styles = theme => ({
+  spacer: {
+    flex: '1 1 100%'
+  },
+  actions: {
+    display: 'flex',
+    color: theme.palette.text.secondary
+  },
+  title: {
+    flex: '0 0 auto'
+  }
+});
+
 const EnhancedTableToolbar = (props: Props) => {
-  const { onFilterClicked, title, theme } = props;
+  const { classes, onFilterClicked, title } = props;
 
   const onExportClicked = () => {
     const { data } = props;
@@ -53,28 +71,15 @@ const EnhancedTableToolbar = (props: Props) => {
     download(csvContent, `transactions-${Date.now()}`, 'text/csv');
   };
 
-  const styles = {
-    spacer: {
-      flex: '1 1 100%'
-    },
-    actions: {
-      display: 'flex',
-      color: theme.palette.text.secondary
-    },
-    title: {
-      flex: '0 0 auto'
-    }
-  };
-
   return (
     <Toolbar>
-      <div style={styles.title}>
+      <div className={classes.title}>
         <Typography variant="h6" id="tableTitle">
           {title}
         </Typography>
       </div>
-      <div style={styles.spacer} />
-      <div style={styles.actions}>
+      <div className={classes.spacer} />
+      <div className={classes.actions}>
         <Tooltip title="Export">
           <IconButton
             aria-label="Export List"
@@ -100,4 +105,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(withTheme()(EnhancedTableToolbar));
+export default connect(mapStateToProps)(
+  withStyles(styles, { withTheme: true })(EnhancedTableToolbar)
+);

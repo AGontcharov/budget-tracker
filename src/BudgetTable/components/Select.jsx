@@ -144,6 +144,7 @@ const components = {
 };
 
 type Props = {
+  autoFocus?: boolean,
   classes: Object,
   onChange: string => void,
   theme: Object,
@@ -163,7 +164,7 @@ class IntegrationReactSelect extends React.Component<Props, State> {
   }
 
   onChange = value => {
-    this.props.onChange(value.value);
+    this.props.onChange(value ? value.value : '');
     this.setState({ value });
   };
 
@@ -185,6 +186,7 @@ class IntegrationReactSelect extends React.Component<Props, State> {
       <div className={classes.root}>
         <NoSsr>
           <CreatableSelect
+            isClearable
             classes={classes}
             styles={selectStyles}
             options={suggestions}

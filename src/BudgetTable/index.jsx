@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
 
 // Material UI
-import { withTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -29,6 +29,13 @@ import { loadData, loadFilters, loadSort } from 'ducks/data';
 import type { Filter, Sort, Transaction } from 'ducks/data';
 
 type Props = {
+  classes: {
+    paper: string,
+    tableWrapper: string,
+    row: string,
+    input: string,
+    amount: string
+  },
   filters: Array<{ name: string, value: string }>,
   data: Array<Transaction>,
   loadData: (Array<Transaction>) => void,
@@ -45,7 +52,28 @@ type State = {
   page: number
 };
 
+// TODO: Figure out Table Styles
+const styles = theme => ({
+  paper: {
+    margin: theme.spacing.unit * 3.5
+  },
+  tableWrapper: {
+    overflowX: 'auto'
+  },
+  row: {
+    backgroundColor: theme.palette.background.default
+  },
+  input: {
+    fontSize: '13'
+  },
+  amount: {
+    textAlign: 'right'
+  }
+});
+
 class BudgetTable extends React.Component<Props, State> {
+  tableRef: { current: null | HTMLDivElement };
+
   constructor(props: Props) {
     super(props);
 
@@ -116,39 +144,22 @@ class BudgetTable extends React.Component<Props, State> {
 
   onChangePage = (event: SyntheticEvent<>, page: number) => {
     this.setState({ page }, () => {
-      this.tableRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      this.tableRef.current &&
+        this.tableRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
     });
   };
 
   onChangeRowsPerPage = (event: SyntheticInputEvent<HTMLInputElement>) => {
     localStorage.setItem('rowsPerPage', event.target.value);
     this.setState({ rowsPerPage: parseInt(event.target.value, 10) }, () => {
-      this.tableRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      this.tableRef.current &&
+        this.tableRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
     });
   };
 
   render() {
-    const { theme, data, order, orderBy } = this.props;
+    const { classes, data, order, orderBy } = this.props;
     const { isFilter, page, rowsPerPage } = this.state;
-
-    const styles = {
-      paper: {
-        margin: theme.spacing.unit * 2
-      },
-      table: {
-        minWidth: 900,
-        overflowX: 'auto'
-      },
-      row: {
-        backgroundColor: theme.palette.background.default
-      },
-      input: {
-        fontSize: '13'
-      },
-      amount: {
-        textAlign: 'right'
-      }
-    };
 
     // Get the total amount
     const totalAmount = data.reduce((accumulator, row) => {
@@ -157,58 +168,58 @@ class BudgetTable extends React.Component<Props, State> {
 
     return (
       // TODO: Alternating Table color scheme?
-      <Paper style={styles.paper}>
-        <div ref={this.tableRef}>
-          <EnhancedToolBar
-            data={data}
-            title={'Transactions'}
-            onFilterClicked={this.onFilterClicked}
-          />
-        </div>
+      <Paper className={classes.paper}>
+        <EnhancedToolBar
+          data={data}
+          title={'Transactions'}
+          onFilterClicked={this.onFilterClicked}
+        />
 
-        <Table aria-labelledby="tableTitle" style={styles.table}>
-          <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={this.onRequestSort} />
-          <EnhancedTableBody
-            isFilter={isFilter}
-            minRows={10}
-            onFilter={this.onFilter}
-            onCategoryChange={this.onCategoryChange}
-            order={order}
-            orderBy={orderBy}
-            page={page}
-            rowsPerPage={rowsPerPage}
-          />
-          <TableFooter>
-            <TableRow>
-              <TableCell colSpan={5} padding="dense" style={styles.amount}>
-                <FormControl margin="dense">
-                  <InputLabel htmlFor="adornment-amount">Amount</InputLabel>
-                  <Input
-                    id="adornment-amount"
-                    value={
-                      totalAmount < 0
-                        ? `(${Math.abs(totalAmount).toFixed(2)})`
-                        : totalAmount.toFixed(2)
-                    }
-                    readOnly
-                    startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                  />
-                </FormControl>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TablePagination
-                count={data.length}
-                page={page}
-                onChangePage={this.onChangePage}
-                rowsPerPage={rowsPerPage}
-                rowsPerPageOptions={[10, 25, 50, 100]}
-                onChangeRowsPerPage={this.onChangeRowsPerPage}
-                ActionsComponent={TablePaginationActions}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
+        <div ref={this.tableRef} className={classes.tableWrapper}>
+          <Table aria-labelledby="tableTitle">
+            <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={this.onRequestSort} />
+            <EnhancedTableBody
+              isFilter={isFilter}
+              minRows={10}
+              onFilter={this.onFilter}
+              onCategoryChange={this.onCategoryChange}
+              order={order}
+              orderBy={orderBy}
+              page={page}
+              rowsPerPage={rowsPerPage}
+            />
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={5} padding="dense" className={classes.amount}>
+                  <FormControl margin="dense">
+                    <InputLabel htmlFor="adornment-amount">Amount</InputLabel>
+                    <Input
+                      id="adornment-amount"
+                      value={
+                        totalAmount < 0
+                          ? `(${Math.abs(totalAmount).toFixed(2)})`
+                          : totalAmount.toFixed(2)
+                      }
+                      readOnly
+                      startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                    />
+                  </FormControl>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TablePagination
+                  count={data.length}
+                  page={page}
+                  onChangePage={this.onChangePage}
+                  rowsPerPage={rowsPerPage}
+                  rowsPerPageOptions={[10, 25, 50, 100]}
+                  onChangeRowsPerPage={this.onChangeRowsPerPage}
+                  ActionsComponent={TablePaginationActions}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </div>
       </Paper>
     );
   }
@@ -223,7 +234,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default withTheme()(
+export default withStyles(styles, { withTheme: true })(
   connect(
     mapStateToProps,
     { loadData, loadFilters, loadSort }

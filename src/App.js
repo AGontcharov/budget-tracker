@@ -34,7 +34,6 @@ const theme = createMuiTheme({
 const App = (props: Props) => {
   return (
     <MuiThemeProvider theme={theme}>
-      {/* <React.StrictMode> */}
       <Layout>
         <Navbar />
         <DropFile />
@@ -42,7 +41,6 @@ const App = (props: Props) => {
         <Dashboard />
         <Footer />
       </Layout>
-      {/* </React.StrictMode> */}
     </MuiThemeProvider>
   );
 };

@@ -128,7 +128,7 @@ class CategoryChart extends React.Component<Props, State> {
     return (
       <PieChart
         width={600}
-        height={500}
+        height={600}
         margin={{
           top: theme.spacing.unit * 4,
           right: theme.spacing.unit * 4,

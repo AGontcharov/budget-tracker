@@ -8,7 +8,7 @@ import ExpenseTimeChart from 'dashboard/components/ExpenseTimeChart';
 import CategoryChart from 'dashboard/components/CategoryChart';
 
 // Material UI
-import { withTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
@@ -21,72 +21,70 @@ import type { Transaction } from 'ducks/data';
 
 type Props = {
   data: Array<Transaction>,
-  theme: Object
+  classes: {
+    paper: string,
+    wrapper: string,
+    empty: string,
+    grid: string
+  }
 };
 
-class Dashboard extends React.Component<Props> {
-  render() {
-    const { data, theme } = this.props;
-
-    const styles = {
-      paper: {
-        width: '100%',
-        maxWidth: 1200,
-        display: 'flex',
-        flexDirection: 'column',
-        margin: theme.spacing.unit * 2
-      },
-      wrapper: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-      },
-      empty: {
-        margin: theme.spacing.unit * 2
-      },
-      grid: {
-        // TODO: Maybe this is a solution for material design grids
-        display: 'grid',
-        // Each grid is a minimum of 600px or a maximum of 1 fraction unit
-        gridTemplateColumns: 'repeat(auto-fill, minmax(600px, 1fr))',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }
-    };
-
-    const availableMonths = [...new Set(this.props.data.map(item => item.date.getMonth()))];
-
-    return (
-      <React.Fragment>
-        <Paper style={styles.paper}>
-          <Toolbar>
-            <Typography variant="h6" id="tableTitle">
-              {'Dashboard'}
-            </Typography>
-          </Toolbar>
-          {!data.length ? (
-            <div style={styles.wrapper}>
-              <Typography style={styles.empty}>
-                {'To view the Dashboard load some data...'}{' '}
-              </Typography>
-            </div>
-          ) : (
-            <div style={styles.grid}>
-              <IncomeExpensesChart data={data} />
-              <CategoryChart data={data} />
-              <ExpenseTimeChart
-                // Specifying a key allows for the component to reset whenever the starting month changes
-                key={availableMonths[0]}
-                availableMonths={availableMonths}
-                data={data}
-              />
-            </div>
-          )}
-        </Paper>
-      </React.Fragment>
-    );
+const styles = theme => ({
+  paper: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: theme.spacing.unit * 3.5
+  },
+  wrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  empty: {
+    margin: theme.spacing.unit * 3.5
+  },
+  grid: {
+    display: 'grid',
+    // Each grid is a minimum of 600px or a maximum of 1 fraction unit
+    gridTemplateColumns: 'repeat(auto-fill, minmax(600px, 1fr))',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
-}
+});
+
+const Dashboard = (props: Props) => {
+  const { classes, data } = props;
+
+  const availableMonths = [...new Set(data.map(item => item.date.getMonth()))];
+
+  return (
+    <Paper className={classes.paper}>
+      <Toolbar>
+        <Typography variant="h6" id="tableTitle">
+          {'Dashboard'}
+        </Typography>
+      </Toolbar>
+      {!data.length ? (
+        <div className={classes.wrapper}>
+          <Typography className={classes.empty}>
+            {'To view the Dashboard load some data...'}{' '}
+          </Typography>
+        </div>
+      ) : (
+        <div className={classes.grid}>
+          <IncomeExpensesChart data={data} />
+          <CategoryChart data={data} />
+          <ExpenseTimeChart
+            // Specifying a key allows for the component to reset whenever the starting month changes
+            key={availableMonths[0]}
+            availableMonths={availableMonths}
+            data={data}
+          />
+        </div>
+      )}
+    </Paper>
+  );
+};
 
 const mapStateToProps = state => {
   return {
@@ -94,7 +92,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default withTheme()(
+export default withStyles(styles, { withTheme: true })(
   connect(
     mapStateToProps,
     { getFilteredData }
