@@ -11,7 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 
 // Custom Components
-import Select from 'budgetTable//components/Select';
+import Select from 'budgetTable/components/Select';
 
 // Helper Functions
 import { getData } from 'ducks/data';

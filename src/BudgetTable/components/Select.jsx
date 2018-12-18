@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { useState } from 'react';
 import CreatableSelect from 'react-select/lib/Creatable';
 
 // Material UI
@@ -14,7 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 const suggestions = [
   { label: 'Debt' },
   { label: 'Entertainment' },
-  { label: 'Eating Out' },
+  { label: 'Dinning' },
   { label: 'Food' },
   { label: 'Health Care' },
   { label: 'Housing' },
@@ -63,76 +63,70 @@ const styles = theme => ({
   }
 });
 
-const inputComponent = ({ inputRef, ...props }) => {
-  return <div ref={inputRef} {...props} />;
-};
+const inputComponent = ({ inputRef, ...props }) => <div ref={inputRef} {...props} />;
 
-const Control = props => {
-  return (
-    <TextField
-      fullWidth
-      InputProps={{
-        inputComponent,
-        inputProps: {
-          className: props.selectProps.classes.input,
-          inputRef: props.innerRef,
-          children: props.children,
-          ...props.innerProps
-        }
-      }}
-      {...props.selectProps.textFieldProps}
-    />
-  );
-};
+// Overwrite the control component
+const Control = props => (
+  <TextField
+    fullWidth
+    InputProps={{
+      inputComponent,
+      inputProps: {
+        className: props.selectProps.classes.input,
+        inputRef: props.innerRef,
+        children: props.children,
+        ...props.innerProps
+      }
+    }}
+    {...props.selectProps.textFieldProps}
+  />
+);
 
-const Option = props => {
-  return (
-    <MenuItem
-      buttonRef={props.innerRef}
-      selected={props.isFocused}
-      component="div"
-      style={{
-        fontWeight: props.isSelected ? 500 : 400,
-        fontSize: 13
-      }}
-      {...props.innerProps}
-    >
-      {props.children}
-    </MenuItem>
-  );
-};
+// Overwrite the Options component
+const Option = props => (
+  <MenuItem
+    buttonRef={props.innerRef}
+    selected={props.isFocused}
+    component="div"
+    style={{
+      fontWeight: props.isSelected ? 500 : 400,
+      fontSize: 13
+    }}
+    {...props.innerProps}
+  >
+    {props.children}
+  </MenuItem>
+);
 
-const Placeholder = props => {
-  return (
-    <Typography
-      color="textSecondary"
-      className={props.selectProps.classes.placeholder}
-      {...props.innerProps}
-    >
-      {props.children}
-    </Typography>
-  );
-};
+// Overwrite the placeholder component
+const Placeholder = props => (
+  <Typography
+    color="textSecondary"
+    className={props.selectProps.classes.placeholder}
+    {...props.innerProps}
+  >
+    {props.children}
+  </Typography>
+);
 
-const SingleValue = props => {
-  return (
-    <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
-      {props.children}
-    </Typography>
-  );
-};
+// Overwrite the singleValue component
+const SingleValue = props => (
+  <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
+    {props.children}
+  </Typography>
+);
 
-const ValueContainer = props => {
-  return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>;
-};
+// Overwrite the valueContainer component
+const ValueContainer = props => (
+  <div className={props.selectProps.classes.valueContainer}>{props.children}</div>
+);
 
-const Menu = props => {
-  return (
-    <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
-      {props.children}
-    </Paper>
-  );
-};
+// Overwrite the menu component
+const Menu = props => (
+  <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
+    {props.children}
+  </Paper>
+);
 
 const components = {
   Control,
@@ -145,60 +139,54 @@ const components = {
 
 type Props = {
   autoFocus?: boolean,
-  classes: Object,
+  classes: {
+    root: string,
+    input: string,
+    valueContainer: string,
+    singleValue: string,
+    placeholder: string,
+    paper: string
+  },
   onChange: string => void,
   theme: Object,
   value: { value: string, label: string }
 };
 
-type State = {
-  value: { value: string, label: string }
-};
+const IntegrationReactSelect = (props: Props) => {
+  const { classes, theme } = props;
+  const [value, setValue] = useState(props.value);
 
-class IntegrationReactSelect extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      value: props.value
-    };
-  }
-
-  onChange = value => {
-    this.props.onChange(value ? value.value : '');
-    this.setState({ value });
+  const onChange = value => {
+    props.onChange(value ? value.value : '');
+    setValue(value);
   };
 
-  render() {
-    const { classes, theme } = this.props;
-    const { value } = this.state;
+  const selectStyles = {
+    input: base => ({
+      ...base,
+      color: theme.palette.text.primary,
+      '& input': {
+        font: 'inherit'
+      }
+    })
+  };
 
-    const selectStyles = {
-      input: base => ({
-        ...base,
-        color: theme.palette.text.primary,
-        '& input': {
-          font: 'inherit'
-        }
-      })
-    };
-
-    return (
-      <div className={classes.root}>
-        <NoSsr>
-          <CreatableSelect
-            isClearable
-            classes={classes}
-            styles={selectStyles}
-            options={suggestions}
-            components={components}
-            value={value}
-            onChange={this.onChange}
-            placeholder="Choose..."
-          />
-        </NoSsr>
-      </div>
-    );
-  }
-}
+  return (
+    <div className={classes.root}>
+      <NoSsr>
+        <CreatableSelect
+          isClearable
+          classes={classes}
+          styles={selectStyles}
+          options={suggestions}
+          components={components}
+          value={value}
+          onChange={onChange}
+          placeholder="Choose..."
+        />
+      </NoSsr>
+    </div>
+  );
+};
 
 export default withStyles(styles, { withTheme: true })(IntegrationReactSelect);

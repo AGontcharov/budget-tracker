@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
 
 // Material UI
+import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';

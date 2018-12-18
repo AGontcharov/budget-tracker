@@ -1,3 +1,5 @@
+// @flow
+
 // Material UI
 import {
   red,
@@ -24,7 +26,7 @@ import {
 const categoryColors = {
   Debt: brown,
   Entertainment: red,
-  'Eating Out': green,
+  Dinning: green,
   Food: lightGreen,
   'Health Care': cyan,
   Housing: orange,
@@ -39,7 +41,7 @@ const categoryColors = {
   Utilities: teal
 };
 
-const getCategoryColor = (category: string, shade?: numer = 500) => {
+const getCategoryColor = (category: string, shade?: number = 500): ?string => {
   if (categoryColors.hasOwnProperty(category)) {
     return categoryColors[category][shade];
   }

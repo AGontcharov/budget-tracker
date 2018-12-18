@@ -1,7 +1,8 @@
 // @flow
-import * as React from 'react';
+import React, { useState } from 'react';
 
 // Material UI
+import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,64 +15,59 @@ import Typography from '@material-ui/core/Typography';
 
 // Icons
 import MenuIcon from '@material-ui/icons/Menu';
-
-// Icons
 import HomeIcon from '@material-ui/icons/Home';
 
-type Props = {};
-
-type State = {
-  open: boolean
+type Props = {
+  classes: {
+    list: string
+  }
 };
 
-export default class Navbar extends React.Component<Props, State> {
-  state = {
-    open: false
-  };
-
-  onClick = () => {
-    this.setState({ open: !this.state.open });
-  };
-
-  onClose = () => {
-    this.setState({ open: false });
-  };
-
-  render() {
-    const { open } = this.state;
-
-    const styles = {
-      list: {
-        minWidth: 250
-      }
-    };
-
-    return (
-      <>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton color="inherit" aria-label="Menu" onClick={this.onClick}>
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit">
-              Budget Tracker
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Drawer open={open} onClose={this.onClose}>
-          <List style={styles.list}>
-            {['Home'].map(text => (
-              <ListItem button key={text} selected>
-                <ListItemIcon>
-                  <HomeIcon />
-                </ListItemIcon>
-
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-        </Drawer>
-      </>
-    );
+const styles = {
+  list: {
+    minWidth: 256
   }
-}
+};
+
+const Navbar = (props: Props) => {
+  const [open, setOpen] = useState(false);
+  const { classes } = props;
+
+  const onClick = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton color="inherit" aria-label="Menu" onClick={onClick}>
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" color="inherit">
+            Budget Tracker
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer open={open} onClose={onClose}>
+        <List className={classes.list}>
+          {['Home'].map(text => (
+            <ListItem button key={text} selected>
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+    </>
+  );
+};
+
+export default withStyles(styles)(Navbar);

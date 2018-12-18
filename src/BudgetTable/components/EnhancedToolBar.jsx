@@ -47,11 +47,9 @@ const styles = theme => ({
 });
 
 const EnhancedTableToolbar = (props: Props) => {
-  const { classes, onFilterClicked, title } = props;
+  const { classes, data, onFilterClicked, title } = props;
 
   const onExportClicked = () => {
-    const { data } = props;
-
     // Get the headers
     let csvContent = headers
       .reduce((accumulator, header) => {
@@ -81,11 +79,7 @@ const EnhancedTableToolbar = (props: Props) => {
       <div className={classes.spacer} />
       <div className={classes.actions}>
         <Tooltip title="Export">
-          <IconButton
-            aria-label="Export List"
-            disabled={!props.data.length}
-            onClick={onExportClicked}
-          >
+          <IconButton aria-label="Export List" disabled={!data.length} onClick={onExportClicked}>
             <FileDownloadIcon />
           </IconButton>
         </Tooltip>
