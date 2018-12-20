@@ -1,10 +1,10 @@
 // @flow
-import * as React from 'react';
+import React, { useState } from 'react';
 
 import { Cell, Legend, PieChart, Pie, Sector } from 'recharts';
 
 // Material UI
-import { withTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 // Helper Functions
 import getCategoryColor from 'lib/CategoryColors';
@@ -75,85 +75,85 @@ const ActiveShape = props => {
 };
 
 type Props = {
+  classes: {
+    pieChart: string
+  },
   data: Array<Transaction>,
   theme: Object
 };
 
-type State = {
-  activeCategory: number
+const styles = {
+  pieChart: {
+    justifySelf: 'center'
+  }
 };
 
-class CategoryChart extends React.Component<Props, State> {
-  state = {
-    activeCategory: 0
+const CategoryChart = (props: Props) => {
+  const { classes, data, theme } = props;
+  const [activeCategory, setActiveCategory] = useState(0);
+
+  const onCategorySelect = (data, index) => {
+    setActiveCategory(index);
   };
 
-  onCategorySelect = (data, index) => {
-    this.setState({ activeCategory: index });
-  };
+  // TODO: Maybe I can map this beforehand,
+  // but I need to watch out for custom categories too. Store the map in redux?
+  // Need to calculate the runtime complexity
+  let categories = data.reduce((accumulator, row, index) => {
+    if (accumulator && row.category) {
+      let categoryExists = false;
 
-  render() {
-    const { theme, data } = this.props;
+      accumulator.forEach(category => {
+        if (category.name === row.category) {
+          category.value += row.price;
+          categoryExists = true;
+        }
+      });
 
-    // TODO: Maybe I can map this beforehand,
-    // but I need to watch out for custom categories too. Store the map in redux?
-    // Need to calculate the runtime complexity
-    let categories = data.reduce((accumulator, row, index) => {
-      if (accumulator && row.category) {
-        let categoryExists = false;
+      return categoryExists
+        ? accumulator
+        : accumulator.concat({
+            id: row.id,
+            isNegative: row.price < 0 ? true : false,
+            name: row.category,
+            value: row.price
+          });
+    }
 
-        accumulator.forEach(category => {
-          if (category.name === row.category) {
-            category.value += row.price;
-            categoryExists = true;
-          }
-        });
+    return accumulator;
+  }, []);
 
-        return categoryExists
-          ? accumulator
-          : accumulator.concat({
-              id: row.id,
-              isNegative: row.price < 0 ? true : false,
-              name: row.category,
-              value: row.price
-            });
-      }
+  categories.forEach(row => (row.value = Math.abs(row.value)));
+  const colors = categories.map(category => getCategoryColor(category.name));
 
-      return accumulator;
-    }, []);
-
-    categories.forEach(row => (row.value = Math.abs(row.value)));
-    const colors = categories.map(category => getCategoryColor(category.name));
-
-    return (
-      <PieChart
-        width={600}
-        height={600}
-        margin={{
-          top: theme.spacing.unit * 4,
-          right: theme.spacing.unit * 4,
-          bottom: theme.spacing.unit * 4,
-          left: theme.spacing.unit * 4
-        }}
-        style={{ justifySelf: 'center' }}
+  return (
+    <PieChart
+      width={600}
+      height={600}
+      margin={{
+        top: theme.spacing.unit * 4,
+        right: theme.spacing.unit * 4,
+        bottom: theme.spacing.unit * 4,
+        left: theme.spacing.unit * 4
+      }}
+      className={classes.pieChart}
+    >
+      <Pie
+        data={categories.length ? categories : [{ id: 'none', name: 'No Categories', value: 1 }]}
+        dataKey="value"
+        innerRadius={80}
+        outerRadius={160}
+        activeIndex={activeCategory}
+        activeShape={ActiveShape}
+        onMouseEnter={onCategorySelect}
       >
-        <Pie
-          data={categories.length ? categories : [{ id: 'none', name: 'No Categories', value: 1 }]}
-          dataKey="value"
-          innerRadius={80}
-          outerRadius={160}
-          activeIndex={this.state.activeCategory}
-          activeShape={ActiveShape}
-          onMouseEnter={this.onCategorySelect}
-        >
-          {categories.map((entry, index) => (
-            <Cell key={entry.id} fill={colors[index % colors.length]} />
-          ))}
-        </Pie>
-        <Legend />
-      </PieChart>
-    );
-  }
-}
+        {categories.map((entry, index) => (
+          <Cell key={entry.id} fill={colors[index % colors.length]} />
+        ))}
+      </Pie>
+      <Legend />
+    </PieChart>
+  );
+};
 
-export default withTheme()(CategoryChart);
+export default withStyles(styles, { withTheme: true })(CategoryChart);

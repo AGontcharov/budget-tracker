@@ -31,7 +31,7 @@ const EnhancedTableHead = (props: Props) => {
           return (
             <TableCell
               key={row.id}
-              numeric={row.numeric}
+              align={row.numeric ? 'right' : 'center'}
               padding={row.disablePadding ? 'none' : 'default'}
               sortDirection={orderBy === row.id ? order : false}
             >

@@ -68,7 +68,11 @@ class EnhancedTableBody extends React.Component<Props> {
           <TableRow>
             {headers.map(filter => {
               return (
-                <TableCell padding="dense" key={filter.id} numeric={filter.id === 'price'}>
+                <TableCell
+                  padding="dense"
+                  key={filter.id}
+                  align={filter.id === 'price' ? 'right' : 'center'}
+                >
                   <Input
                     placeholder="Search..."
                     inputProps={{ 'aria-label': 'Description' }}
@@ -102,7 +106,7 @@ class EnhancedTableBody extends React.Component<Props> {
                 />
               </TableCell>
               <TableCell padding="dense">{row.details}</TableCell>
-              <TableCell numeric>
+              <TableCell align="right">
                 {row.price < 0 ? `(${Math.abs(row.price)})` : row.price}
               </TableCell>
             </TableRow>

@@ -54,7 +54,6 @@ const styles = theme => ({
 
 const Dashboard = (props: Props) => {
   const { classes, data } = props;
-
   const availableMonths = [...new Set(data.map(item => item.date.getMonth()))];
 
   return (
