@@ -65,6 +65,7 @@ const ExpenseTimeChart = (props: Props) => {
     { name: 'Week 5', value: 0 }
   ];
 
+  // TODO: Performance increase?
   props.data
     .filter(row => row.date.getMonth() === month)
     .forEach(transaction => {

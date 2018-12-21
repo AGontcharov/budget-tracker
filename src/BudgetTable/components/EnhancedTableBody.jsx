@@ -34,97 +34,93 @@ type Props = {
   rowsPerPage: number
 };
 
-class EnhancedTableBody extends React.Component<Props> {
-  render() {
-    const {
-      data,
-      isFilter,
-      isLoading,
-      minRows,
-      onFilter,
-      onCategoryChange,
-      page,
-      rowsPerPage
-    } = this.props;
+const EnhancedTableBody = (props: Props) => {
+  const {
+    data,
+    isFilter,
+    isLoading,
+    minRows,
+    onFilter,
+    onCategoryChange,
+    page,
+    rowsPerPage
+  } = props;
 
-    const currentRows = Math.min(rowsPerPage, data.length - page * rowsPerPage);
-    const emptyRows = rowsPerPage - currentRows;
+  const currentRows = Math.min(rowsPerPage, data.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - currentRows;
 
-    // TODO: How to transition this to withStyles?
-    const styles = {
-      input: {
-        fontSize: 14,
-        minWidth: 200
-      },
-      // 49px is the size of one row
-      emptyRow: {
-        height: minRows > emptyRows ? 49 * emptyRows : 49 * (minRows - currentRows)
-      }
-    };
+  // TODO: How to transition this to withStyles?
+  const styles = {
+    input: {
+      fontSize: 14,
+      minWidth: 200
+    },
+    // 49px is the size of one row
+    emptyRow: {
+      height: minRows > emptyRows ? 49 * emptyRows : 49 * (minRows - currentRows)
+    }
+  };
 
-    return (
-      <TableBody>
-        {isFilter && (
-          <TableRow>
-            {headers.map(filter => {
-              return (
-                <TableCell
-                  padding="dense"
-                  key={filter.id}
-                  align={filter.id === 'price' ? 'right' : 'center'}
-                >
-                  <Input
-                    placeholder="Search..."
-                    inputProps={{ 'aria-label': 'Description' }}
-                    onChange={onFilter(filter.id)}
-                    style={styles.input}
-                  />
-                </TableCell>
-              );
-            })}
-          </TableRow>
-        )}
-
-        {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
-          return (
-            <TableRow
-              hover
-              key={row.id}
-              style={{
-                background: row.category ? getCategoryColor(row.category) : undefined
-              }}
-            >
-              <TableCell padding="dense">{row.date.toDateString()}</TableCell>
-              <TableCell>{row.type}</TableCell>
-              <TableCell>
-                <Select
-                  // Specifying key allows the select component to reset whenever the category changes
-                  // TODO: Lose autofocus on remount, add React lifecycle to select
-                  // key={row.category}
-                  onChange={onCategoryChange(row.id)}
-                  value={row.category ? { value: row.category, label: row.category } : null}
+  return (
+    <TableBody>
+      {isFilter && (
+        <TableRow>
+          {headers.map(filter => {
+            return (
+              <TableCell
+                padding="dense"
+                key={filter.id}
+                align={filter.id === 'price' ? 'right' : 'center'}
+              >
+                <Input
+                  placeholder="Search..."
+                  inputProps={{ 'aria-label': 'Description' }}
+                  onChange={onFilter(filter.id)}
+                  style={styles.input}
                 />
               </TableCell>
-              <TableCell padding="dense">{row.details}</TableCell>
-              <TableCell align="right">
-                {row.price < 0 ? `(${Math.abs(row.price)})` : row.price}
-              </TableCell>
-            </TableRow>
-          );
-        })}
+            );
+          })}
+        </TableRow>
+      )}
 
-        {currentRows < minRows && (
-          <TableRow style={styles.emptyRow}>
-            <TableCell colSpan={6} style={{ textAlign: 'center' }}>
-              {!data.length && !isLoading && <Typography align="center">{'No data...'}</Typography>}
-              {isLoading && <LinearProgress />}
+      {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+        return (
+          <TableRow
+            hover
+            key={row.id}
+            style={{
+              background: row.category ? getCategoryColor(row.category) : undefined
+            }}
+          >
+            <TableCell padding="dense">{row.date.toDateString()}</TableCell>
+            <TableCell>{row.type}</TableCell>
+            <TableCell>
+              <Select
+                onChange={onCategoryChange(row.id)}
+                value={row.category ? { value: row.category, label: row.category } : null}
+              />
+            </TableCell>
+            <TableCell padding="dense">{row.details}</TableCell>
+            <TableCell padding="dense">{'Description...'}</TableCell>
+            <TableCell align="right">
+              {row.price < 0 ? `(${Math.abs(row.price)})` : row.price}
             </TableCell>
           </TableRow>
-        )}
-      </TableBody>
-    );
-  }
-}
+        );
+      })}
+
+      {currentRows < minRows && (
+        <TableRow style={styles.emptyRow}>
+          <TableCell colSpan={6} style={{ textAlign: 'center' }}>
+            {!data.length && !isLoading && <Typography align="center">{'No data...'}</Typography>}
+            {isLoading && <LinearProgress />}
+          </TableCell>
+        </TableRow>
+      )}
+    </TableBody>
+  );
+};
 
 const mapStateToProps = state => {
   return {

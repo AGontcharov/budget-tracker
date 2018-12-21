@@ -30,6 +30,13 @@ export const headers = [
     numeric: false,
     disablePadding: false,
     label: 'Details',
+    tooltip: 'Details of the transaction'
+  },
+  {
+    id: 'description',
+    numeric: false,
+    disablePadding: false,
+    label: 'Description',
     tooltip: 'More information about the transaction'
   },
   {

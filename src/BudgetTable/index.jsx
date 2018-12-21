@@ -190,7 +190,7 @@ class BudgetTable extends React.Component<Props, State> {
             />
             <TableFooter>
               <TableRow>
-                <TableCell colSpan={5} padding="dense" className={classes.amount}>
+                <TableCell colSpan={6} padding="dense" className={classes.amount}>
                   <FormControl margin="dense">
                     <InputLabel htmlFor="adornment-amount">Amount</InputLabel>
                     <Input
