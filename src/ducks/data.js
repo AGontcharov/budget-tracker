@@ -12,6 +12,7 @@ export type Transaction = {
   type: string,
   category: string,
   details: string,
+  description: string,
   price: number
 };
 

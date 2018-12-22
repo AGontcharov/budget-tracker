@@ -95,6 +95,7 @@ const DropFile = (props: Props) => {
         category: '',
         // Remove the quotes around the details
         details: transaction[4].replace(/^"(.*)"$/, '$1'),
+        description: 'Add description...',
         price: Number(transaction[6])
       };
     });
