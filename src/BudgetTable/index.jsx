@@ -142,6 +142,13 @@ class BudgetTable extends React.Component<Props, State> {
     this.props.loadData(transactions);
   };
 
+  onDescriptionChange = (index: number) => (event: SyntheticInputEvent<HTMLInputElement>) => {
+    let transactions = [...this.props.data];
+
+    transactions[index].description = event.target.value;
+    this.props.loadData(transactions);
+  };
+
   onChangePage = (event: SyntheticEvent<>, page: number) => {
     this.setState({ page }, () => {
       this.tableRef.current &&
@@ -183,6 +190,7 @@ class BudgetTable extends React.Component<Props, State> {
               minRows={10}
               onFilter={this.onFilter}
               onCategoryChange={this.onCategoryChange}
+              onDescriptionChange={this.onDescriptionChange}
               order={order}
               orderBy={orderBy}
               page={page}

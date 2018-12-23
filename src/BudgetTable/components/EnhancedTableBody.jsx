@@ -1,14 +1,18 @@
 // @flow
-import * as React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-// Material Ui
+// Material UI
+import { grey } from '@material-ui/core/colors';
 import Input from '@material-ui/core/Input';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
+
+import TextField from '@material-ui/core/TextField';
+import Popover from '@material-ui/core/Popover';
 
 // Custom Components
 import Select from 'budgetTable/components/Select';
@@ -27,7 +31,8 @@ type Props = {
   isFilter: boolean,
   minRows: number,
   onFilter: string => Function,
-  onCategoryChange: number => Function,
+  onCategoryChange: number => string => void,
+  onDescriptionChange: number => string => void,
   order: string,
   orderBy: string,
   page: number,
@@ -42,9 +47,12 @@ const EnhancedTableBody = (props: Props) => {
     minRows,
     onFilter,
     onCategoryChange,
+    onDescriptionChange,
     page,
     rowsPerPage
   } = props;
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
   const currentRows = Math.min(rowsPerPage, data.length - page * rowsPerPage);
   const emptyRows = rowsPerPage - currentRows;
@@ -52,8 +60,8 @@ const EnhancedTableBody = (props: Props) => {
   // TODO: How to transition this to withStyles?
   const styles = {
     input: {
-      fontSize: 14,
-      minWidth: 200
+      fontSize: 13,
+      width: 200
     },
     // 49px is the size of one row
     emptyRow: {
@@ -61,26 +69,28 @@ const EnhancedTableBody = (props: Props) => {
     }
   };
 
+  const onDescriptionClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const onClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <TableBody>
       {isFilter && (
         <TableRow>
-          {headers.map(filter => {
-            return (
-              <TableCell
-                padding="dense"
-                key={filter.id}
-                align={filter.id === 'price' ? 'right' : 'center'}
-              >
-                <Input
-                  placeholder="Search..."
-                  inputProps={{ 'aria-label': 'Description' }}
-                  onChange={onFilter(filter.id)}
-                  style={styles.input}
-                />
-              </TableCell>
-            );
-          })}
+          {headers.map(filter => (
+            <TableCell padding="dense" key={filter.id}>
+              <Input
+                placeholder="Search..."
+                inputProps={{ 'aria-label': 'Description' }}
+                onChange={onFilter(filter.id)}
+                style={styles.input}
+              />
+            </TableCell>
+          ))}
         </TableRow>
       )}
 
@@ -93,16 +103,47 @@ const EnhancedTableBody = (props: Props) => {
               background: row.category ? getCategoryColor(row.category) : undefined
             }}
           >
+            {/* Date */}
             <TableCell padding="dense">{row.date.toDateString()}</TableCell>
+
+            {/* Type */}
             <TableCell>{row.type}</TableCell>
+
+            {/* Category */}
             <TableCell>
               <Select
                 onChange={onCategoryChange(row.id)}
                 value={row.category ? { value: row.category, label: row.category } : null}
               />
             </TableCell>
+
+            {/* Details */}
             <TableCell padding="dense">{row.details}</TableCell>
-            <TableCell padding="dense">{'Description...'}</TableCell>
+
+            {/* Descriptions */}
+            <TableCell onClick={onDescriptionClick} padding="dense">
+              {row.description}
+            </TableCell>
+            <Popover
+              anchorEl={anchorEl}
+              elevation={0}
+              onClose={onClose}
+              open={open}
+              PaperProps={{
+                square: true,
+                style: { background: grey[100], border: '1px solid grey' }
+              }}
+            >
+              <TextField
+                // onChange={onDescriptionChange(row.id)}
+                style={{ width: 200, margin: 8 }}
+                inputProps={{
+                  style: { fontSize: 13 }
+                }}
+              />
+            </Popover>
+
+            {/* Price */}
             <TableCell align="right">
               {row.price < 0 ? `(${Math.abs(row.price)})` : row.price}
             </TableCell>
