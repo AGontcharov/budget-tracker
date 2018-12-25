@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 // Material UI
-import { grey } from '@material-ui/core/colors';
 import Input from '@material-ui/core/Input';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,6 +10,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Popover from '@material-ui/core/Popover';
 
@@ -32,7 +32,8 @@ type Props = {
   minRows: number,
   onFilter: string => Function,
   onCategoryChange: number => string => void,
-  onDescriptionChange: number => string => void,
+  // onDescriptionChange: number => string => void,
+  onDescriptionChange: (number, string) => void,
   order: string,
   orderBy: string,
   page: number,
@@ -47,7 +48,6 @@ const EnhancedTableBody = (props: Props) => {
     minRows,
     onFilter,
     onCategoryChange,
-    onDescriptionChange,
     page,
     rowsPerPage
   } = props;
@@ -66,7 +66,16 @@ const EnhancedTableBody = (props: Props) => {
     // 49px is the size of one row
     emptyRow: {
       height: minRows > emptyRows ? 49 * emptyRows : 49 * (minRows - currentRows)
-    }
+    },
+    buttonWrapper: {
+      display: 'flex',
+      justifyContent: 'flex-end'
+    },
+    button: { fontSize: 14, margin: 4 }
+  };
+
+  const onSubmit = () => {
+    setAnchorEl(null);
   };
 
   const onDescriptionClick = event => {
@@ -131,16 +140,29 @@ const EnhancedTableBody = (props: Props) => {
               open={open}
               PaperProps={{
                 square: true,
-                style: { background: grey[100], border: '1px solid grey' }
+                style: { border: '1px solid grey' }
               }}
             >
-              <TextField
-                // onChange={onDescriptionChange(row.id)}
-                style={{ width: 200, margin: 8 }}
-                inputProps={{
-                  style: { fontSize: 13 }
-                }}
-              />
+              {/* TODO: Add form */}
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                {/* <form onSubmit={onSubmit}> */}
+                <TextField
+                  autoFocus
+                  style={{ width: 256, margin: 8 }}
+                  inputProps={{
+                    style: { fontSize: 13 }
+                  }}
+                />
+                <div style={styles.buttonWrapper}>
+                  <Button type="submit" color="primary" style={styles.button}>
+                    {'Save'}
+                  </Button>
+                  <Button onClick={onClose} color="secondary" style={styles.button}>
+                    {'Cancel'}
+                  </Button>
+                </div>
+                {/* </form> */}
+              </div>
             </Popover>
 
             {/* Price */}

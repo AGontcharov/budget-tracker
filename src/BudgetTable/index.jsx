@@ -142,6 +142,7 @@ class BudgetTable extends React.Component<Props, State> {
     this.props.loadData(transactions);
   };
 
+  // TODO: I want to update the table data once the user has submitting the form
   onDescriptionChange = (index: number) => (event: SyntheticInputEvent<HTMLInputElement>) => {
     let transactions = [...this.props.data];
 
