@@ -1,18 +1,16 @@
 // @flow
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 
 // Material UI
+import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Popover from '@material-ui/core/Popover';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Popover from '@material-ui/core/Popover';
 
 // Custom Components
 import Select from 'budgetTable/components/Select';
@@ -32,7 +30,6 @@ type Props = {
   minRows: number,
   onFilter: string => Function,
   onCategoryChange: number => string => void,
-  // onDescriptionChange: number => string => void,
   onDescriptionChange: (number, string) => void,
   order: string,
   orderBy: string,
@@ -52,6 +49,8 @@ const EnhancedTableBody = (props: Props) => {
     rowsPerPage
   } = props;
   const [anchorEl, setAnchorEl] = useState(null);
+  const [index, setIndex] = useState(-1);
+  const inputRef = useRef();
   const open = Boolean(anchorEl);
 
   const currentRows = Math.min(rowsPerPage, data.length - page * rowsPerPage);
@@ -67,19 +66,26 @@ const EnhancedTableBody = (props: Props) => {
     emptyRow: {
       height: minRows > emptyRows ? 49 * emptyRows : 49 * (minRows - currentRows)
     },
+    form: {
+      display: 'flex',
+      flexDirection: 'column'
+    },
     buttonWrapper: {
       display: 'flex',
       justifyContent: 'flex-end'
     },
-    button: { fontSize: 14, margin: 4 }
+    button: { fontSize: 13, margin: 4 }
   };
 
-  const onSubmit = () => {
+  const onSubmit = event => {
+    event.preventDefault();
+    props.onDescriptionChange(index, inputRef.current.value);
     setAnchorEl(null);
   };
 
-  const onDescriptionClick = event => {
+  const onDescriptionClick = id => event => {
     setAnchorEl(event.currentTarget);
+    setIndex(id);
   };
 
   const onClose = () => {
@@ -130,40 +136,9 @@ const EnhancedTableBody = (props: Props) => {
             <TableCell padding="dense">{row.details}</TableCell>
 
             {/* Descriptions */}
-            <TableCell onClick={onDescriptionClick} padding="dense">
+            <TableCell onClick={onDescriptionClick(row.id)} padding="dense">
               {row.description}
             </TableCell>
-            <Popover
-              anchorEl={anchorEl}
-              elevation={0}
-              onClose={onClose}
-              open={open}
-              PaperProps={{
-                square: true,
-                style: { border: '1px solid grey' }
-              }}
-            >
-              {/* TODO: Add form */}
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                {/* <form onSubmit={onSubmit}> */}
-                <TextField
-                  autoFocus
-                  style={{ width: 256, margin: 8 }}
-                  inputProps={{
-                    style: { fontSize: 13 }
-                  }}
-                />
-                <div style={styles.buttonWrapper}>
-                  <Button type="submit" color="primary" style={styles.button}>
-                    {'Save'}
-                  </Button>
-                  <Button onClick={onClose} color="secondary" style={styles.button}>
-                    {'Cancel'}
-                  </Button>
-                </div>
-                {/* </form> */}
-              </div>
-            </Popover>
 
             {/* Price */}
             <TableCell align="right">
@@ -172,6 +147,36 @@ const EnhancedTableBody = (props: Props) => {
           </TableRow>
         );
       })}
+
+      <Popover
+        anchorEl={anchorEl}
+        elevation={0}
+        onClose={onClose}
+        open={open}
+        PaperProps={{
+          square: true,
+          style: { border: '1px solid grey' }
+        }}
+      >
+        <form onSubmit={onSubmit} style={styles.form}>
+          <Input
+            inputRef={inputRef}
+            autoFocus
+            autoComplete="off"
+            name="description"
+            type="text"
+            style={{ width: 256, margin: 12, fontSize: 13 }}
+          />
+          <div style={styles.buttonWrapper}>
+            <Button type="submit" color="primary" style={styles.button}>
+              {'Save'}
+            </Button>
+            <Button onClick={onClose} color="primary" style={styles.button}>
+              {'Cancel'}
+            </Button>
+          </div>
+        </form>
+      </Popover>
 
       {currentRows < minRows && (
         <TableRow style={styles.emptyRow}>
