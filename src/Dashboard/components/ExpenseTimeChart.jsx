@@ -15,7 +15,7 @@ import type { Transaction } from 'ducks/data';
 type Props = {
   availableMonths: Array<number>,
   classes: {
-    areaChart: string
+    wrapper: string
   },
   data: Array<Transaction>,
   theme: Object
@@ -26,12 +26,6 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
-  },
-  form: {
-    width: 150
-  },
-  areaChart: {
-    justifySelf: 'center'
   }
 };
 
@@ -89,7 +83,7 @@ const ExpenseTimeChart = (props: Props) => {
   });
 
   return (
-    <div style={styles.wrapper}>
+    <div className={classes.wrapper}>
       <SelectMonth month={month} availableMonths={availableMonths} onChange={onMonthChange} />
 
       <AreaChart
@@ -102,7 +96,6 @@ const ExpenseTimeChart = (props: Props) => {
           bottom: theme.spacing.unit * 4,
           left: theme.spacing.unit * 4
         }}
-        className={classes.areaChart}
       >
         <defs>
           <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">

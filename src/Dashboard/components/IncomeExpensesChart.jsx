@@ -3,28 +3,19 @@ import * as React from 'react';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 
 // Material UI,
-import { withStyles } from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 import { red, green } from '@material-ui/core/colors';
 
 // Flow Type
 import type { Transaction } from 'ducks/data';
 
 type Props = {
-  classes: {
-    barChart: string
-  },
   data: Array<Transaction>,
   theme: Object
 };
 
-const styles = {
-  barChart: {
-    justifySelf: 'center'
-  }
-};
-
 const IncomeExpensesChart = (props: Props) => {
-  const { classes, data, theme } = props;
+  const { data, theme } = props;
 
   let income = 0;
   let expenses = 0;
@@ -47,7 +38,6 @@ const IncomeExpensesChart = (props: Props) => {
         bottom: theme.spacing.unit * 4,
         left: theme.spacing.unit * 4
       }}
-      className={classes.barChart}
       data={[
         {
           name: 'Total Amount',
@@ -67,4 +57,4 @@ const IncomeExpensesChart = (props: Props) => {
   );
 };
 
-export default withStyles(styles, { withTheme: true })(IncomeExpensesChart);
+export default withTheme()(IncomeExpensesChart);

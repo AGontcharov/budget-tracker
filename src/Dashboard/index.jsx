@@ -19,13 +19,14 @@ import { getFilteredData } from 'ducks/data';
 // Flow Type
 import type { Transaction } from 'ducks/data';
 
+import Grid from '@material-ui/core/Grid';
+
 type Props = {
   data: Array<Transaction>,
   classes: {
     paper: string,
     wrapper: string,
-    empty: string,
-    grid: string
+    empty: string
   }
 };
 
@@ -42,13 +43,6 @@ const styles = theme => ({
   },
   empty: {
     margin: theme.spacing.unit * 3.5
-  },
-  grid: {
-    display: 'grid',
-    // Each grid is a minimum of 600px or a maximum of 1 fraction unit
-    gridTemplateColumns: 'repeat(auto-fill, minmax(600px, 1fr))',
-    justifyContent: 'center',
-    alignItems: 'center'
   }
 });
 
@@ -70,16 +64,22 @@ const Dashboard = (props: Props) => {
           </Typography>
         </div>
       ) : (
-        <div className={classes.grid}>
-          <IncomeExpensesChart data={data} />
-          <CategoryChart data={data} />
-          <ExpenseTimeChart
-            // Specifying a key allows for the component to reset whenever the starting month changes
-            key={availableMonths[0]}
-            availableMonths={availableMonths}
-            data={data}
-          />
-        </div>
+        <Grid container spacing={16}>
+          <Grid container item xs={12} lg={6} justify="center">
+            <IncomeExpensesChart data={data} />
+          </Grid>
+          <Grid container item xs={12} lg={6} justify="center">
+            <CategoryChart data={data} />
+          </Grid>
+          <Grid container item xs={12} lg={6} justify="center">
+            <ExpenseTimeChart
+              // Specifying a key allows for the component to reset whenever the starting month changes
+              key={availableMonths[0]}
+              availableMonths={availableMonths}
+              data={data}
+            />
+          </Grid>
+        </Grid>
       )}
     </Paper>
   );
