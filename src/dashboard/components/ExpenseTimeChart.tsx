@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
 // Custom Component
 import SelectMonth from 'dashboard/components/SelectMonth';
 
 // Material UI
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { red, green } from '@material-ui/core/colors';
 
 // Flow Type
 import { Transaction } from 'ducks/data';
+
+type Data = Array<{ name: string; value: number }>;
 
 type Props = {
   availableMonths: Array<number>;
@@ -17,26 +19,26 @@ type Props = {
     wrapper: string;
   };
   data: Array<Transaction>;
-  theme: Object;
+  theme: Theme;
 };
 
-const styles = {
+const styles = createStyles({
   wrapper: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
   }
-};
+});
 
 const ExpenseTimeChart = (props: Props) => {
   const { availableMonths, classes, theme } = props;
-  const [month, setMonth] = useState(availableMonths[0]);
+  const [month, setMonth] = useState<number>(availableMonths[0]);
 
-  const onMonthChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    setMonth(event.target.value);
+  const onMonthChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setMonth(Number(event.target.value));
   };
 
-  const gradientOffset = data => {
+  const gradientOffset = (data: Data) => {
     const dataMax = Math.max(...data.map(week => week.value));
     const dataMin = Math.min(...data.map(week => week.value));
 
@@ -50,7 +52,7 @@ const ExpenseTimeChart = (props: Props) => {
   };
 
   //TODO: Better to move elsewhere or keep logic here?
-  const data: Array<{ name: string; value: number }> = [
+  const data: Data = [
     { name: 'Week 1', value: 0 },
     { name: 'Week 2', value: 0 },
     { name: 'Week 3', value: 0 },
@@ -78,7 +80,7 @@ const ExpenseTimeChart = (props: Props) => {
   const off = gradientOffset(data);
 
   data.forEach(week => {
-    week.value = week.value.toFixed(2);
+    week.value = Number(week.value.toFixed(2));
   });
 
   return (

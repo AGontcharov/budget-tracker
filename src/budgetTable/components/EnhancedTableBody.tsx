@@ -1,4 +1,4 @@
-import React, { useState, useRef, SyntheticEvent } from 'react';
+import React, { useState, useRef, ChangeEvent, FormEvent, MouseEvent } from 'react';
 import { connect } from 'react-redux';
 
 // Material UI
@@ -28,7 +28,7 @@ type Props = {
   isLoading: boolean;
   isFilter: boolean;
   minRows: number;
-  onFilter: (name: string) => (event: SyntheticEvent) => void;
+  onFilter: (name: string) => (event: ChangeEvent<HTMLInputElement>) => void;
   onCategoryChange: (index: number) => (value: string) => void;
   onDescriptionChange: (index: number, value: string) => void;
   order: string;
@@ -49,8 +49,7 @@ const EnhancedTableBody = (props: Props) => {
     rowsPerPage
   } = props;
 
-  // TODO: Fix type
-  const [anchorEl, setAnchorEl] = useState<any>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLTableCellElement | null>(null);
   const [index, setIndex] = useState<number>(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const open = Boolean(anchorEl);
@@ -79,7 +78,7 @@ const EnhancedTableBody = (props: Props) => {
     button: { fontSize: 13, margin: 4 }
   };
 
-  const onSubmit = (event: SyntheticEvent) => {
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (inputRef && inputRef.current && inputRef.current.value) {
@@ -88,7 +87,7 @@ const EnhancedTableBody = (props: Props) => {
     setAnchorEl(null);
   };
 
-  const onDescriptionClick = (id: number) => (event: SyntheticEvent) => {
+  const onDescriptionClick = (id: number) => (event: MouseEvent<HTMLTableCellElement>) => {
     setAnchorEl(event.currentTarget);
     setIndex(id);
   };

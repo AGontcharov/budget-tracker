@@ -4,21 +4,21 @@ import { connect } from 'react-redux';
 // Custom Component
 import IncomeExpensesChart from 'dashboard/components/IncomeExpensesChart';
 import ExpenseTimeChart from 'dashboard/components/ExpenseTimeChart';
-import CategoryChart from 'dashboard/components/CategoryChart';
+// import CategoryChart from 'dashboard/components/CategoryChart';
 
 // Material UI
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 
 // Helper Functions
 import { getFilteredData } from 'ducks/data';
 
 // Flow Type
 import { Transaction } from 'ducks/data';
-
-import Grid from '@material-ui/core/Grid';
+import { AppState } from 'ducks';
 
 type Props = {
   data: Array<Transaction>;
@@ -29,25 +29,26 @@ type Props = {
   };
 };
 
-const styles = theme => ({
-  paper: {
-    display: 'flex',
-    flexDirection: 'column',
-    margin: theme.spacing.unit * 3.5
-  },
-  wrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  empty: {
-    margin: theme.spacing.unit * 3.5
-  }
-});
+const styles = ({ spacing }: Theme) =>
+  createStyles({
+    paper: {
+      display: 'flex',
+      flexDirection: 'column',
+      margin: spacing.unit * 3.5
+    },
+    wrapper: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    empty: {
+      margin: spacing.unit * 3.5
+    }
+  });
 
 const Dashboard = (props: Props) => {
   const { classes, data } = props;
-  const availableMonths = [...new Set(data.map(item => item.date.getMonth()))];
+  const availableMonths = [...Array.from(new Set(data.map(item => item.date.getMonth())))];
 
   return (
     <Paper className={classes.paper}>
@@ -67,9 +68,9 @@ const Dashboard = (props: Props) => {
           <Grid container item xs={12} lg={6} justify="center">
             <IncomeExpensesChart data={data} />
           </Grid>
-          <Grid container item xs={12} lg={6} justify="center">
+          {/* <Grid container item xs={12} lg={6} justify="center">
             <CategoryChart data={data} />
-          </Grid>
+          </Grid> */}
           <Grid container item xs={12} lg={6} justify="center">
             <ExpenseTimeChart
               // Specifying a key allows for the component to reset whenever the starting month changes
@@ -84,7 +85,7 @@ const Dashboard = (props: Props) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: AppState) => {
   return {
     data: getFilteredData(state.transactions)
   };

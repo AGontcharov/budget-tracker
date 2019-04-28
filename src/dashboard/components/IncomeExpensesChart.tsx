@@ -2,7 +2,7 @@ import * as React from 'react';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 
 // Material UI,
-import { withTheme } from '@material-ui/core/styles';
+import { withTheme, Theme } from '@material-ui/core/styles';
 import { red, green } from '@material-ui/core/colors';
 
 // Flow Type
@@ -10,7 +10,7 @@ import { Transaction } from 'ducks/data';
 
 type Props = {
   data: Array<Transaction>;
-  theme: Object;
+  theme: Theme;
 };
 
 const IncomeExpensesChart = (props: Props) => {

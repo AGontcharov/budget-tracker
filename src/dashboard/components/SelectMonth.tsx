@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { ChangeEvent } from 'react';
 
 // Material UI
 import { withStyles } from '@material-ui/core/styles';
@@ -16,7 +16,7 @@ type Props = {
     form: string;
   };
   month: number;
-  onChange: (event: SyntheticInputEvent<HTMLInputElement>) => void;
+  onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
 };
 
 const styles = {
@@ -34,7 +34,7 @@ const SelectMonth = (props: Props) => {
       <Select value={month} onChange={onChange}>
         {availableMonths.map(month => {
           return (
-            <MenuItem id={month} key={month} value={month}>
+            <MenuItem id={month.toString()} key={month} value={month}>
               {MONTHS[month]}
             </MenuItem>
           );

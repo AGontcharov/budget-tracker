@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 
 // Material UI
 import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
@@ -9,7 +9,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 
 type Props = {
-  onChangePage: (event: any, page: number) => void;
+  onChangePage: (event: MouseEvent<HTMLButtonElement> | null, page: number) => void;
   count: number;
   page: number;
   rowsPerPage: number;
@@ -30,19 +30,19 @@ const styles = ({ palette, spacing }: Theme) =>
 const TablePaginationActions = (props: Props) => {
   const { classes, count, onChangePage, page, rowsPerPage } = props;
 
-  const handleFirstPageButtonClick = (event: any) => {
+  const handleFirstPageButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
     onChangePage(event, 0);
   };
 
-  const handleBackButtonClick = (event: any) => {
+  const handleBackButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
     onChangePage(event, page - 1);
   };
 
-  const handleNextButtonClick = (event: any) => {
+  const handleNextButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
     onChangePage(event, page + 1);
   };
 
-  const handleLastPageButtonClick = (event: any) => {
+  const handleLastPageButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
     onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
 

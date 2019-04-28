@@ -2,7 +2,7 @@ import React from 'react';
 
 // Custom Component
 import BudgetTable from 'budgetTable';
-// import Dashboard from 'dashboard';
+import Dashboard from 'dashboard';
 import Navbar from 'layout/Navbar';
 import Layout from 'layout/Layout';
 import Footer from 'layout/Footer';
@@ -46,7 +46,7 @@ const App = () => {
         <Navbar />
         <DropFile />
         <BudgetTable />
-        {/* <Dashboard /> */}
+        <Dashboard />
         <Footer />
       </Layout>
     </MuiThemeProvider>

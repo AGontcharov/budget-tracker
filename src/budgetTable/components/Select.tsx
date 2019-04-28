@@ -147,10 +147,9 @@ type Props = {
     placeholder: string;
     paper: string;
   };
-  onChange: (index: string) => void;
-  // value: { value: string; label: string };
+  onChange: (value: string) => void;
   theme: Theme;
-  value: any;
+  value: { value: string; label: string } | null;
 };
 
 const IntegrationReactSelect = (props: Props) => {

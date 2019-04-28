@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, MouseEvent } from 'react';
 import { connect } from 'react-redux';
 import { debounce } from 'lodash';
 
@@ -43,7 +43,6 @@ type Props = {
   loadSort: (payload: Sort) => void;
   orderBy: string;
   order: 'asc' | 'desc';
-  theme: Object;
 };
 
 type State = {
@@ -103,7 +102,7 @@ class BudgetTable extends React.Component<Props, State> {
     this.props.loadFilters([]);
   };
 
-  onFilter = (name: string) => (event: any) => {
+  onFilter = (name: string) => (event: ChangeEvent<HTMLInputElement>) => {
     this.setFilters(name, event.target.value);
   };
 
@@ -151,14 +150,14 @@ class BudgetTable extends React.Component<Props, State> {
     this.props.loadData(transactions);
   };
 
-  onChangePage = (event: any, page: number) => {
+  onChangePage = (event: MouseEvent<HTMLButtonElement> | null, page: number) => {
     this.setState({ page }, () => {
       this.tableRef.current &&
         this.tableRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
     });
   };
 
-  onChangeRowsPerPage = (event: any) => {
+  onChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     localStorage.setItem('rowsPerPage', event.target.value);
     this.setState({ rowsPerPage: parseInt(event.target.value, 10) }, () => {
       this.tableRef.current &&
@@ -178,11 +177,7 @@ class BudgetTable extends React.Component<Props, State> {
     return (
       // TODO: Alternating Table color scheme?
       <Paper className={classes.paper}>
-        <EnhancedToolBar
-          // data={data}
-          title={'Transactions'}
-          onFilterClicked={this.onFilterClicked}
-        />
+        <EnhancedToolBar title={'Transactions'} onFilterClicked={this.onFilterClicked} />
 
         <div ref={this.tableRef} className={classes.tableWrapper}>
           <Table aria-labelledby="tableTitle">
