@@ -1,10 +1,9 @@
-// @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
 import download from 'downloadjs';
 
 // Material UI
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -17,32 +16,33 @@ import { getData } from 'ducks/data';
 import { headers } from 'lib/Utils';
 
 // Flow Type
-import type { Transaction } from 'ducks/data';
+import { Transaction } from 'ducks/data';
+import { AppState } from 'ducks';
 
 type Props = {
   classes: {
-    spacer: string,
-    actions: string,
-    title: string
-  },
-  data: Array<Transaction>,
-  onFilterClicked: () => void,
-  title: string,
-  theme: Object
+    spacer: string;
+    actions: string;
+    title: string;
+  };
+  data: Array<Transaction>;
+  onFilterClicked: () => void;
+  title: string;
 };
 
-const styles = theme => ({
-  spacer: {
-    flex: '1 1 100%'
-  },
-  actions: {
-    display: 'flex',
-    color: theme.palette.text.secondary
-  },
-  title: {
-    flex: '0 0 auto'
-  }
-});
+const styles = ({ palette }: Theme) =>
+  createStyles({
+    spacer: {
+      flex: '1 1 100%'
+    },
+    actions: {
+      display: 'flex',
+      color: palette.text.secondary
+    },
+    title: {
+      flex: '0 0 auto'
+    }
+  });
 
 const EnhancedTableToolbar = (props: Props) => {
   const { classes, data, onFilterClicked, title } = props;
@@ -56,11 +56,13 @@ const EnhancedTableToolbar = (props: Props) => {
       .concat('\r\n');
 
     data.forEach(transaction => {
-      const row = { ...transaction };
+      // TODO: See if this works
+      // const row = { ...transaction };
+      const row = Object.assign({}, transaction, { date: transaction.date.toDateString() });
 
       delete row.id;
       // TODO: Why do I have to flow it like this?
-      row.date = new Date(row.date).toDateString();
+      // row.date = new Date(row.date).toDateString();
       csvContent = csvContent.concat(Object.values(row).join(',')) + '\r\n';
     });
 
@@ -77,9 +79,11 @@ const EnhancedTableToolbar = (props: Props) => {
       <div className={classes.spacer} />
       <div className={classes.actions}>
         <Tooltip title="Export">
-          <IconButton aria-label="Export List" disabled={!data.length} onClick={onExportClicked}>
-            <FileDownloadIcon />
-          </IconButton>
+          <div>
+            <IconButton aria-label="Export List" disabled={!data.length} onClick={onExportClicked}>
+              <FileDownloadIcon />
+            </IconButton>
+          </div>
         </Tooltip>
         <Tooltip title="Filter list">
           <IconButton aria-label="Filter list" onClick={onFilterClicked}>
@@ -91,7 +95,7 @@ const EnhancedTableToolbar = (props: Props) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: AppState) => {
   return {
     data: getData(state.transactions)
   };

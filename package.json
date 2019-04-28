@@ -3,20 +3,30 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^3.8.1",
-    "@material-ui/icons": "^3.0.1",
+    "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^3.0.2",
+    "@types/downloadjs": "^1.4.1",
+    "@types/jest": "^24.0.11",
+    "@types/lodash": "^4.14.123",
+    "@types/node": "^11.13.8",
+    "@types/react": "^16.8.14",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-redux": "^7.0.8",
+    "@types/react-select": "^2.0.17",
+    "@types/recharts": "^1.1.16",
     "add": "^2.0.6",
     "downloadjs": "^1.4.7",
     "lodash": "^4.17.11",
-    "react": "16.7.0-alpha.0",
-    "react-dom": "16.7.0-alpha.0",
-    "react-dropzone": "^8.0.3",
-    "react-redux": "^6.0.0",
-    "react-scripts": "2.1.2",
-    "react-select": "^2.2.0",
-    "recharts": "^1.4.2",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "react-dropzone": "^10.1.4",
+    "react-redux": "^7.0.2",
+    "react-scripts": "^3.0.0",
+    "react-select": "^2.4.3",
+    "recharts": "^1.5.0",
     "redux": "^4.0.1",
-    "yarn": "^1.12.3"
+    "typescript": "^3.4.5",
+    "yarn": "^1.15.2"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json,css}": [
@@ -34,11 +44,10 @@
     "flow": "flow"
   },
   "devDependencies": {
-    "flow-bin": "^0.89.0",
-    "husky": "^1.3.1",
-    "lint-staged": "^8.1.0",
-    "prettier": "^1.15.3",
-    "source-map-explorer": "^1.6.0"
+    "husky": "^2.1.0",
+    "lint-staged": "^8.1.5",
+    "prettier": "^1.17.0",
+    "source-map-explorer": "^1.8.0"
   },
   "browserslist": [
     ">0.2%",

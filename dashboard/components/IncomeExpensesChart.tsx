@@ -1,4 +1,3 @@
-// @flow
 import * as React from 'react';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 
@@ -7,11 +6,11 @@ import { withTheme } from '@material-ui/core/styles';
 import { red, green } from '@material-ui/core/colors';
 
 // Flow Type
-import type { Transaction } from 'ducks/data';
+import { Transaction } from 'ducks/data';
 
 type Props = {
-  data: Array<Transaction>,
-  theme: Object
+  data: Array<Transaction>;
+  theme: Object;
 };
 
 const IncomeExpensesChart = (props: Props) => {

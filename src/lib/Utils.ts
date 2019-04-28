@@ -1,8 +1,3 @@
-// @flow
-
-// Flow Type
-import type { Transaction } from 'ducks/data';
-
 export const headers = [
   {
     id: 'date',
@@ -48,7 +43,7 @@ export const headers = [
   }
 ];
 
-export const desc = (a: Transaction, b: Transaction, orderBy: string) => {
+export const desc = (a: any, b: any, orderBy: string) => {
   // a gets sorted to an index lower than b i.e. a comes first
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -63,11 +58,11 @@ export const desc = (a: Transaction, b: Transaction, orderBy: string) => {
   return 0;
 };
 
-export const stableSort = (array: Array<Transaction>, cmp: Function) => {
+export const stableSort = (array: Array<any>, compare: Function): Array<any> => {
   const stabilizedThis = array.map((el, index) => [el, index]);
 
   stabilizedThis.sort((a, b) => {
-    const order = cmp(a[0], b[0]);
+    const order = compare(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
@@ -80,6 +75,6 @@ export const stableSort = (array: Array<Transaction>, cmp: Function) => {
 // Otherwise, return -desc(a, b, orderBy)
 export const getSorting = (order: string, orderBy: string) => {
   return order === 'desc'
-    ? (a: Transaction, b: Transaction) => desc(a, b, orderBy)
-    : (a: Transaction, b: Transaction) => -desc(a, b, orderBy);
+    ? (a: any, b: any) => desc(a, b, orderBy)
+    : (a: any, b: any) => -desc(a, b, orderBy);
 };

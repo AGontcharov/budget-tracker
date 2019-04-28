@@ -1,4 +1,3 @@
-// @flow
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
@@ -7,7 +6,7 @@ import Dropzone from 'react-dropzone';
 import EnhancedSnackbar from 'components/EnhancedSnackbar';
 
 // Material UI
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Upload from '@material-ui/icons/CloudUpload';
 
@@ -15,51 +14,52 @@ import Upload from '@material-ui/icons/CloudUpload';
 import { isLoading, loadData } from 'ducks/data';
 
 // Flow Type
-import type { Transaction } from 'ducks/data';
+import { Transaction } from 'ducks/data';
 
 type Props = {
   classes: {
-    root: string,
-    dropZoneInactive: string,
-    dropZoneInactiveText: string,
-    rejected: string,
-    upload: string
-  },
-  theme: Object,
-  isLoading: boolean => void,
-  loadData: (Array<Transaction>) => void
+    root: string;
+    dropZoneInactive: string;
+    dropZoneInactiveText: string;
+    rejected: string;
+    upload: string;
+  };
+  theme: Object;
+  isLoading: (paylod: boolean) => void;
+  loadData: (payload: Array<Transaction>) => void;
 };
 
-const styles = theme => ({
-  root: {
-    height: 110,
-    padding: '0 15%',
-    alignSelf: 'center',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: 'solid 1px',
-    borderColor: theme.palette.accent.main,
-    borderRadius: 10,
-    margin: theme.spacing.unit * 4.5,
-    marginBottom: theme.spacing.unit * 2
-  },
-  dropZoneInactive: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  dropZoneInactiveText: {
-    margin: theme.spacing.unit
-  },
-  // TODO: Accepted styles?
-  rejected: {
-    borderColor: theme.palette.error.dark
-  },
-  upload: {
-    fontSize: theme.spacing.unit * 4
-  }
-});
+const styles = ({ palette, spacing }: Theme) =>
+  createStyles({
+    root: {
+      height: 110,
+      padding: '0 15%',
+      alignSelf: 'center',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      border: 'solid 1px',
+      borderColor: palette.accent.main,
+      borderRadius: 10,
+      margin: spacing.unit * 4.5,
+      marginBottom: spacing.unit * 2
+    },
+    dropZoneInactive: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
+    },
+    dropZoneInactiveText: {
+      margin: spacing.unit
+    },
+    // TODO: Accepted styles?
+    rejected: {
+      borderColor: palette.error.dark
+    },
+    upload: {
+      fontSize: spacing.unit * 4
+    }
+  });
 
 const DropFile = (props: Props) => {
   const { classes, isLoading, loadData } = props;
@@ -72,7 +72,9 @@ const DropFile = (props: Props) => {
       reader.onload = () => {
         const result = reader.result;
         props.isLoading(true);
-        modifyFile(result.toString());
+        if (result) {
+          modifyFile(result.toString());
+        }
       };
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
@@ -95,7 +97,7 @@ const DropFile = (props: Props) => {
         category: '',
         // Remove the quotes around the details
         details: transaction[4].replace(/^"(.*)"$/, '$1'),
-        description: 'Add description...',
+        description: '',
         price: Number(transaction[6])
       };
     });

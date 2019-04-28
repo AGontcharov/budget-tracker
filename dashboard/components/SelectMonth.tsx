@@ -1,4 +1,3 @@
-// @flow
 import * as React from 'react';
 
 // Material UI
@@ -12,12 +11,12 @@ import Select from '@material-ui/core/Select';
 import { MONTHS } from 'lib/constants';
 
 type Props = {
-  availableMonths: Array<number>,
+  availableMonths: Array<number>;
   classes: {
-    form: string
-  },
-  month: number,
-  onChange: (event: SyntheticInputEvent<HTMLInputElement>) => void
+    form: string;
+  };
+  month: number;
+  onChange: (event: SyntheticInputEvent<HTMLInputElement>) => void;
 };
 
 const styles = {

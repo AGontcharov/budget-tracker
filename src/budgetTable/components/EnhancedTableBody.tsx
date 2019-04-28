@@ -1,5 +1,4 @@
-// @flow
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, SyntheticEvent } from 'react';
 import { connect } from 'react-redux';
 
 // Material UI
@@ -21,20 +20,21 @@ import { headers } from 'lib/Utils';
 import getCategoryColor from 'lib/CategoryColors';
 
 // Flow Type
-import type { Transaction } from 'ducks/data';
+import { Transaction } from 'ducks/data';
+import { AppState } from 'ducks';
 
 type Props = {
-  data: Array<Transaction>,
-  isLoading: boolean,
-  isFilter: boolean,
-  minRows: number,
-  onFilter: string => Function,
-  onCategoryChange: number => string => void,
-  onDescriptionChange: (number, string) => void,
-  order: string,
-  orderBy: string,
-  page: number,
-  rowsPerPage: number
+  data: Array<Transaction>;
+  isLoading: boolean;
+  isFilter: boolean;
+  minRows: number;
+  onFilter: (name: string) => (event: SyntheticEvent) => void;
+  onCategoryChange: (index: number) => (value: string) => void;
+  onDescriptionChange: (index: number, value: string) => void;
+  order: string;
+  orderBy: string;
+  page: number;
+  rowsPerPage: number;
 };
 
 const EnhancedTableBody = (props: Props) => {
@@ -48,9 +48,11 @@ const EnhancedTableBody = (props: Props) => {
     page,
     rowsPerPage
   } = props;
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [index, setIndex] = useState(-1);
-  const inputRef = useRef();
+
+  // TODO: Fix type
+  const [anchorEl, setAnchorEl] = useState<any>(null);
+  const [index, setIndex] = useState<number>(-1);
+  const inputRef = useRef<HTMLInputElement>(null);
   const open = Boolean(anchorEl);
 
   const currentRows = Math.min(rowsPerPage, data.length - page * rowsPerPage);
@@ -68,7 +70,7 @@ const EnhancedTableBody = (props: Props) => {
     },
     form: {
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column' as 'column'
     },
     buttonWrapper: {
       display: 'flex',
@@ -77,13 +79,16 @@ const EnhancedTableBody = (props: Props) => {
     button: { fontSize: 13, margin: 4 }
   };
 
-  const onSubmit = event => {
+  const onSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
-    props.onDescriptionChange(index, inputRef.current.value);
+
+    if (inputRef && inputRef.current && inputRef.current.value) {
+      props.onDescriptionChange(index, inputRef.current.value);
+    }
     setAnchorEl(null);
   };
 
-  const onDescriptionClick = id => event => {
+  const onDescriptionClick = (id: number) => (event: SyntheticEvent) => {
     setAnchorEl(event.currentTarget);
     setIndex(id);
   };
@@ -190,7 +195,7 @@ const EnhancedTableBody = (props: Props) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: AppState) => {
   return {
     data: getData(state.transactions),
     isLoading: state.transactions.isLoading

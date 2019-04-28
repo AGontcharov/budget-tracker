@@ -1,10 +1,9 @@
-// @flow
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import debounce from 'lodash.debounce';
+import { debounce } from 'lodash';
 
 // Material UI
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -26,50 +25,53 @@ import TablePaginationActions from 'budgetTable/components/TablePaginationAction
 import { loadData, loadFilters, loadSort } from 'ducks/data';
 
 // Flow Type
-import type { Filter, Sort, Transaction } from 'ducks/data';
+import { Filter, Sort, Transaction } from 'ducks/data';
+import { AppState } from 'ducks';
 
 type Props = {
   classes: {
-    paper: string,
-    tableWrapper: string,
-    row: string,
-    input: string,
-    amount: string
-  },
-  filters: Array<{ name: string, value: string }>,
-  data: Array<Transaction>,
-  loadData: (Array<Transaction>) => void,
-  loadFilters: (Array<Filter>) => void,
-  loadSort: Sort => void,
-  orderBy: string,
-  order: 'asc' | 'desc',
-  theme: Object
+    paper: string;
+    tableWrapper: string;
+    row: string;
+    input: string;
+    amount: string;
+  };
+  filters: Array<{ name: string; value: string }>;
+  data: Array<Transaction>;
+  loadData: (payload: Array<Transaction>) => void;
+  loadFilters: (payload: Array<Filter>) => void;
+  loadSort: (payload: Sort) => void;
+  orderBy: string;
+  order: 'asc' | 'desc';
+  theme: Object;
 };
 
 type State = {
-  isFilter: boolean,
-  rowsPerPage: number,
-  page: number
+  isFilter: boolean;
+  filters: Array<Filter>;
+  rowsPerPage: number;
+  page: number;
 };
 
 // TODO: Figure out Table Styles
-const styles = theme => ({
-  paper: {
-    margin: theme.spacing.unit * 3.5
-  },
-  tableWrapper: {
-    overflowX: 'auto'
-  },
-  row: {
-    backgroundColor: theme.palette.background.default
-  },
-  input: {
-    fontSize: '13'
-  },
-  amount: {
-    textAlign: 'right'
-  }
-});
+const styles = ({ palette, spacing }: Theme) =>
+  createStyles({
+    paper: {
+      margin: spacing.unit * 3.5
+    },
+    tableWrapper: {
+      overflowX: 'auto'
+    },
+    row: {
+      backgroundColor: palette.background.default
+    },
+    input: {
+      fontSize: '13'
+    },
+    amount: {
+      textAlign: 'right'
+    }
+  });
 
 class BudgetTable extends React.Component<Props, State> {
   tableRef: { current: null | HTMLDivElement };
@@ -101,7 +103,7 @@ class BudgetTable extends React.Component<Props, State> {
     this.props.loadFilters([]);
   };
 
-  onFilter = (name: string) => (event: SyntheticInputEvent<HTMLInputElement>) => {
+  onFilter = (name: string) => (event: any) => {
     this.setFilters(name, event.target.value);
   };
 
@@ -149,14 +151,14 @@ class BudgetTable extends React.Component<Props, State> {
     this.props.loadData(transactions);
   };
 
-  onChangePage = (event: SyntheticEvent<>, page: number) => {
+  onChangePage = (event: any, page: number) => {
     this.setState({ page }, () => {
       this.tableRef.current &&
         this.tableRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
     });
   };
 
-  onChangeRowsPerPage = (event: SyntheticInputEvent<HTMLInputElement>) => {
+  onChangeRowsPerPage = (event: any) => {
     localStorage.setItem('rowsPerPage', event.target.value);
     this.setState({ rowsPerPage: parseInt(event.target.value, 10) }, () => {
       this.tableRef.current &&
@@ -177,7 +179,7 @@ class BudgetTable extends React.Component<Props, State> {
       // TODO: Alternating Table color scheme?
       <Paper className={classes.paper}>
         <EnhancedToolBar
-          data={data}
+          // data={data}
           title={'Transactions'}
           onFilterClicked={this.onFilterClicked}
         />
@@ -233,7 +235,7 @@ class BudgetTable extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: AppState) => {
   return {
     filters: state.transactions.filters,
     data: state.transactions.data,

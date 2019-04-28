@@ -1,4 +1,3 @@
-// @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
 
@@ -17,17 +16,17 @@ import Paper from '@material-ui/core/Paper';
 import { getFilteredData } from 'ducks/data';
 
 // Flow Type
-import type { Transaction } from 'ducks/data';
+import { Transaction } from 'ducks/data';
 
 import Grid from '@material-ui/core/Grid';
 
 type Props = {
-  data: Array<Transaction>,
+  data: Array<Transaction>;
   classes: {
-    paper: string,
-    wrapper: string,
-    empty: string
-  }
+    paper: string;
+    wrapper: string;
+    empty: string;
+  };
 };
 
 const styles = theme => ({

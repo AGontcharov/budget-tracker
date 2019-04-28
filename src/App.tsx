@@ -1,9 +1,8 @@
-// @flow
-import * as React from 'react';
+import React from 'react';
 
 // Custom Component
 import BudgetTable from 'budgetTable';
-import Dashboard from 'dashboard';
+// import Dashboard from 'dashboard';
 import Navbar from 'layout/Navbar';
 import Layout from 'layout/Layout';
 import Footer from 'layout/Footer';
@@ -11,8 +10,17 @@ import DropFile from 'components/DropFile';
 
 // Material UI
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { Palette, PaletteOptions } from '@material-ui/core/styles/createPalette';
 
-type Props = {};
+declare module '@material-ui/core/styles/createPalette' {
+  interface Palette {
+    accent: { main: string };
+  }
+
+  interface PaletteOptions {
+    accent?: { main: string };
+  }
+}
 
 const theme = createMuiTheme({
   palette: {
@@ -31,14 +39,14 @@ const theme = createMuiTheme({
   }
 });
 
-const App = (props: Props) => {
+const App = () => {
   return (
     <MuiThemeProvider theme={theme}>
       <Layout>
         <Navbar />
         <DropFile />
         <BudgetTable />
-        <Dashboard />
+        {/* <Dashboard /> */}
         <Footer />
       </Layout>
     </MuiThemeProvider>

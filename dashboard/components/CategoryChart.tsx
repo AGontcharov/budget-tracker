@@ -1,19 +1,18 @@
-// @flow
 import React, { useState } from 'react';
 
 import { Cell, Legend, PieChart, Pie, Sector } from 'recharts';
 
 // Material UI
-import { withTheme } from '@material-ui/core/styles';
+import { withTheme, Theme } from '@material-ui/core/styles';
 
 // Helper Functions
 import getCategoryColor from 'lib/CategoryColors';
 
 // Flow Type
-import type { Transaction } from 'ducks/data';
+import { Transaction } from 'ducks/data';
 
 // TODO: Try and understand this a bit.
-const ActiveShape = props => {
+const ActiveShape = (props: any) => {
   const RADIAN = Math.PI / 180;
   const {
     cx,
@@ -75,15 +74,15 @@ const ActiveShape = props => {
 };
 
 type Props = {
-  data: Array<Transaction>,
-  theme: Object
+  data: Array<Transaction>;
+  theme: Theme;
 };
 
 const CategoryChart = (props: Props) => {
   const { data, theme } = props;
   const [activeCategory, setActiveCategory] = useState(0);
 
-  const onCategorySelect = (data, index) => {
+  const onCategorySelect = (data: Array<Transaction>, index: number) => {
     setActiveCategory(index);
   };
 
@@ -94,7 +93,7 @@ const CategoryChart = (props: Props) => {
     if (accumulator && row.category) {
       let categoryExists = false;
 
-      accumulator.forEach(category => {
+      accumulator.forEach((category: any) => {
         if (category.name === row.category) {
           category.value += row.price;
           categoryExists = true;

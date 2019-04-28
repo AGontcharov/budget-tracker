@@ -1,28 +1,40 @@
-// @flow
-
 // Helper Functions
 import rawData from 'lib/RawData';
 import { getSorting, stableSort } from 'lib/Utils';
 
-export type Filter = { name: string, value: string };
-export type Sort = { orderBy: string, order: 'asc' | 'desc' };
-export type Transaction = {
-  id: number,
-  date: Date,
-  type: string,
-  category: string,
-  details: string,
-  description: string,
-  price: number
-};
+export interface Filter {
+  name: string;
+  value: string;
+}
 
-type Action = { type: string, payload: any };
-type InitialState = {
-  data: Array<Transaction>,
-  isLoading: false,
-  filters: Array<Filter>,
-  sort: Sort
-};
+export interface Sort {
+  orderBy: string;
+  // order: 'asc' as 'asc' | 'desc' as '';
+  order: string;
+}
+
+export interface Transaction {
+  id: number;
+  date: Date;
+  type: string;
+  category: string;
+  details: string;
+  description: string;
+  price: number;
+  [key: string]: number | Date | string;
+}
+
+interface Action {
+  type: string;
+  payload: any;
+}
+
+interface InitialState {
+  data: Array<Transaction>;
+  isLoading: boolean;
+  filters: Array<Filter>;
+  sort: Sort;
+}
 
 const IS_LOADING = 'IS_LOADING';
 const LOAD = 'LOAD';

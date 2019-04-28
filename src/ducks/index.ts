@@ -10,3 +10,5 @@ export const initialStoreState = {
 };
 
 export default rootReducer;
+
+export type AppState = ReturnType<typeof rootReducer>;

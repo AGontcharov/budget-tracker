@@ -1,4 +1,3 @@
-// @flow
 import React, { useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
@@ -10,15 +9,15 @@ import { withStyles } from '@material-ui/core/styles';
 import { red, green } from '@material-ui/core/colors';
 
 // Flow Type
-import type { Transaction } from 'ducks/data';
+import { Transaction } from 'ducks/data';
 
 type Props = {
-  availableMonths: Array<number>,
+  availableMonths: Array<number>;
   classes: {
-    wrapper: string
-  },
-  data: Array<Transaction>,
-  theme: Object
+    wrapper: string;
+  };
+  data: Array<Transaction>;
+  theme: Object;
 };
 
 const styles = {
@@ -51,7 +50,7 @@ const ExpenseTimeChart = (props: Props) => {
   };
 
   //TODO: Better to move elsewhere or keep logic here?
-  const data: Array<{ name: string, value: number }> = [
+  const data: Array<{ name: string; value: number }> = [
     { name: 'Week 1', value: 0 },
     { name: 'Week 2', value: 0 },
     { name: 'Week 3', value: 0 },

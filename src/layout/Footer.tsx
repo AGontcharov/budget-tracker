@@ -1,29 +1,29 @@
-// @flow
-import * as React from 'react';
+import React from 'react';
 
 // Material UI
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 type Props = {
   classes: {
-    wrapper: string,
-    copyRight: string
-  }
+    wrapper: string;
+    copyRight: string;
+  };
 };
 
-const styles = theme => ({
-  wrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 75,
-    background: theme.palette.accent.main
-  },
-  copyRight: {
-    fontSize: 13
-  }
-});
+const styles = ({ palette }: Theme) =>
+  createStyles({
+    wrapper: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 75,
+      background: palette.accent.main
+    },
+    copyRight: {
+      fontSize: 13
+    }
+  });
 
 const Footer = (props: Props) => {
   const { classes } = props;

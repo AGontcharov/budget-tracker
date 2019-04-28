@@ -1,8 +1,7 @@
-// @flow
-import * as React from 'react';
+import React, { SyntheticEvent } from 'react';
 
 // Material UI
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
@@ -16,21 +15,22 @@ import { headers } from 'lib/Utils';
 
 type Props = {
   classes: {
-    icon: string
-  },
-  onRequestSort: string => void,
-  order: string,
-  orderBy: string
+    icon: string;
+  };
+  onRequestSort: (property: string) => void;
+  order: 'asc' | 'desc';
+  orderBy: string;
 };
 
-const styles = theme => ({
-  icon: {
-    marginRight: theme.spacing.unit
-  }
-});
+const styles = ({ palette, spacing }: Theme) =>
+  createStyles({
+    icon: {
+      marginRight: spacing.unit
+    }
+  });
 
 const EnhancedTableHead = (props: Props) => {
-  const createSortHandler = (property: string) => (event: SyntheticEvent<>) => {
+  const createSortHandler = (property: string) => (event: SyntheticEvent) => {
     props.onRequestSort(property);
   };
 
@@ -65,7 +65,7 @@ const EnhancedTableHead = (props: Props) => {
               </Tooltip>
             </TableCell>
           );
-        }, this)}
+        })}
       </TableRow>
     </TableHead>
   );

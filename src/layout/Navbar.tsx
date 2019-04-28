@@ -1,4 +1,3 @@
-// @flow
 import React, { useState } from 'react';
 
 // Material UI
@@ -19,8 +18,8 @@ import HomeIcon from '@material-ui/icons/Home';
 
 type Props = {
   classes: {
-    list: string
-  }
+    list: string;
+  };
 };
 
 const styles = {

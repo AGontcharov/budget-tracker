@@ -1,8 +1,7 @@
-// @flow
 import React from 'react';
 
 // Material UI
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
@@ -12,8 +11,17 @@ import CloseIcon from '@material-ui/icons/Close';
 import ErrorIcon from '@material-ui/icons/Error';
 import InfoIcon from '@material-ui/icons/Info';
 import WarningIcon from '@material-ui/icons/Warning';
+import { SvgIconProps } from '@material-ui/core/SvgIcon';
 
-const variantIcon = {
+type VariantIcon = {
+  success: React.ComponentType<SvgIconProps>;
+  warning: React.ComponentType<SvgIconProps>;
+  error: React.ComponentType<SvgIconProps>;
+  info: React.ComponentType<SvgIconProps>;
+  [key: string]: React.ComponentType<SvgIconProps>;
+};
+
+const variantIcon: VariantIcon = {
   success: CheckCircleIcon,
   warning: WarningIcon,
   error: ErrorIcon,
@@ -22,38 +30,40 @@ const variantIcon = {
 
 type Props = {
   classes: {
-    error: string,
-    info: string,
-    icon: string,
-    iconVariant: string,
-    message: string
-  },
-  message: string,
-  onClose: () => void,
-  open: boolean,
-  variant: string
+    error: string;
+    info: string;
+    icon: string;
+    iconVariant: string;
+    message: string;
+    [key: string]: string;
+  };
+  message: string;
+  onClose: () => void;
+  open: boolean;
+  variant: string;
 };
 
 // TODO: Look over colors later
-const styles = theme => ({
-  error: {
-    backgroundColor: theme.palette.error.dark
-  },
-  info: {
-    backgroundColor: theme.palette.primary.dark
-  },
-  icon: {
-    fontSize: 20
-  },
-  iconVariant: {
-    opacity: 0.9,
-    marginRight: theme.spacing.unit
-  },
-  message: {
-    display: 'flex',
-    alignItems: 'center'
-  }
-});
+const styles = ({ palette, spacing }: Theme) =>
+  createStyles({
+    error: {
+      backgroundColor: palette.error.dark
+    },
+    info: {
+      backgroundColor: palette.primary.dark
+    },
+    icon: {
+      fontSize: 20
+    },
+    iconVariant: {
+      opacity: 0.9,
+      marginRight: spacing.unit
+    },
+    message: {
+      display: 'flex',
+      alignItems: 'center'
+    }
+  });
 
 const EnhancedSnackbar = (props: Props) => {
   const { classes, message, onClose, open, variant } = props;

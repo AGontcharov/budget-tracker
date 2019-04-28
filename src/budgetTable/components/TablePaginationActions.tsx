@@ -1,8 +1,7 @@
-// @flow
-import * as React from 'react';
+import React from 'react';
 
 // Material UI
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
@@ -10,39 +9,40 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 
 type Props = {
-  onChangePage: Function,
-  count: number,
-  page: number,
-  rowsPerPage: number,
+  onChangePage: (event: any, page: number) => void;
+  count: number;
+  page: number;
+  rowsPerPage: number;
   classes: {
-    root: string
-  }
+    root: string;
+  };
 };
 
-const styles = theme => ({
-  root: {
-    flexShrink: 0,
-    color: theme.palette.text.secondary,
-    marginLeft: theme.spacing.unit * 2.5
-  }
-});
+const styles = ({ palette, spacing }: Theme) =>
+  createStyles({
+    root: {
+      flexShrink: 0,
+      color: palette.text.secondary,
+      marginLeft: spacing.unit * 2.5
+    }
+  });
 
 const TablePaginationActions = (props: Props) => {
   const { classes, count, onChangePage, page, rowsPerPage } = props;
 
-  const handleFirstPageButtonClick = (event: SyntheticEvent<>) => {
+  const handleFirstPageButtonClick = (event: any) => {
     onChangePage(event, 0);
   };
 
-  const handleBackButtonClick = (event: SyntheticEvent<>) => {
+  const handleBackButtonClick = (event: any) => {
     onChangePage(event, page - 1);
   };
 
-  const handleNextButtonClick = (event: SyntheticEvent<>) => {
+  const handleNextButtonClick = (event: any) => {
     onChangePage(event, page + 1);
   };
 
-  const handleLastPageButtonClick = (event: SyntheticEvent<>) => {
+  const handleLastPageButtonClick = (event: any) => {
     onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
 

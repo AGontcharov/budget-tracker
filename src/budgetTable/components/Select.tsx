@@ -1,9 +1,8 @@
-// @flow
 import React, { useState } from 'react';
 import CreatableSelect from 'react-select/lib/Creatable';
 
 // Material UI
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import NoSsr from '@material-ui/core/NoSsr';
 import TextField from '@material-ui/core/TextField';
@@ -30,42 +29,44 @@ const suggestions = [
   label: suggestion.label
 }));
 
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    minWidth: 200
-  },
-  input: {
-    display: 'flex',
-    padding: 0
-  },
-  valueContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flex: 1,
-    alignItems: 'center'
-  },
-  singleValue: {
-    fontSize: 13
-  },
-  placeholder: {
-    position: 'absolute',
-    left: 2,
-    fontSize: 13
-  },
-  paper: {
-    position: 'absolute',
-    zIndex: 1,
-    marginTop: theme.spacing.unit,
-    left: 0,
-    right: 0
-  }
-});
+const styles = ({ spacing }: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+      minWidth: 200
+    },
+    input: {
+      display: 'flex',
+      padding: 0
+    },
+    valueContainer: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      flex: 1,
+      alignItems: 'center'
+    },
+    singleValue: {
+      fontSize: 13
+    },
+    placeholder: {
+      position: 'absolute',
+      left: 2,
+      fontSize: 13
+    },
+    paper: {
+      position: 'absolute',
+      zIndex: 1,
+      marginTop: spacing.unit,
+      left: 0,
+      right: 0
+    }
+  });
 
-const inputComponent = ({ inputRef, ...props }) => <div ref={inputRef} {...props} />;
+// TODO: Fix type
+const inputComponent = ({ inputRef, ...props }: any) => <div ref={inputRef} {...props} />;
 
 // Overwrite the control component
-const Control = props => (
+const Control = (props: any) => (
   <TextField
     fullWidth
     InputProps={{
@@ -82,7 +83,7 @@ const Control = props => (
 );
 
 // Overwrite the Options component
-const Option = props => (
+const Option = (props: any) => (
   <MenuItem
     buttonRef={props.innerRef}
     selected={props.isFocused}
@@ -98,7 +99,7 @@ const Option = props => (
 );
 
 // Overwrite the placeholder component
-const Placeholder = props => (
+const Placeholder = (props: any) => (
   <Typography
     color="textSecondary"
     className={props.selectProps.classes.placeholder}
@@ -109,19 +110,19 @@ const Placeholder = props => (
 );
 
 // Overwrite the singleValue component
-const SingleValue = props => (
+const SingleValue = (props: any) => (
   <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
     {props.children}
   </Typography>
 );
 
 // Overwrite the valueContainer component
-const ValueContainer = props => (
+const ValueContainer = (props: any) => (
   <div className={props.selectProps.classes.valueContainer}>{props.children}</div>
 );
 
 // Overwrite the menu component
-const Menu = props => (
+const Menu = (props: any) => (
   <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
     {props.children}
   </Paper>
@@ -137,31 +138,32 @@ const components = {
 };
 
 type Props = {
-  autoFocus?: boolean,
+  autoFocus?: boolean;
   classes: {
-    root: string,
-    input: string,
-    valueContainer: string,
-    singleValue: string,
-    placeholder: string,
-    paper: string
-  },
-  onChange: string => void,
-  theme: Object,
-  value: { value: string, label: string }
+    root: string;
+    input: string;
+    valueContainer: string;
+    singleValue: string;
+    placeholder: string;
+    paper: string;
+  };
+  onChange: (index: string) => void;
+  // value: { value: string; label: string };
+  theme: Theme;
+  value: any;
 };
 
 const IntegrationReactSelect = (props: Props) => {
   const { classes, theme } = props;
   const [value, setValue] = useState(props.value);
 
-  const onChange = value => {
+  const onChange = (value: any) => {
     props.onChange(value ? value.value : '');
     setValue(value);
   };
 
   const selectStyles = {
-    input: base => ({
+    input: (base: any) => ({
       ...base,
       color: theme.palette.text.primary,
       '& input': {
