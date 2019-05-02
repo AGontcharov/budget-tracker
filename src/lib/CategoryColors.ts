@@ -17,8 +17,8 @@ import {
   orange,
   // deepOrange,
   brown,
-  grey
-  // blueGrey,
+  grey,
+  blueGrey
 } from '@material-ui/core/colors';
 
 type CategoryColors = {
@@ -58,10 +58,12 @@ const categoryColors: CategoryColors = {
   Utilities: teal[500]
 };
 
-const getCategoryColor = (category: string): string | undefined => {
+const getCategoryColor = (category: string): string => {
   if (categoryColors.hasOwnProperty(category)) {
     return categoryColors[category];
   }
+
+  return blueGrey[500];
 };
 
 export default getCategoryColor;

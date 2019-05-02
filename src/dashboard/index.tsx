@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 // Custom Component
 import IncomeExpensesChart from 'dashboard/components/IncomeExpensesChart';
 import ExpenseTimeChart from 'dashboard/components/ExpenseTimeChart';
-// import CategoryChart from 'dashboard/components/CategoryChart';
+import CategoryChart from 'dashboard/components/CategoryChart';
 
 // Material UI
 import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
@@ -68,9 +68,9 @@ const Dashboard = (props: Props) => {
           <Grid container item xs={12} lg={6} justify="center">
             <IncomeExpensesChart data={data} />
           </Grid>
-          {/* <Grid container item xs={12} lg={6} justify="center">
+          <Grid container item xs={12} lg={6} justify="center">
             <CategoryChart data={data} />
-          </Grid> */}
+          </Grid>
           <Grid container item xs={12} lg={6} justify="center">
             <ExpenseTimeChart
               // Specifying a key allows for the component to reset whenever the starting month changes

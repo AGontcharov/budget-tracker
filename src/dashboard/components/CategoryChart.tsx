@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import { Cell, Legend, PieChart, Pie, Sector } from 'recharts';
 
 // Material UI
@@ -86,35 +85,33 @@ const CategoryChart = (props: Props) => {
     setActiveCategory(index);
   };
 
-  // TODO: Maybe I can map this beforehand,
-  // but I need to watch out for custom categories too. Store the map in redux?
-  // Need to calculate the runtime complexity
-  let categories = data.reduce((accumulator, row, index) => {
-    if (accumulator && row.category) {
-      let categoryExists = false;
+  const categories: Array<{ name: string; value: number; isNegative: boolean; color: string }> = [];
 
-      accumulator.forEach((category: any) => {
-        if (category.name === row.category) {
-          category.value += row.price;
-          categoryExists = true;
-        }
+  data.forEach(transaction => {
+    // Skip undefined categories
+    if (!transaction.category) return;
+
+    const category = categories.find(element => {
+      return element.name === transaction.category;
+    });
+
+    if (category) {
+      // If the category already exits, sum up the value
+      category.value += transaction.price;
+    } else {
+      // Otherwise add this unique category
+      categories.push({
+        isNegative: transaction.price < 0 ? true : false,
+        name: transaction.category,
+        value: transaction.price,
+        color: getCategoryColor(transaction.category)
       });
-
-      return categoryExists
-        ? accumulator
-        : accumulator.concat({
-            id: row.id,
-            isNegative: row.price < 0 ? true : false,
-            name: row.category,
-            value: row.price
-          });
     }
+  });
 
-    return accumulator;
-  }, []);
-
-  categories.forEach(row => (row.value = Math.abs(row.value)));
-  const colors = categories.map(category => getCategoryColor(category.name));
+  categories.forEach(row => {
+    row.value = Math.abs(row.value);
+  });
 
   return (
     <PieChart
@@ -137,7 +134,7 @@ const CategoryChart = (props: Props) => {
         onMouseEnter={onCategorySelect}
       >
         {categories.map((entry, index) => (
-          <Cell key={entry.id} fill={colors[index % colors.length]} />
+          <Cell key={entry.name} fill={entry.color} />
         ))}
       </Pie>
       <Legend />
