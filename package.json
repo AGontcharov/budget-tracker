@@ -6,10 +6,10 @@
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
     "@types/downloadjs": "^1.4.1",
-    "@types/jest": "^24.0.11",
-    "@types/lodash": "^4.14.123",
-    "@types/node": "^11.13.8",
-    "@types/react": "^16.8.14",
+    "@types/jest": "^24.0.12",
+    "@types/lodash": "^4.14.126",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.8.17",
     "@types/react-dom": "^16.8.4",
     "@types/react-redux": "^7.0.8",
     "@types/react-select": "^2.0.17",
@@ -20,13 +20,13 @@
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-dropzone": "^10.1.4",
-    "react-redux": "^7.0.2",
-    "react-scripts": "^3.0.0",
+    "react-redux": "^7.0.3",
+    "react-scripts": "^3.0.1",
     "react-select": "^2.4.3",
     "recharts": "^1.5.0",
     "redux": "^4.0.1",
     "typescript": "^3.4.5",
-    "yarn": "^1.15.2"
+    "yarn": "^1.16.0"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json,css}": [
@@ -44,8 +44,8 @@
     "flow": "flow"
   },
   "devDependencies": {
-    "husky": "^2.1.0",
-    "lint-staged": "^8.1.5",
+    "husky": "^2.2.0",
+    "lint-staged": "^8.1.6",
     "prettier": "^1.17.0",
     "source-map-explorer": "^1.8.0"
   },
