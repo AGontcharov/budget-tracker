@@ -1,0 +1,26 @@
+{
+  "name": "budget-tracker-server",
+  "version": "1.0.0",
+  "description": "The Budget Tracker server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AGontcharov/budget-tracker.git"
+  },
+  "keywords": [
+    "budget"
+  ],
+  "author": "Alexander Gontcharov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AGontcharov/budget-tracker/issues"
+  },
+  "homepage": "https://github.com/AGontcharov/budget-tracker#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
