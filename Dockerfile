@@ -10,7 +10,10 @@ COPY . ./
 # Change to the ui directory
 WORKDIR ./ui
 
-# Build the application
+# Install the application
+RUN npm install
+
+# Build the app for production
 RUN npm run build
 
 # Change to the server directory
