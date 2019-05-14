@@ -8,7 +8,7 @@ server/node_modules
 RawData.js
 
 # production
-/build
+ui/build
 
 # misc
 roadmap
