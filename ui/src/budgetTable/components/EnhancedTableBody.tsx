@@ -1,25 +1,27 @@
-import React, { useState, useRef, ChangeEvent, FormEvent, MouseEvent } from 'react';
+import React, { ChangeEvent } from 'react';
+import { Form, Field } from 'react-final-form';
 import { connect } from 'react-redux';
+
+// Custom Components
+import FinalTextField from 'components/Form/FinalTextField';
 
 // Material UI
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import Popover from '@material-ui/core/Popover';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
 
 // Custom Components
 import Select from 'budgetTable/components/Select';
 
 // Helper Functions
-import { getData } from 'ducks/data';
+import { loadData, getData } from 'ducks/data';
 import { headers } from 'lib/Utils';
 import getCategoryColor from 'lib/CategoryColors';
 
-// Flow Type
+// TypeScript
 import { Transaction } from 'ducks/data';
 import { AppState } from 'ducks';
 
@@ -27,10 +29,10 @@ type Props = {
   data: Array<Transaction>;
   isLoading: boolean;
   isFilter: boolean;
+  loadData: (data: Array<Transaction>) => void;
   minRows: number;
   onFilter: (name: string) => (event: ChangeEvent<HTMLInputElement>) => void;
   onCategoryChange: (index: number) => (value: string) => void;
-  onDescriptionChange: (index: number, value: string) => void;
   order: string;
   orderBy: string;
   page: number;
@@ -42,6 +44,7 @@ const EnhancedTableBody = (props: Props) => {
     data,
     isFilter,
     isLoading,
+    loadData,
     minRows,
     onFilter,
     onCategoryChange,
@@ -49,51 +52,36 @@ const EnhancedTableBody = (props: Props) => {
     rowsPerPage
   } = props;
 
-  const [anchorEl, setAnchorEl] = useState<HTMLTableCellElement | null>(null);
-  const [index, setIndex] = useState<number>(-1);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const open = Boolean(anchorEl);
-
   const currentRows = Math.min(rowsPerPage, data.length - page * rowsPerPage);
   const emptyRows = rowsPerPage - currentRows;
 
   // TODO: How to transition this to withStyles?
   const styles = {
     input: {
-      fontSize: 13,
-      width: 200
+      fontSize: 13
     },
     // 49px is the size of one row
     emptyRow: {
       height: minRows > emptyRows ? 49 * emptyRows : 49 * (minRows - currentRows)
-    },
-    form: {
-      display: 'flex',
-      flexDirection: 'column' as 'column'
-    },
-    buttonWrapper: {
-      display: 'flex',
-      justifyContent: 'flex-end'
-    },
-    button: { fontSize: 13, margin: 4 }
-  };
-
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (inputRef && inputRef.current && inputRef.current.value) {
-      props.onDescriptionChange(index, inputRef.current.value);
     }
-    setAnchorEl(null);
   };
 
-  const onDescriptionClick = (id: number) => (event: MouseEvent<HTMLTableCellElement>) => {
-    setAnchorEl(event.currentTarget);
-    setIndex(id);
-  };
+  const onAddRows = () => {
+    const emptyRows = [];
 
-  const onClose = () => {
-    setAnchorEl(null);
+    for (let i = 0; i < 10; i++) {
+      emptyRows.push({
+        id: i,
+        date: new Date(),
+        type: 'Chequing',
+        category: '',
+        details: '',
+        description: '',
+        price: 15
+      });
+    }
+
+    loadData(emptyRows);
   };
 
   return (
@@ -105,6 +93,7 @@ const EnhancedTableBody = (props: Props) => {
               <Input
                 placeholder="Search..."
                 inputProps={{ 'aria-label': 'Description' }}
+                fullWidth
                 onChange={onFilter(filter.id)}
                 style={styles.input}
               />
@@ -112,8 +101,9 @@ const EnhancedTableBody = (props: Props) => {
           ))}
         </TableRow>
       )}
-
       {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+        console.log(row);
+
         return (
           <TableRow
             hover
@@ -122,70 +112,91 @@ const EnhancedTableBody = (props: Props) => {
               background: row.category ? getCategoryColor(row.category) : undefined
             }}
           >
-            {/* Date */}
-            <TableCell padding="dense">{row.date.toDateString()}</TableCell>
+            <Form onSubmit={() => {}} initialValues={row}>
+              {() => {
+                return (
+                  <>
+                    {/* Date */}
+                    <TableCell padding="dense">
+                      <Field
+                        name="date"
+                        component={FinalTextField}
+                        format={value => value.toDateString()}
+                        value="date"
+                        fullWidth
+                        InputProps={{ style: styles.input, disableUnderline: true }}
+                      />
+                    </TableCell>
 
-            {/* Type */}
-            <TableCell>{row.type}</TableCell>
+                    {/* Type */}
+                    <TableCell padding="dense">
+                      <Field
+                        name="type"
+                        component={FinalTextField}
+                        value="type"
+                        fullWidth
+                        InputProps={{ style: styles.input, disableUnderline: true }}
+                      />
+                    </TableCell>
 
-            {/* Category */}
-            <TableCell>
-              <Select
-                onChange={onCategoryChange(row.id)}
-                value={row.category ? { value: row.category, label: row.category } : null}
-              />
-            </TableCell>
+                    {/* Category */}
+                    <TableCell padding="dense">
+                      <Select
+                        onChange={onCategoryChange(row.id)}
+                        value={row.category ? { value: row.category, label: row.category } : null}
+                      />
+                    </TableCell>
 
-            {/* Details */}
-            <TableCell padding="dense">{row.details}</TableCell>
+                    {/* Details */}
+                    <TableCell padding="dense">
+                      <Field
+                        name="details"
+                        component={FinalTextField}
+                        value="details"
+                        fullWidth
+                        InputProps={{ style: styles.input, disableUnderline: true }}
+                      />
+                    </TableCell>
 
-            {/* Descriptions */}
-            <TableCell onClick={onDescriptionClick(row.id)} padding="dense">
-              {row.description}
-            </TableCell>
+                    {/* Descriptions */}
+                    <TableCell padding="dense">
+                      <Field
+                        name="description"
+                        component={FinalTextField}
+                        value="description"
+                        fullWidth
+                        InputProps={{ style: styles.input, disableUnderline: true }}
+                      />
+                    </TableCell>
 
-            {/* Price */}
-            <TableCell align="right">
-              {row.price < 0 ? `(${Math.abs(row.price)})` : row.price}
-            </TableCell>
+                    {/* Price */}
+                    <TableCell padding="dense">
+                      <Field
+                        name="price"
+                        component={FinalTextField}
+                        format={value => (value < 0 ? `(${Math.abs(value)})` : value)}
+                        value="price"
+                        fullWidth
+                        InputProps={{ style: styles.input, disableUnderline: true }}
+                        inputProps={{ style: { textAlign: 'right' } }}
+                      />
+                    </TableCell>
+                  </>
+                );
+              }}
+            </Form>
           </TableRow>
         );
       })}
 
-      <Popover
-        anchorEl={anchorEl}
-        elevation={0}
-        onClose={onClose}
-        open={open}
-        PaperProps={{
-          square: true,
-          style: { border: '1px solid grey' }
-        }}
-      >
-        <form onSubmit={onSubmit} style={styles.form}>
-          <Input
-            inputRef={inputRef}
-            autoFocus
-            autoComplete="off"
-            name="description"
-            type="text"
-            style={{ width: 256, margin: 12, fontSize: 13 }}
-          />
-          <div style={styles.buttonWrapper}>
-            <Button type="submit" color="primary" style={styles.button}>
-              {'Save'}
-            </Button>
-            <Button onClick={onClose} color="primary" style={styles.button}>
-              {'Cancel'}
-            </Button>
-          </div>
-        </form>
-      </Popover>
-
       {currentRows < minRows && (
         <TableRow style={styles.emptyRow}>
-          <TableCell colSpan={6} style={{ textAlign: 'center' }}>
-            {!data.length && !isLoading && <Typography align="center">{'No data...'}</Typography>}
+          <TableCell colSpan={6} align="center">
+            {!data.length && !isLoading && (
+              <Button color="primary" onClick={onAddRows} size="large" variant="outlined">
+                {'Add Rows'}
+              </Button>
+            )}
             {isLoading && <LinearProgress />}
           </TableCell>
         </TableRow>
@@ -201,4 +212,7 @@ const mapStateToProps = (state: AppState) => {
   };
 };
 
-export default connect(mapStateToProps)(EnhancedTableBody);
+export default connect(
+  mapStateToProps,
+  { loadData }
+)(EnhancedTableBody);
