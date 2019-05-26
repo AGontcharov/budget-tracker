@@ -7,7 +7,7 @@ import { withTheme, Theme } from '@material-ui/core/styles';
 // Helper Functions
 import getCategoryColor from 'lib/CategoryColors';
 
-// Flow Type
+// TypeScript
 import { Transaction } from 'ducks/data';
 
 // TODO: Try and understand this a bit.

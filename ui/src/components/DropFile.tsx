@@ -13,7 +13,7 @@ import Upload from '@material-ui/icons/CloudUpload';
 // Helper Functions
 import { isLoading, loadData } from 'ducks/data';
 
-// Flow Type
+// TypeScript
 import { Transaction } from 'ducks/data';
 
 type Props = {
@@ -113,7 +113,7 @@ const DropFile = (props: Props) => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Dropzone
         accept="text/csv"
         onDropAccepted={() => setIsRejected(false)}
@@ -133,12 +133,12 @@ const DropFile = (props: Props) => {
                 {isDragActive ? (
                   <Typography align="center">Drop files...</Typography>
                 ) : (
-                  <React.Fragment>
+                  <>
                     <Typography align="center" className={classes.dropZoneInactiveText}>
                       Drop your RBC CSV file here to get started!
                     </Typography>
                     <Upload className={classes.upload} color="primary" />
-                  </React.Fragment>
+                  </>
                 )}
               </div>
             </div>
@@ -152,7 +152,7 @@ const DropFile = (props: Props) => {
         message="Only CSV files are accepted"
         variant="error"
       />
-    </React.Fragment>
+    </>
   );
 };
 

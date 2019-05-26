@@ -24,7 +24,7 @@ import TablePaginationActions from 'budgetTable/components/TablePaginationAction
 // Helper Functions
 import { loadData, loadFilters, loadSort } from 'ducks/data';
 
-// Flow Type
+// TypeScript
 import { Filter, Sort, Transaction } from 'ducks/data';
 import { AppState } from 'ducks';
 

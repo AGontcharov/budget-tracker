@@ -15,7 +15,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { getData } from 'ducks/data';
 import { headers } from 'lib/Utils';
 
-// Flow Type
+// TypeScript
 import { Transaction } from 'ducks/data';
 import { AppState } from 'ducks';
 

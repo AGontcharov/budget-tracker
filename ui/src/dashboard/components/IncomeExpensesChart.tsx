@@ -5,7 +5,7 @@ import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'rec
 import { withTheme, Theme } from '@material-ui/core/styles';
 import { red, green } from '@material-ui/core/colors';
 
-// Flow Type
+// TypeScript
 import { Transaction } from 'ducks/data';
 
 type Props = {

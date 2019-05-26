@@ -8,7 +8,7 @@ import SelectMonth from 'dashboard/components/SelectMonth';
 import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { red, green } from '@material-ui/core/colors';
 
-// Flow Type
+// TypeScript
 import { Transaction } from 'ducks/data';
 
 type Data = Array<{ name: string; value: number }>;

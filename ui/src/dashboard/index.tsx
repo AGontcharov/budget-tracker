@@ -16,7 +16,7 @@ import Typography from '@material-ui/core/Typography';
 // Helper Functions
 import { getFilteredData } from 'ducks/data';
 
-// Flow Type
+// TypeScript
 import { Transaction } from 'ducks/data';
 import { AppState } from 'ducks';
 
