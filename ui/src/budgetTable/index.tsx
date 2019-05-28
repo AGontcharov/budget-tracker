@@ -22,7 +22,7 @@ import EnhancedToolBar from 'budgetTable/components/EnhancedToolBar';
 import TablePaginationActions from 'budgetTable/components/TablePaginationActions';
 
 // Helper Functions
-import { loadData, loadFilters, loadSort } from 'ducks/data';
+import { loadData, loadFilters } from 'ducks/data';
 import { parseNumber } from 'lib/Utils';
 
 // TypeScript
@@ -38,7 +38,6 @@ type Props = {
     input: string;
     amount: string;
   };
-  filters: Array<{ name: string; value: string }>;
   data: Array<Transaction>;
   loadData: (payload: Array<Transaction>) => void;
   loadFilters: (payload: Array<Filter>) => void;
@@ -82,29 +81,6 @@ const BudgetTable = (props: Props) => {
     loadFilters([]);
   };
 
-  const onFilter = (name: string) => (event: ChangeEvent<HTMLInputElement>) => {
-    changeFilters(name, event.target.value);
-  };
-
-  const changeFilters: (name: string, value: string) => void = debounce((name, value) => {
-    let filters = [...props.filters];
-    let index;
-
-    filters.forEach((filter, position) => {
-      if (filter.name === name) {
-        index = position;
-      }
-    });
-
-    if (index === undefined) {
-      filters.push({ name, value });
-    } else {
-      filters[index] = { name, value };
-    }
-
-    loadFilters(filters);
-  }, 200);
-
   const onCategoryChange = (index: number) => (value: string) => {
     let transactions = [...data];
     transactions[index].category = value;
@@ -132,6 +108,7 @@ const BudgetTable = (props: Props) => {
   }, 1000);
 
   // Get the total amount
+  // TODO: This isn't reflected to the filtered dataset
   const totalAmount = data.reduce((accumulator, row) => {
     return accumulator + row.price;
   }, 0);
@@ -147,13 +124,12 @@ const BudgetTable = (props: Props) => {
           <EnhancedTableBody
             isFilter={isFilter}
             minRows={10}
-            onFilter={onFilter}
             onCategoryChange={onCategoryChange}
             onSave={onSave}
             page={page}
             rowsPerPage={rowsPerPage}
           />
-          {/* TODO: Create a component for this and subscribe to the filter data so count is proper */}
+          {/* TODO: Create a component for this and subscribe to the filtered data so count is properly reflected */}
           <TableFooter>
             <TableRow>
               <TableCell colSpan={6} padding="dense" className={classes.amount}>
@@ -191,7 +167,6 @@ const BudgetTable = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-  filters: state.transactions.filters,
   data: state.transactions.data
 });
 

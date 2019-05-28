@@ -1,6 +1,7 @@
 import React, { ChangeEvent } from 'react';
-import { Form, Field } from 'react-final-form';
 import { connect } from 'react-redux';
+import { Form, Field } from 'react-final-form';
+import { debounce } from 'lodash';
 
 // Custom Components
 import AutoSave from 'components/Form/AutoSave';
@@ -19,11 +20,11 @@ import TableRow from '@material-ui/core/TableRow';
 import Select from 'budgetTable/components/Select';
 
 // Helper Functions
-import { loadData, getData } from 'ducks/data';
+import { getData, loadData, loadFilters } from 'ducks/data';
 import getCategoryColor from 'lib/CategoryColors';
 
 // TypeScript
-import { Transaction } from 'ducks/data';
+import { Filter, Transaction } from 'ducks/data';
 import { AppState } from 'ducks';
 import { Values } from 'components/Form/AutoSave';
 
@@ -32,6 +33,11 @@ type Props = {
    * @ignore
    */
   data: Array<Transaction>;
+
+  /**
+   * @ignore
+   */
+  filters: Array<{ name: string; value: string }>;
 
   /**
    * @ignore
@@ -49,15 +55,15 @@ type Props = {
   loadData: (data: Array<Transaction>) => void;
 
   /**
+   * @ignore
+   */
+  loadFilters: (payload: Array<Filter>) => void;
+
+  /**
    * The minimum number of rows to show per page.
    * @type {number}
    */
   minRows: number;
-
-  /**
-   * @type {Function}
-   */
-  onFilter: (name: string) => (event: ChangeEvent<HTMLInputElement>) => void;
 
   /**
    * @type {Function}
@@ -100,8 +106,8 @@ const EnhancedTableBody = (props: Props) => {
     isFilter,
     isLoading,
     loadData,
+    loadFilters,
     minRows,
-    onFilter,
     onCategoryChange,
     onSave,
     page,
@@ -121,6 +127,29 @@ const EnhancedTableBody = (props: Props) => {
       height: minRows > emptyRows ? 49 * emptyRows : 49 * (minRows - currentRows)
     }
   };
+
+  const onFilter = (name: string) => (event: ChangeEvent<HTMLInputElement>) => {
+    changeFilters(name, event.target.value);
+  };
+
+  const changeFilters: (name: string, value: string) => void = debounce((name, value) => {
+    const filters = [...props.filters];
+    let index = -1;
+
+    filters.forEach((filter, position) => {
+      if (filter.name === name) {
+        index = position;
+      }
+    });
+
+    if (index === -1) {
+      filters.push({ name, value });
+    } else {
+      filters[index] = { name, value };
+    }
+
+    loadFilters(filters);
+  }, 200);
 
   const onAddRows = () => {
     const emptyRows = [];
@@ -263,6 +292,7 @@ const EnhancedTableBody = (props: Props) => {
 
 const mapStateToProps = (state: AppState) => ({
   data: getData(state.transactions),
+  filters: state.transactions.filters,
   isLoading: state.transactions.isLoading,
   order: state.transactions.sort.order,
   orderBy: state.transactions.sort.orderBy
@@ -270,5 +300,5 @@ const mapStateToProps = (state: AppState) => ({
 
 export default connect(
   mapStateToProps,
-  { loadData }
+  { loadData, loadFilters }
 )(EnhancedTableBody);

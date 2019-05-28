@@ -66,7 +66,6 @@ export default (state: InitialState = initialState, action: Action) => {
 };
 
 // Action Creator
-// TODO: Maybe we can combine this...
 export const isLoading = (payload: boolean) => {
   return { type: IS_LOADING, payload };
 };
@@ -98,7 +97,7 @@ export const getData = (transactions: InitialState): Array<Transaction> => {
   return filteredData;
 };
 
-// TODO: Keep it around for now
+// This is used in the dashboard to get the filtered data without any sorting applied.
 export const getFilteredData = (transactions: InitialState): Array<Transaction> => {
   const { data, filters } = transactions;
 
