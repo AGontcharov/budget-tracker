@@ -26,7 +26,7 @@ import { loadData, loadFilters, loadSort } from 'ducks/data';
 import { parseNumber } from 'lib/Utils';
 
 // TypeScript
-import { Filter, Sort, Transaction } from 'ducks/data';
+import { Filter, Transaction } from 'ducks/data';
 import { AppState } from 'ducks';
 import { Values } from 'components/Form/AutoSave';
 
@@ -42,9 +42,6 @@ type Props = {
   data: Array<Transaction>;
   loadData: (payload: Array<Transaction>) => void;
   loadFilters: (payload: Array<Filter>) => void;
-  loadSort: (payload: Sort) => void;
-  orderBy: string;
-  order: 'asc' | 'desc';
 };
 
 // TODO: Figure out Table Styles
@@ -68,7 +65,7 @@ const styles = ({ palette, spacing }: Theme) =>
   });
 
 const BudgetTable = (props: Props) => {
-  const { classes, data, loadData, loadFilters, loadSort, order, orderBy } = props;
+  const { classes, data, loadData, loadFilters } = props;
 
   const [isFilter, setIsFilter] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(Number(localStorage.getItem('rowsPerPage')) || 10);
@@ -108,17 +105,6 @@ const BudgetTable = (props: Props) => {
     loadFilters(filters);
   }, 200);
 
-  const onRequestSort = (property: string) => {
-    const orderBy = property;
-    let order = 'desc';
-
-    if (orderBy === property && order === 'desc') {
-      order = 'asc';
-    }
-
-    loadSort({ orderBy, order });
-  };
-
   const onCategoryChange = (index: number) => (value: string) => {
     let transactions = [...data];
     transactions[index].category = value;
@@ -157,15 +143,13 @@ const BudgetTable = (props: Props) => {
 
       <div ref={tableRef} className={classes.tableWrapper}>
         <Table aria-labelledby="tableTitle">
-          <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={onRequestSort} />
+          <EnhancedTableHead />
           <EnhancedTableBody
             isFilter={isFilter}
             minRows={10}
             onFilter={onFilter}
             onCategoryChange={onCategoryChange}
             onSave={onSave}
-            order={order}
-            orderBy={orderBy}
             page={page}
             rowsPerPage={rowsPerPage}
           />
@@ -208,14 +192,12 @@ const BudgetTable = (props: Props) => {
 
 const mapStateToProps = (state: AppState) => ({
   filters: state.transactions.filters,
-  data: state.transactions.data,
-  order: state.transactions.sort.order,
-  orderBy: state.transactions.sort.orderBy
+  data: state.transactions.data
 });
 
 export default withStyles(styles, { withTheme: true })(
   connect(
     mapStateToProps,
-    { loadData, loadFilters, loadSort }
+    { loadData, loadFilters }
   )(BudgetTable)
 );

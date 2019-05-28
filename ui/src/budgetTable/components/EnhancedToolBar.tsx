@@ -2,6 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import download from 'downloadjs';
 
+// Custom Components
+import { headers } from 'budgetTable/components/EnhancedTableHead';
+
 // Material UI
 import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
@@ -15,7 +18,6 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 // Helper Functions
 import { getData } from 'ducks/data';
-import { headers } from 'lib/Utils';
 
 // TypeScript
 import { Transaction } from 'ducks/data';

@@ -1,4 +1,5 @@
 import React, { SyntheticEvent } from 'react';
+import { connect } from 'react-redux';
 
 // Material UI
 import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
@@ -12,13 +13,62 @@ import Tooltip from '@material-ui/core/Tooltip';
 import CommentIcon from '@material-ui/icons/Comment';
 
 // Helper Functions
-import { headers } from 'lib/Utils';
+import { loadSort } from 'ducks/data';
+
+// TypeScript
+import { AppState } from 'ducks';
+import { Sort } from 'ducks/data';
+
+export const headers = [
+  {
+    id: 'date',
+    numeric: false,
+    disablePadding: false,
+    label: 'Date',
+    tooltip: 'Date of transaction'
+  },
+  {
+    id: 'type',
+    numeric: false,
+    disablePadding: false,
+    label: 'Type',
+    tooltip: 'The type of transaction.'
+  },
+  {
+    id: 'category',
+    numeric: false,
+    disablePadding: false,
+    label: 'Category',
+    tooltip: 'The category of the transaction'
+  },
+  {
+    id: 'details',
+    numeric: false,
+    disablePadding: false,
+    label: 'Details',
+    tooltip: 'Details of the transaction'
+  },
+  {
+    id: 'description',
+    numeric: false,
+    disablePadding: false,
+    label: 'Description',
+    tooltip: 'More information about the transaction'
+  },
+  {
+    id: 'price',
+    numeric: true,
+    disablePadding: false,
+    label: 'Price $ (CAD)',
+    tooltip: 'The price of the transaction'
+  }
+];
 
 type Props = {
   classes: {
     icon: string;
   };
-  onRequestSort: (property: string) => void;
+  loadSort: (payload: Sort) => void;
   order: 'asc' | 'desc';
   orderBy: string;
 };
@@ -31,10 +81,17 @@ const styles = ({ palette, spacing }: Theme) =>
   });
 
 const EnhancedTableHead = (props: Props) => {
-  const { classes, order, orderBy, onRequestSort } = props;
+  const { classes, loadSort } = props;
 
   const createSortHandler = (property: string) => (event: SyntheticEvent) => {
-    onRequestSort(property);
+    const orderBy = property;
+    let order = 'desc';
+
+    if (props.orderBy === property && props.order === 'desc') {
+      order = 'asc';
+    }
+
+    loadSort({ orderBy, order });
   };
 
   return (
@@ -45,7 +102,7 @@ const EnhancedTableHead = (props: Props) => {
             key={row.id}
             align={row.numeric ? 'right' : 'center'}
             padding={row.disablePadding ? 'none' : 'default'}
-            sortDirection={orderBy === row.id ? order : false}
+            sortDirection={props.orderBy === row.id ? props.order : false}
           >
             <Tooltip
               title={row.tooltip}
@@ -53,8 +110,8 @@ const EnhancedTableHead = (props: Props) => {
               enterDelay={300}
             >
               <TableSortLabel
-                active={orderBy === row.id}
-                direction={order}
+                active={props.orderBy === row.id}
+                direction={props.order}
                 onClick={createSortHandler(row.id)}
               >
                 {row.label === 'Description' && (
@@ -70,4 +127,14 @@ const EnhancedTableHead = (props: Props) => {
   );
 };
 
-export default withStyles(styles, { withTheme: true })(EnhancedTableHead);
+const mapStateToProps = (state: AppState) => ({
+  order: state.transactions.sort.order,
+  orderBy: state.transactions.sort.orderBy
+});
+
+export default withStyles(styles, { withTheme: true })(
+  connect(
+    mapStateToProps,
+    { loadSort }
+  )(EnhancedTableHead)
+);

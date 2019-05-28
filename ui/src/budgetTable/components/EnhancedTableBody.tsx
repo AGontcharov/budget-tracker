@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 // Custom Components
 import AutoSave from 'components/Form/AutoSave';
 import FinalTextField from 'components/Form/FinalTextField';
+import { headers } from 'budgetTable/components/EnhancedTableHead';
 
 // Material UI
 import Button from '@material-ui/core/Button';
@@ -19,7 +20,6 @@ import Select from 'budgetTable/components/Select';
 
 // Helper Functions
 import { loadData, getData } from 'ducks/data';
-import { headers } from 'lib/Utils';
 import getCategoryColor from 'lib/CategoryColors';
 
 // TypeScript
@@ -70,11 +70,13 @@ type Props = {
   onSave: (values: Values) => void;
 
   /**
+   * @ignore
    * @type {string}
    */
-  order: string;
+  order: 'asc' | 'desc';
 
   /**
+   * @ignore
    * @type {string}
    */
   orderBy: string;
@@ -259,12 +261,12 @@ const EnhancedTableBody = (props: Props) => {
   );
 };
 
-const mapStateToProps = (state: AppState) => {
-  return {
-    data: getData(state.transactions),
-    isLoading: state.transactions.isLoading
-  };
-};
+const mapStateToProps = (state: AppState) => ({
+  data: getData(state.transactions),
+  isLoading: state.transactions.isLoading,
+  order: state.transactions.sort.order,
+  orderBy: state.transactions.sort.orderBy
+});
 
 export default connect(
   mapStateToProps,
