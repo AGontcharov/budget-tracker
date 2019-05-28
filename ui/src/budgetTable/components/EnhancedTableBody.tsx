@@ -166,79 +166,78 @@ const EnhancedTableBody = (props: Props) => {
             }}
           >
             <Form onSubmit={() => {}} initialValues={row} subscription={{}}>
-              {() => {
-                return (
-                  <>
-                    {/* TODO: Debounce prop not used  */}
-                    <AutoSave debounce={1000} save={onSave} />
+              {() => (
+                <>
+                  {/* TODO: Debounce prop not used  */}
+                  <AutoSave debounce={1000} save={onSave} />
 
-                    {/* Date */}
-                    <TableCell padding="dense">
-                      <Field
-                        name="date"
-                        component={FinalTextField}
-                        format={value => value.toDateString()}
-                        value="date"
-                        fullWidth
-                        InputProps={{ style: styles.input, disableUnderline: true }}
-                      />
-                    </TableCell>
+                  {/* Date */}
+                  <TableCell padding="dense">
+                    <Field
+                      name="date"
+                      component={FinalTextField}
+                      format={value => value.toDateString()}
+                      parse={value => new Date(value)}
+                      value="date"
+                      fullWidth
+                      InputProps={{ style: styles.input, disableUnderline: true }}
+                    />
+                  </TableCell>
 
-                    {/* Type */}
-                    <TableCell padding="dense">
-                      <Field
-                        name="type"
-                        component={FinalTextField}
-                        value="type"
-                        fullWidth
-                        InputProps={{ style: styles.input, disableUnderline: true }}
-                      />
-                    </TableCell>
+                  {/* Type */}
+                  <TableCell padding="dense">
+                    <Field
+                      name="type"
+                      component={FinalTextField}
+                      value="type"
+                      fullWidth
+                      InputProps={{ style: styles.input, disableUnderline: true }}
+                    />
+                  </TableCell>
 
-                    {/* Category */}
-                    <TableCell padding="dense">
-                      <Select
-                        onChange={onCategoryChange(row.id)}
-                        value={row.category ? { value: row.category, label: row.category } : null}
-                      />
-                    </TableCell>
+                  {/* Category */}
+                  <TableCell padding="dense">
+                    <Select
+                      onChange={onCategoryChange(row.id)}
+                      value={row.category ? { value: row.category, label: row.category } : null}
+                    />
+                  </TableCell>
 
-                    {/* Details */}
-                    <TableCell padding="dense">
-                      <Field
-                        name="details"
-                        component={FinalTextField}
-                        value="details"
-                        fullWidth
-                        InputProps={{ style: styles.input, disableUnderline: true }}
-                      />
-                    </TableCell>
+                  {/* Details */}
+                  <TableCell padding="dense">
+                    <Field
+                      name="details"
+                      component={FinalTextField}
+                      value="details"
+                      fullWidth
+                      InputProps={{ style: styles.input, disableUnderline: true }}
+                    />
+                  </TableCell>
 
-                    {/* Descriptions */}
-                    <TableCell padding="dense">
-                      <Field
-                        name="description"
-                        component={FinalTextField}
-                        value="description"
-                        fullWidth
-                        InputProps={{ style: styles.input, disableUnderline: true }}
-                      />
-                    </TableCell>
+                  {/* Descriptions */}
+                  <TableCell padding="dense">
+                    <Field
+                      name="description"
+                      component={FinalTextField}
+                      value="description"
+                      fullWidth
+                      InputProps={{ style: styles.input, disableUnderline: true }}
+                    />
+                  </TableCell>
 
-                    {/* Price */}
-                    <TableCell padding="dense">
-                      <Field
-                        name="price"
-                        component={FinalTextField}
-                        value="price"
-                        fullWidth
-                        InputProps={{ style: styles.input, disableUnderline: true }}
-                        inputProps={{ style: { textAlign: 'right' } }}
-                      />
-                    </TableCell>
-                  </>
-                );
-              }}
+                  {/* Price */}
+                  <TableCell padding="dense">
+                    <Field
+                      name="price"
+                      component={FinalTextField}
+                      value="price"
+                      fullWidth
+                      InputProps={{ style: styles.input, disableUnderline: true }}
+                      inputProps={{ style: { textAlign: 'right' } }}
+                    />
+                  </TableCell>
+                </>
+              )}
             </Form>
           </TableRow>
         );

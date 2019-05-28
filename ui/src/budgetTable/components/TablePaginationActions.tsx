@@ -2,8 +2,10 @@ import React, { MouseEvent } from 'react';
 
 // Material UI
 import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
+
+// Material UI Icons
 import FirstPageIcon from '@material-ui/icons/FirstPage';
+import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';

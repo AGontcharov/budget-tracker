@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 // Custom Component
-import IncomeExpensesChart from 'dashboard/components/IncomeExpensesChart';
-import ExpenseTimeChart from 'dashboard/components/ExpenseTimeChart';
 import CategoryChart from 'dashboard/components/CategoryChart';
+import ExpenseTimeChart from 'dashboard/components/ExpenseTimeChart';
+import IncomeExpensesChart from 'dashboard/components/IncomeExpensesChart';
 
 // Material UI
 import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
@@ -85,11 +85,9 @@ const Dashboard = (props: Props) => {
   );
 };
 
-const mapStateToProps = (state: AppState) => {
-  return {
-    data: getFilteredData(state.transactions)
-  };
-};
+const mapStateToProps = (state: AppState) => ({
+  data: getFilteredData(state.transactions)
+});
 
 export default withStyles(styles, { withTheme: true })(
   connect(

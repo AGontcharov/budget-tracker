@@ -11,14 +11,14 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
 import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
 
 // Custom Components
-import EnhancedToolBar from 'budgetTable/components/EnhancedToolBar';
-import EnhancedTableHead from 'budgetTable/components/EnhancedTableHead';
 import EnhancedTableBody from 'budgetTable/components/EnhancedTableBody';
+import EnhancedTableHead from 'budgetTable/components/EnhancedTableHead';
+import EnhancedToolBar from 'budgetTable/components/EnhancedToolBar';
 import TablePaginationActions from 'budgetTable/components/TablePaginationActions';
 
 // Helper Functions
@@ -169,6 +169,7 @@ const BudgetTable = (props: Props) => {
             page={page}
             rowsPerPage={rowsPerPage}
           />
+          {/* TODO: Create a component for this and subscribe to the filter data so count is proper */}
           <TableFooter>
             <TableRow>
               <TableCell colSpan={6} padding="dense" className={classes.amount}>

@@ -20,6 +20,7 @@ const FinalTextField = ({
 }: FinalTextFieldProps) => {
   return (
     <TextField
+      autoComplete="off"
       name={name}
       InputProps={{ ...InputProps, ...restInput }}
       inputProps={inputProps}

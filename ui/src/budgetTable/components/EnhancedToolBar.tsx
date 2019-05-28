@@ -4,10 +4,12 @@ import download from 'downloadjs';
 
 // Material UI
 import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
+
+// Material UI Icons
 import FileDownloadIcon from '@material-ui/icons/GetApp';
 import FilterListIcon from '@material-ui/icons/FilterList';
 

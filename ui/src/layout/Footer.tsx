@@ -31,7 +31,7 @@ const Footer = (props: Props) => {
   return (
     <div className={classes.wrapper}>
       <Typography className={classes.copyRight}>
-        Copyright © {new Date().getFullYear()} Alexander Gontcharov. All right reserved.
+        {`Copyright © ${new Date().getFullYear()} Alexander Gontcharov. All right reserved.`}
       </Typography>
     </div>
   );

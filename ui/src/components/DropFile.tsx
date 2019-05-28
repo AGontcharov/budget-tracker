@@ -71,7 +71,7 @@ const DropFile = (props: Props) => {
 
       reader.onload = () => {
         const result = reader.result;
-        props.isLoading(true);
+        isLoading(true);
         if (result) {
           modifyFile(result.toString());
         }
@@ -135,7 +135,7 @@ const DropFile = (props: Props) => {
                 ) : (
                   <>
                     <Typography align="center" className={classes.dropZoneInactiveText}>
-                      Drop your RBC CSV file here to get started!
+                      {'Drop your RBC CSV file here to get started!'}
                     </Typography>
                     <Upload className={classes.upload} color="primary" />
                   </>
