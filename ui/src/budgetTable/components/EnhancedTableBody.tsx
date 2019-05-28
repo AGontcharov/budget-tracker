@@ -3,6 +3,7 @@ import { Form, Field } from 'react-final-form';
 import { connect } from 'react-redux';
 
 // Custom Components
+import AutoSave from 'components/Form/AutoSave';
 import FinalTextField from 'components/Form/FinalTextField';
 
 // Material UI
@@ -24,18 +25,70 @@ import getCategoryColor from 'lib/CategoryColors';
 // TypeScript
 import { Transaction } from 'ducks/data';
 import { AppState } from 'ducks';
+import { Values } from 'components/Form/AutoSave';
 
 type Props = {
+  /**
+   * @ignore
+   */
   data: Array<Transaction>;
+
+  /**
+   * @ignore
+   */
   isLoading: boolean;
+
+  /**
+   * @type {boolean}
+   */
   isFilter: boolean;
+
+  /**
+   * @ignore
+   */
   loadData: (data: Array<Transaction>) => void;
+
+  /**
+   * The minimum number of rows to show per page.
+   * @type {number}
+   */
   minRows: number;
+
+  /**
+   * @type {Function}
+   */
   onFilter: (name: string) => (event: ChangeEvent<HTMLInputElement>) => void;
+
+  /**
+   * @type {Function}
+   */
   onCategoryChange: (index: number) => (value: string) => void;
+
+  /**
+   * @type {Function}
+   */
+  onSave: (values: Values) => void;
+
+  /**
+   * @type {string}
+   */
   order: string;
+
+  /**
+   * @type {string}
+   */
   orderBy: string;
+
+  /**
+   * The current table page.
+   * @type {number}
+   */
   page: number;
+
+  /**
+   * The number of rows per page.
+   * @type {number}
+   */
   rowsPerPage: number;
 };
 
@@ -48,6 +101,7 @@ const EnhancedTableBody = (props: Props) => {
     minRows,
     onFilter,
     onCategoryChange,
+    onSave,
     page,
     rowsPerPage
   } = props;
@@ -69,15 +123,15 @@ const EnhancedTableBody = (props: Props) => {
   const onAddRows = () => {
     const emptyRows = [];
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 100; i++) {
       emptyRows.push({
         id: i,
         date: new Date(),
-        type: 'Chequing',
+        type: '',
         category: '',
         details: '',
         description: '',
-        price: 15
+        price: 0
       });
     }
 
@@ -101,9 +155,8 @@ const EnhancedTableBody = (props: Props) => {
           ))}
         </TableRow>
       )}
-      {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
-        console.log(row);
 
+      {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
         return (
           <TableRow
             hover
@@ -112,10 +165,13 @@ const EnhancedTableBody = (props: Props) => {
               background: row.category ? getCategoryColor(row.category) : undefined
             }}
           >
-            <Form onSubmit={() => {}} initialValues={row}>
+            <Form onSubmit={() => {}} initialValues={row} subscription={{}}>
               {() => {
                 return (
                   <>
+                    {/* TODO: Debounce prop not used  */}
+                    <AutoSave debounce={1000} save={onSave} />
+
                     {/* Date */}
                     <TableCell padding="dense">
                       <Field
@@ -174,7 +230,6 @@ const EnhancedTableBody = (props: Props) => {
                       <Field
                         name="price"
                         component={FinalTextField}
-                        format={value => (value < 0 ? `(${Math.abs(value)})` : value)}
                         value="price"
                         fullWidth
                         InputProps={{ style: styles.input, disableUnderline: true }}

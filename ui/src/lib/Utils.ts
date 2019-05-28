@@ -4,14 +4,14 @@ export const headers = [
     numeric: false,
     disablePadding: false,
     label: 'Date',
-    tooltip: 'Date of Transaction'
+    tooltip: 'Date of transaction'
   },
   {
     id: 'type',
     numeric: false,
     disablePadding: false,
     label: 'Type',
-    tooltip: 'The category which the transaction falls under'
+    tooltip: 'The type of transaction.'
   },
   {
     id: 'category',
@@ -77,4 +77,13 @@ export const getSorting = (order: string, orderBy: string) => {
   return order === 'desc'
     ? (a: any, b: any) => desc(a, b, orderBy)
     : (a: any, b: any) => -desc(a, b, orderBy);
+};
+
+export const parseNumber = (value: string) => {
+  const number = Number(value);
+
+  if (Number.isNaN(number)) {
+    return 0;
+  }
+  return number;
 };

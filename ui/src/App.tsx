@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 // Custom Component
 import BudgetTable from 'budgetTable';
@@ -11,6 +12,9 @@ import DropFile from 'components/DropFile';
 // Material UI
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Palette, PaletteOptions } from '@material-ui/core/styles/createPalette';
+
+// TypeScript
+import { AppState } from 'ducks';
 
 declare module '@material-ui/core/styles/createPalette' {
   interface Palette {
@@ -39,13 +43,21 @@ const theme = createMuiTheme({
   }
 });
 
-const App = () => {
+type Props = {
+  /**
+   * @ignore
+   */
+  isLoading: boolean;
+};
+
+const App = ({ isLoading }: Props) => {
   return (
     <MuiThemeProvider theme={theme}>
       <Layout>
         <Navbar />
         <DropFile />
-        <BudgetTable />
+        {/* Remount the Budget Table anytime we upload a new file */}
+        <BudgetTable key={`${isLoading}`} />
         <Dashboard />
         <Footer />
       </Layout>
@@ -53,4 +65,6 @@ const App = () => {
   );
 };
 
-export default App;
+const mapStateToProps = (state: AppState) => ({ isLoading: state.transactions.isLoading });
+
+export default connect(mapStateToProps)(App);

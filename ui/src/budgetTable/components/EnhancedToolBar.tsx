@@ -56,13 +56,10 @@ const EnhancedTableToolbar = (props: Props) => {
       .concat('\r\n');
 
     data.forEach(transaction => {
-      // TODO: See if this works
-      // const row = { ...transaction };
-      const row = Object.assign({}, transaction, { date: transaction.date.toDateString() });
-
+      // Change Date object to a readable string and delete row.id
+      const row = { ...transaction, date: transaction.date.toDateString() };
       delete row.id;
-      // TODO: Why do I have to flow it like this?
-      // row.date = new Date(row.date).toDateString();
+
       csvContent = csvContent.concat(Object.values(row).join(',')) + '\r\n';
     });
 
@@ -95,11 +92,7 @@ const EnhancedTableToolbar = (props: Props) => {
   );
 };
 
-const mapStateToProps = (state: AppState) => {
-  return {
-    data: getData(state.transactions)
-  };
-};
+const mapStateToProps = (state: AppState) => ({ data: getData(state.transactions) });
 
 export default connect(mapStateToProps)(
   withStyles(styles, { withTheme: true })(EnhancedTableToolbar)
