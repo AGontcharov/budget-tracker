@@ -11,13 +11,36 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 
 type Props = {
-  onChangePage: (event: MouseEvent<HTMLButtonElement> | null, page: number) => void;
-  count: number;
-  page: number;
-  rowsPerPage: number;
+  /**
+   * @ignore
+   */
   classes: {
     root: string;
   };
+
+  /**
+   * The total number of rows.
+   * @type {number}
+   */
+  count: number;
+
+  /**
+   * Callback fired when the page is changed.
+   * @type {Function}
+   */
+  onChangePage: (event: MouseEvent<HTMLButtonElement> | null, page: number) => void;
+
+  /**
+   * The zero-based index of the current page.
+   * @type {number}
+   */
+  page: number;
+
+  /**
+   * The number of rows per page.
+   * @type {number}
+   */
+  rowsPerPage: number;
 };
 
 const styles = ({ palette, spacing }: Theme) =>

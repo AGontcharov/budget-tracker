@@ -65,11 +65,26 @@ export const headers = [
 ];
 
 type Props = {
+  /**
+   * @ignore
+   */
   classes: {
     icon: string;
   };
+
+  /**
+   * @ignore
+   */
   loadSort: (payload: Sort) => void;
+
+  /**
+   * @type {string}
+   */
   order: 'asc' | 'desc';
+
+  /**
+   * @type {string}
+   */
   orderBy: string;
 };
 

@@ -54,9 +54,7 @@ const EnhancedTableToolbar = (props: Props) => {
   const onExportClicked = () => {
     // Get the headers
     let csvContent = headers
-      .reduce((accumulator, header) => {
-        return (accumulator = accumulator.concat(`${header.label},`));
-      }, '')
+      .reduce((accumulator, header) => (accumulator = accumulator.concat(`${header.label},`)), '')
       .concat('\r\n');
 
     data.forEach(transaction => {

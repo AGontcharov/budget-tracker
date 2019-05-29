@@ -151,10 +151,11 @@ const EnhancedTableBody = (props: Props) => {
     loadFilters(filters);
   }, 200);
 
+  // TODO: Later we want to concatenate the empty rows to the initial data
   const onAddRows = () => {
     const emptyRows = [];
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 5; i++) {
       emptyRows.push({
         id: i,
         date: new Date(),
