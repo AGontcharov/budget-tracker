@@ -74,12 +74,6 @@ const BudgetTable = (props: Props) => {
     loadFilters([]);
   };
 
-  const onCategoryChange = (index: number) => (value: string) => {
-    let transactions = [...data];
-    transactions[index].category = value;
-    loadData(transactions);
-  };
-
   const onChangePage = (event: MouseEvent<HTMLButtonElement> | null, page: number) => {
     setPage(page);
   };
@@ -100,6 +94,9 @@ const BudgetTable = (props: Props) => {
     loadData(transactions);
   }, 1000);
 
+  // TODO: Should I derive the filtered + sorted table data here and pass it down?
+  // I can still have the original data in props from redux
+
   return (
     // TODO: Alternating Table color scheme?
     <Paper className={classes.paper}>
@@ -111,7 +108,6 @@ const BudgetTable = (props: Props) => {
           <EnhancedTableBody
             isFilter={isFilter}
             minRows={10}
-            onCategoryChange={onCategoryChange}
             onSave={onSave}
             page={page}
             rowsPerPage={rowsPerPage}

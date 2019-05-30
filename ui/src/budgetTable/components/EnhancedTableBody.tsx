@@ -20,7 +20,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Select from 'budgetTable/components/Select';
 
 // Helper Functions
-import { getData, loadData, loadFilters } from 'ducks/data';
+import { getData, filterSelector, loadData, loadFilters } from 'ducks/data';
 import getCategoryColor from 'lib/CategoryColors';
 
 // TypeScript
@@ -68,24 +68,7 @@ type Props = {
   /**
    * @type {Function}
    */
-  onCategoryChange: (index: number) => (value: string) => void;
-
-  /**
-   * @type {Function}
-   */
   onSave: (values: Values) => void;
-
-  /**
-   * @ignore
-   * @type {string}
-   */
-  order: 'asc' | 'desc';
-
-  /**
-   * @ignore
-   * @type {string}
-   */
-  orderBy: string;
 
   /**
    * The current table page.
@@ -108,7 +91,6 @@ const EnhancedTableBody = (props: Props) => {
     loadData,
     loadFilters,
     minRows,
-    onCategoryChange,
     onSave,
     page,
     rowsPerPage
@@ -190,88 +172,87 @@ const EnhancedTableBody = (props: Props) => {
 
       {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
         return (
-          <TableRow
-            hover
+          <Form
             key={row.id}
-            style={{
-              background: row.category ? getCategoryColor(row.category) : undefined
-            }}
+            onSubmit={() => {}}
+            initialValues={row}
+            subscription={{ values: true }}
           >
-            <Form onSubmit={() => {}} initialValues={row} subscription={{}}>
-              {() => (
-                <>
-                  {/* TODO: Debounce prop not used  */}
-                  <AutoSave debounce={1000} save={onSave} />
+            {({ values }) => (
+              <TableRow
+                hover
+                style={{
+                  background: values.category ? getCategoryColor(values.category) : undefined
+                }}
+              >
+                {/* TODO: Debounce prop not used  */}
+                <AutoSave debounce={1000} save={onSave} />
 
-                  {/* Date */}
-                  <TableCell padding="dense">
-                    <Field
-                      name="date"
-                      component={FinalTextField}
-                      format={value => value.toDateString()}
-                      parse={value => new Date(value)}
-                      value="date"
-                      fullWidth
-                      InputProps={{ style: styles.input, disableUnderline: true }}
-                    />
-                  </TableCell>
+                {/* Date */}
+                <TableCell padding="dense">
+                  <Field
+                    name="date"
+                    component={FinalTextField}
+                    format={value => value.toDateString()}
+                    parse={value => new Date(value)}
+                    value="date"
+                    fullWidth
+                    InputProps={{ style: styles.input, disableUnderline: true }}
+                  />
+                </TableCell>
 
-                  {/* Type */}
-                  <TableCell padding="dense">
-                    <Field
-                      name="type"
-                      component={FinalTextField}
-                      value="type"
-                      fullWidth
-                      InputProps={{ style: styles.input, disableUnderline: true }}
-                    />
-                  </TableCell>
+                {/* Type */}
+                <TableCell padding="dense">
+                  <Field
+                    name="type"
+                    component={FinalTextField}
+                    value="type"
+                    fullWidth
+                    InputProps={{ style: styles.input, disableUnderline: true }}
+                  />
+                </TableCell>
 
-                  {/* Category */}
-                  <TableCell padding="dense">
-                    <Select
-                      onChange={onCategoryChange(row.id)}
-                      value={row.category ? { value: row.category, label: row.category } : null}
-                    />
-                  </TableCell>
+                {/* Category */}
+                <TableCell padding="dense">
+                  <Field name="category" component={ReactSelectAdapter} value="category" />
+                </TableCell>
 
-                  {/* Details */}
-                  <TableCell padding="dense">
-                    <Field
-                      name="details"
-                      component={FinalTextField}
-                      value="details"
-                      fullWidth
-                      InputProps={{ style: styles.input, disableUnderline: true }}
-                    />
-                  </TableCell>
+                {/* Details */}
+                <TableCell padding="dense">
+                  <Field
+                    name="details"
+                    component={FinalTextField}
+                    value="details"
+                    fullWidth
+                    InputProps={{ style: styles.input, disableUnderline: true }}
+                  />
+                </TableCell>
 
-                  {/* Descriptions */}
-                  <TableCell padding="dense">
-                    <Field
-                      name="description"
-                      component={FinalTextField}
-                      value="description"
-                      fullWidth
-                      InputProps={{ style: styles.input, disableUnderline: true }}
-                    />
-                  </TableCell>
+                {/* Descriptions */}
+                <TableCell padding="dense">
+                  <Field
+                    name="description"
+                    component={FinalTextField}
+                    value="description"
+                    fullWidth
+                    InputProps={{ style: styles.input, disableUnderline: true }}
+                  />
+                </TableCell>
 
-                  {/* Price */}
-                  <TableCell padding="dense">
-                    <Field
-                      name="price"
-                      component={FinalTextField}
-                      value="price"
-                      fullWidth
-                      InputProps={{ style: styles.input, disableUnderline: true }}
-                      inputProps={{ style: { textAlign: 'right' } }}
-                    />
-                  </TableCell>
-                </>
-              )}
-            </Form>
-          </TableRow>
+                {/* Price */}
+                <TableCell padding="dense">
+                  <Field
+                    name="price"
+                    component={FinalTextField}
+                    value="price"
+                    fullWidth
+                    InputProps={{ style: styles.input, disableUnderline: true }}
+                    inputProps={{ style: { textAlign: 'right' } }}
+                  />
+                </TableCell>
+              </TableRow>
+            )}
+          </Form>
         );
       })}
 
@@ -291,12 +272,15 @@ const EnhancedTableBody = (props: Props) => {
   );
 };
 
+// TODO: Fix types
+const ReactSelectAdapter = ({ input, ...rest }: any) => {
+  return <Select {...input} {...rest} />;
+};
+
 const mapStateToProps = (state: AppState) => ({
   data: getData(state),
-  filters: state.transactions.filters,
-  isLoading: state.transactions.isLoading,
-  order: state.transactions.sort.order,
-  orderBy: state.transactions.sort.orderBy
+  filters: filterSelector(state),
+  isLoading: state.transactions.isLoading
 });
 
 export default connect(
