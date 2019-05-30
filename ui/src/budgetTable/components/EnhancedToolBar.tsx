@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import download from 'downloadjs';
 
@@ -31,7 +31,6 @@ type Props = {
   };
   data: Array<Transaction>;
   onFilterClicked: () => void;
-  title: string;
 };
 
 const styles = ({ palette }: Theme) =>
@@ -49,7 +48,7 @@ const styles = ({ palette }: Theme) =>
   });
 
 const EnhancedTableToolbar = (props: Props) => {
-  const { classes, data, onFilterClicked, title } = props;
+  const { classes, data, onFilterClicked } = props;
 
   const onExportClicked = () => {
     // Get the headers
@@ -72,7 +71,7 @@ const EnhancedTableToolbar = (props: Props) => {
     <Toolbar>
       <div className={classes.title}>
         <Typography variant="h6" id="tableTitle">
-          {title}
+          {'Transaction'}
         </Typography>
       </div>
       <div className={classes.spacer} />

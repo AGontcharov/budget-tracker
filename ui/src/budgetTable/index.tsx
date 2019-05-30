@@ -103,9 +103,9 @@ const BudgetTable = (props: Props) => {
   return (
     // TODO: Alternating Table color scheme?
     <Paper className={classes.paper}>
-      <EnhancedToolBar title={'Transactions'} onFilterClicked={onFilterClicked} />
-
       <div ref={tableRef} className={classes.tableWrapper}>
+        <EnhancedToolBar onFilterClicked={onFilterClicked} />
+
         <Table aria-labelledby="tableTitle">
           <EnhancedTableHead />
           <EnhancedTableBody

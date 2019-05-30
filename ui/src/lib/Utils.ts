@@ -29,9 +29,13 @@ export const stableSort = (array: Array<any>, compare: Function): Array<any> => 
 // If descending return desc(a, b, orderBy)
 // Otherwise, return -desc(a, b, orderBy)
 export const getSorting = (order: string, orderBy: string) => {
-  return order === 'desc'
-    ? (a: any, b: any) => desc(a, b, orderBy)
-    : (a: any, b: any) => -desc(a, b, orderBy);
+  return (a: any, b: any) => {
+    // Sort empty strings to the bottom of the list
+    if (a[orderBy] === '' || a[orderBy] === null) return 1;
+    if (b[orderBy] === '' || b[orderBy] === null) return -1;
+
+    return order === 'desc' ? desc(a, b, orderBy) : -desc(a, b, orderBy);
+  };
 };
 
 export const parseNumber = (value: string) => {

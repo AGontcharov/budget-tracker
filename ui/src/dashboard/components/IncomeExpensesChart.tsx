@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 
 // Material UI,
