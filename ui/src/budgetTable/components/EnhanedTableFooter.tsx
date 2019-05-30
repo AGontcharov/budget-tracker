@@ -106,7 +106,7 @@ const EnhancedTableFooter = (props: Props) => {
 
 const mapStateToProps = (state: AppState) => ({
   // This component does not care about sorted data - only the filtered data
-  data: getFilteredData(state.transactions)
+  data: getFilteredData(state)
 });
 
 export default withStyles(styles, { withTheme: true })(

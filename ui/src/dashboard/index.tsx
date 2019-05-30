@@ -86,7 +86,7 @@ const Dashboard = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-  data: getFilteredData(state.transactions)
+  data: getFilteredData(state)
 });
 
 export default withStyles(styles, { withTheme: true })(

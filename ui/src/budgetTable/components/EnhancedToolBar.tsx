@@ -93,7 +93,7 @@ const EnhancedTableToolbar = (props: Props) => {
   );
 };
 
-const mapStateToProps = (state: AppState) => ({ data: getData(state.transactions) });
+const mapStateToProps = (state: AppState) => ({ data: getData(state) });
 
 export default connect(mapStateToProps)(
   withStyles(styles, { withTheme: true })(EnhancedTableToolbar)

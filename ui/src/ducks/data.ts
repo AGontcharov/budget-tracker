@@ -1,6 +1,10 @@
+import { createSelector } from 'reselect';
+
 // Helper Functions
 import rawData from 'lib/RawData';
 import { getSorting, stableSort } from 'lib/Utils';
+
+import { AppState } from 'ducks';
 
 export interface Filter {
   name: string;
@@ -42,8 +46,8 @@ const LOAD_FILTERS = 'LOAD_FILTERS';
 const LOAD_ORDER = 'LOAD_ORDER';
 
 export const initialState = {
-  data: [],
-  // data: rawData,
+  // data: [],
+  data: rawData,
   isLoading: false,
   filters: [],
   sort: { orderBy: 'date', order: 'asc' }
@@ -83,29 +87,38 @@ export const loadSort = (payload: Sort) => {
 };
 
 // Selectors
-export const getData = (transactions: InitialState): Array<Transaction> => {
-  const { data, filters, sort } = transactions;
+export const dataSelector = (state: AppState) => state.transactions.data;
+export const filterSelector = (state: AppState) => state.transactions.filters;
+export const orderSelector = (state: AppState) => state.transactions.sort.order;
+export const orderBySelector = (state: AppState) => state.transactions.sort.orderBy;
 
-  const sortedData: Array<Transaction> = stableSort(data, getSorting(sort.order, sort.orderBy));
+// This memoized selector is used to retrieve the data with sorting and filters applied
+export const getData = createSelector(
+  [dataSelector, filterSelector, orderSelector, orderBySelector],
+  (data: Array<Transaction>, filters: Array<Filter>, order, orderBy) => {
+    const sortedData: Array<Transaction> = stableSort(data, getSorting(order, orderBy));
 
-  const filteredData = filters.reduce((filteredSoFar, nextFilter) => {
-    return filteredSoFar.filter(row => {
-      return (row[nextFilter.name] + '').toLowerCase().includes(nextFilter.value.toLowerCase());
-    });
-  }, sortedData);
+    const filteredData = filters.reduce((filteredSoFar, nextFilter) => {
+      return filteredSoFar.filter(row => {
+        return (row[nextFilter.name] + '').toLowerCase().includes(nextFilter.value.toLowerCase());
+      });
+    }, sortedData);
 
-  return filteredData;
-};
+    return filteredData;
+  }
+);
 
-// This is used in the dashboard to get the filtered data without any sorting applied.
-export const getFilteredData = (transactions: InitialState): Array<Transaction> => {
-  const { data, filters } = transactions;
+// This memoized selector is used to get the filtered data without any sorting applied.
+// Used in the dashboard as sorting is not important.
+export const getFilteredData = createSelector(
+  [dataSelector, filterSelector],
+  (data: Array<Transaction>, filters: Array<Filter>) => {
+    const filteredData = filters.reduce((filteredSoFar, nextFilter) => {
+      return filteredSoFar.filter(row => {
+        return (row[nextFilter.name] + '').toLowerCase().includes(nextFilter.value.toLowerCase());
+      });
+    }, data);
 
-  const filteredData = filters.reduce((filteredSoFar, nextFilter) => {
-    return filteredSoFar.filter(row => {
-      return (row[nextFilter.name] + '').toLowerCase().includes(nextFilter.value.toLowerCase());
-    });
-  }, data);
-
-  return filteredData;
-};
+    return filteredData;
+  }
+);

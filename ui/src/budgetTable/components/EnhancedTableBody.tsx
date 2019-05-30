@@ -292,7 +292,7 @@ const EnhancedTableBody = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-  data: getData(state.transactions),
+  data: getData(state),
   filters: state.transactions.filters,
   isLoading: state.transactions.isLoading,
   order: state.transactions.sort.order,
