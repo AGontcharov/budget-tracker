@@ -13,6 +13,9 @@ import DropFile from 'components/DropFile';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Palette, PaletteOptions } from '@material-ui/core/styles/createPalette';
 
+// Helper Functions
+import { isLoadingSelector } from 'ducks/data';
+
 // TypeScript
 import { AppState } from 'ducks';
 
@@ -65,6 +68,6 @@ const App = ({ isLoading }: Props) => {
   );
 };
 
-const mapStateToProps = (state: AppState) => ({ isLoading: state.transactions.isLoading });
+const mapStateToProps = (state: AppState) => ({ isLoading: isLoadingSelector(state) });
 
 export default connect(mapStateToProps)(App);

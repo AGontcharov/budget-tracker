@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Upload from '@material-ui/icons/CloudUpload';
 
 // Helper Functions
-import { isLoading, loadData } from 'ducks/data';
+import { setLoading, loadData } from 'ducks/data';
 
 // TypeScript
 import { Transaction } from 'ducks/data';
@@ -25,7 +25,7 @@ type Props = {
     upload: string;
   };
   theme: Object;
-  isLoading: (paylod: boolean) => void;
+  setLoading: (paylod: boolean) => void;
   loadData: (payload: Array<Transaction>) => void;
 };
 
@@ -62,16 +62,16 @@ const styles = ({ palette, spacing }: Theme) =>
   });
 
 const DropFile = (props: Props) => {
-  const { classes, isLoading, loadData } = props;
+  const { classes, setLoading, loadData } = props;
   const [isRejected, setIsRejected] = useState(false);
 
-  const onDrop = (acceptedFiles: Array<Blob>, rejectedFiles: Array<Blob>) => {
+  const onDrop = (acceptedFiles: Array<Blob>) => {
     acceptedFiles.forEach(file => {
       const reader = new FileReader();
 
       reader.onload = () => {
         const result = reader.result;
-        isLoading(true);
+        setLoading(true);
         if (result) {
           modifyFile(result.toString());
         }
@@ -104,7 +104,7 @@ const DropFile = (props: Props) => {
 
     // Remove the headers
     data.shift();
-    isLoading(false);
+    setLoading(false);
     loadData(data);
   };
 
@@ -131,7 +131,7 @@ const DropFile = (props: Props) => {
 
               <div className={classes.dropZoneInactive}>
                 {isDragActive ? (
-                  <Typography align="center">Drop files...</Typography>
+                  <Typography align="center">{'Drop files...'}</Typography>
                 ) : (
                   <>
                     <Typography align="center" className={classes.dropZoneInactiveText}>
@@ -159,6 +159,6 @@ const DropFile = (props: Props) => {
 export default withStyles(styles, { withTheme: true })(
   connect(
     null,
-    { isLoading, loadData }
+    { setLoading, loadData }
   )(DropFile)
 );

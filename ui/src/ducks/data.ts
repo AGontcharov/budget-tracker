@@ -70,7 +70,7 @@ export default (state: InitialState = initialState, action: Action) => {
 };
 
 // Action Creator
-export const isLoading = (payload: boolean) => {
+export const setLoading = (payload: boolean) => {
   return { type: IS_LOADING, payload };
 };
 
@@ -87,6 +87,7 @@ export const loadSort = (payload: Sort) => {
 };
 
 // Selectors
+export const isLoadingSelector = (state: AppState) => state.transactions.isLoading;
 export const dataSelector = (state: AppState) => state.transactions.data;
 export const filterSelector = (state: AppState) => state.transactions.filters;
 export const orderSelector = (state: AppState) => state.transactions.sort.order;
