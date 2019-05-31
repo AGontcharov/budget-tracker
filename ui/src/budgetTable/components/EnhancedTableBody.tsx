@@ -26,7 +26,6 @@ import getCategoryColor from 'lib/CategoryColors';
 // TypeScript
 import { Filter, Transaction } from 'ducks/data';
 import { AppState } from 'ducks';
-import { Values } from 'components/Form/AutoSave';
 
 type Props = {
   /**
@@ -68,7 +67,7 @@ type Props = {
   /**
    * @type {Function}
    */
-  onSave: (values: Values) => void;
+  onSave: (values: Transaction) => void;
 
   /**
    * The current table page.
@@ -137,7 +136,7 @@ const EnhancedTableBody = (props: Props) => {
   const onAddRows = () => {
     const emptyRows = [];
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 50; i++) {
       emptyRows.push({
         id: i,
         date: new Date(),
@@ -176,6 +175,8 @@ const EnhancedTableBody = (props: Props) => {
             key={row.id}
             onSubmit={() => {}}
             initialValues={row}
+            // TODO: We only subscribe to this so that the row background color changes
+            // Could be optimized as we only need the value for category
             subscription={{ values: true }}
           >
             {({ values }) => {
@@ -186,8 +187,7 @@ const EnhancedTableBody = (props: Props) => {
                     background: values.category ? getCategoryColor(values.category) : undefined
                   }}
                 >
-                  {/* TODO: Debounce prop not used  */}
-                  <AutoSave debounce={1000} save={onSave} />
+                  <AutoSave values={values} save={onSave} />
 
                   {/* Date */}
                   <TableCell padding="dense">

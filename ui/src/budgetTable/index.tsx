@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, ChangeEvent, MouseEvent } from 'react';
 import { connect } from 'react-redux';
-import { debounce } from 'lodash';
+import { debounce, cloneDeep } from 'lodash';
 
 // Material UI
 import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
@@ -15,12 +15,10 @@ import EnhancedTableFooter from 'budgetTable/components/EnhanedTableFooter';
 
 // Helper Functions
 import { loadData, loadFilters } from 'ducks/data';
-import { parseNumber } from 'lib/Utils';
 
 // TypeScript
 import { Filter, Transaction } from 'ducks/data';
 import { AppState } from 'ducks';
-import { Values } from 'components/Form/AutoSave';
 
 type Props = {
   classes: {
@@ -83,19 +81,12 @@ const BudgetTable = (props: Props) => {
     setRowsPerPage(Number(event.target.value));
   };
 
-  const onSave = debounce((values: Values) => {
-    let transactions = [...data];
+  const onSave = debounce((values: Transaction) => {
+    let transactions = cloneDeep(data);
+    transactions[values.id] = values;
 
-    // Price is saved as a string in the form, however it is parsed back to number on save.
-    const formatedValues = { ...values, price: parseNumber(values.price) };
-    transactions[values.id] = formatedValues;
-
-    // TODO: This is called twice for price field change.
     loadData(transactions);
   }, 1000);
-
-  // TODO: Should I derive the filtered + sorted table data here and pass it down?
-  // I can still have the original data in props from redux
 
   return (
     // TODO: Alternating Table color scheme?
