@@ -6,6 +6,7 @@ import { debounce } from 'lodash';
 // Custom Components
 import AutoSave from 'components/Form/AutoSave';
 import FinalTextField from 'components/Form/FinalTextField';
+import FinalDatePicker from 'components/Form/FinalDatePicker';
 import { headers } from 'budgetTable/components/EnhancedTableHead';
 
 // Material UI
@@ -15,6 +16,9 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 // Custom Components
 import Select from 'budgetTable/components/Select';
@@ -194,15 +198,16 @@ const EnhancedTableBody = (props: Props) => {
 
                   {/* Date */}
                   <TableCell size="medium">
-                    <Field
-                      name="date"
-                      component={FinalTextField}
-                      format={value => value.toDateString()}
-                      parse={value => new Date(value)}
-                      value="date"
-                      fullWidth
-                      InputProps={{ style: styles.input, disableUnderline: true }}
-                    />
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <Field
+                        name="date"
+                        component={FinalDatePicker}
+                        format={value => value.toDateString()}
+                        parse={value => new Date(value)}
+                        fullWidth
+                        InputProps={{ style: styles.input, disableUnderline: true }}
+                      />
+                    </MuiPickersUtilsProvider>
                   </TableCell>
 
                   {/* Type */}

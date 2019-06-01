@@ -2,7 +2,6 @@ import React, { MouseEvent, ChangeEvent } from 'react';
 import { connect } from 'react-redux';
 
 // Material UI
-import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -53,15 +52,8 @@ type Props = {
   rowsPerPage: number;
 };
 
-const useStyles = makeStyles(theme => ({
-  amount: {
-    textAlign: 'right'
-  }
-}));
-
 const EnhancedTableFooter = (props: Props) => {
   const { data, onChangeRowsPerPage, onChangePage, page, rowsPerPage } = props;
-  const classes = useStyles();
 
   const amount = data.reduce((accumulator, row) => {
     return accumulator + row.price;
@@ -70,9 +62,9 @@ const EnhancedTableFooter = (props: Props) => {
   return (
     <TableFooter>
       <TableRow>
-        <TableCell colSpan={6} size="medium" className={classes.amount}>
+        <TableCell colSpan={6} size="medium" align="right">
           <FormControl margin="dense">
-            <InputLabel htmlFor="adornment-amount">Amount</InputLabel>
+            <InputLabel htmlFor="adornment-amount">{'Amount'}</InputLabel>
             <Input
               id="adornment-amount"
               value={amount < 0 ? `(${Math.abs(amount).toFixed(2)})` : amount.toFixed(2)}
