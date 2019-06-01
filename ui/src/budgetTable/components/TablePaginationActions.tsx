@@ -48,7 +48,7 @@ const styles = ({ palette, spacing }: Theme) =>
     root: {
       flexShrink: 0,
       color: palette.text.secondary,
-      marginLeft: spacing.unit * 2.5
+      marginLeft: spacing(2.5)
     }
   });
 

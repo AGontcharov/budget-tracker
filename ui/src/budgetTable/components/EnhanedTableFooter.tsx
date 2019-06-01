@@ -77,7 +77,7 @@ const EnhancedTableFooter = (props: Props) => {
   return (
     <TableFooter>
       <TableRow>
-        <TableCell colSpan={6} padding="dense" className={classes.amount}>
+        <TableCell colSpan={6} size="medium" className={classes.amount}>
           <FormControl margin="dense">
             <InputLabel htmlFor="adornment-amount">Amount</InputLabel>
             <Input
@@ -109,6 +109,6 @@ const mapStateToProps = (state: AppState) => ({
   data: getFilteredData(state)
 });
 
-export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps)(EnhancedTableFooter)
+export default connect(mapStateToProps)(
+  withStyles(styles, { withTheme: true })(EnhancedTableFooter)
 );

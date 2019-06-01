@@ -34,7 +34,7 @@ const styles = ({ spacing }: Theme) =>
     paper: {
       display: 'flex',
       flexDirection: 'column',
-      margin: spacing.unit * 3.5
+      margin: spacing(3.5)
     },
     wrapper: {
       display: 'flex',
@@ -42,7 +42,7 @@ const styles = ({ spacing }: Theme) =>
       alignItems: 'center'
     },
     empty: {
-      margin: spacing.unit * 3.5
+      margin: spacing(3.5)
     }
   });
 
@@ -64,7 +64,7 @@ const Dashboard = (props: Props) => {
           </Typography>
         </div>
       ) : (
-        <Grid container spacing={16}>
+        <Grid container spacing={2}>
           <Grid container item xs={12} lg={6} justify="center">
             <IncomeExpensesChart data={data} />
           </Grid>
@@ -89,9 +89,7 @@ const mapStateToProps = (state: AppState) => ({
   data: getFilteredData(state)
 });
 
-export default withStyles(styles, { withTheme: true })(
-  connect(
-    mapStateToProps,
-    { getFilteredData }
-  )(Dashboard)
-);
+export default connect(
+  mapStateToProps,
+  { getFilteredData }
+)(withStyles(styles, { withTheme: true })(Dashboard));

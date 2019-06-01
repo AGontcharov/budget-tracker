@@ -2,7 +2,8 @@ import React from 'react';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 
 // Material UI,
-import { withTheme, Theme } from '@material-ui/core/styles';
+import { Theme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/styles';
 import { red, green } from '@material-ui/core/colors';
 
 // TypeScript
@@ -10,11 +11,11 @@ import { Transaction } from 'ducks/data';
 
 type Props = {
   data: Array<Transaction>;
-  theme: Theme;
 };
 
 const IncomeExpensesChart = (props: Props) => {
-  const { data, theme } = props;
+  const { data } = props;
+  const theme: Theme = useTheme();
 
   let income = 0;
   let expenses = 0;
@@ -32,10 +33,10 @@ const IncomeExpensesChart = (props: Props) => {
       width={600}
       height={600}
       margin={{
-        top: theme.spacing.unit * 4,
-        right: theme.spacing.unit * 4,
-        bottom: theme.spacing.unit * 4,
-        left: theme.spacing.unit * 4
+        top: theme.spacing(4),
+        right: theme.spacing(4),
+        bottom: theme.spacing(4),
+        left: theme.spacing(4)
       }}
       data={[
         {
@@ -56,4 +57,4 @@ const IncomeExpensesChart = (props: Props) => {
   );
 };
 
-export default withTheme()(IncomeExpensesChart);
+export default IncomeExpensesChart;

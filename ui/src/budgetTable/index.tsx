@@ -37,7 +37,7 @@ type Props = {
 const styles = ({ palette, spacing }: Theme) =>
   createStyles({
     paper: {
-      margin: spacing.unit * 3.5
+      margin: spacing(3.5)
     },
     tableWrapper: {
       overflowX: 'auto'
@@ -120,9 +120,7 @@ const mapStateToProps = (state: AppState) => ({
   data: state.transactions.data
 });
 
-export default withStyles(styles, { withTheme: true })(
-  connect(
-    mapStateToProps,
-    { loadData, loadFilters }
-  )(BudgetTable)
-);
+export default connect(
+  mapStateToProps,
+  { loadData, loadFilters }
+)(withStyles(styles, { withTheme: true })(BudgetTable));

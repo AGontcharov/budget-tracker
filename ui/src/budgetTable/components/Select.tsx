@@ -37,13 +37,15 @@ const styles = ({ spacing }: Theme) =>
     },
     input: {
       display: 'flex',
-      padding: 0
+      padding: 0,
+      height: 'auto'
     },
     valueContainer: {
       display: 'flex',
       flexWrap: 'wrap',
       flex: 1,
-      alignItems: 'center'
+      alignItems: 'center',
+      overflow: 'hidden'
     },
     singleValue: {
       fontSize: 13
@@ -51,12 +53,13 @@ const styles = ({ spacing }: Theme) =>
     placeholder: {
       position: 'absolute',
       left: 2,
+      bottom: 6,
       fontSize: 13
     },
     paper: {
       position: 'absolute',
       zIndex: 1,
-      marginTop: spacing.unit,
+      marginTop: spacing(1),
       left: 0,
       right: 0
     }
@@ -85,7 +88,7 @@ const Control = (props: any) => (
 // Overwrite the Options component
 const Option = (props: any) => (
   <MenuItem
-    buttonRef={props.innerRef}
+    ref={props.innerRef}
     selected={props.isFocused}
     component="div"
     style={{

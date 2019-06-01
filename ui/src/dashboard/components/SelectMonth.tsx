@@ -16,7 +16,7 @@ type Props = {
     form: string;
   };
   month: number;
-  onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+  onChange: (event: React.ChangeEvent<{ name?: string; value: unknown }>) => void;
 };
 
 const styles = {
@@ -30,7 +30,7 @@ const SelectMonth = (props: Props) => {
 
   return (
     <FormControl className={classes.form}>
-      <InputLabel>Month</InputLabel>
+      <InputLabel>{'Month'}</InputLabel>
       <Select value={month} onChange={onChange}>
         {availableMonths.map(month => {
           return (

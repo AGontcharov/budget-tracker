@@ -34,7 +34,7 @@ const ExpenseTimeChart = (props: Props) => {
   const { availableMonths, classes, theme } = props;
   const [month, setMonth] = useState<number>(availableMonths[0]);
 
-  const onMonthChange = (event: ChangeEvent<HTMLSelectElement>) => {
+  const onMonthChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
     setMonth(Number(event.target.value));
   };
 
@@ -92,10 +92,10 @@ const ExpenseTimeChart = (props: Props) => {
         height={600}
         data={data}
         margin={{
-          top: theme.spacing.unit * 4,
-          right: theme.spacing.unit * 4,
-          bottom: theme.spacing.unit * 4,
-          left: theme.spacing.unit * 4
+          top: theme.spacing(4),
+          right: theme.spacing(4),
+          bottom: theme.spacing(4),
+          left: theme.spacing(4)
         }}
       >
         <defs>

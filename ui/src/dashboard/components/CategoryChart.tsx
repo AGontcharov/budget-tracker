@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Cell, Legend, PieChart, Pie, Sector } from 'recharts';
 
 // Material UI
-import { withTheme, Theme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/styles';
+import { Theme } from '@material-ui/core/styles';
 
 // Helper Functions
 import getCategoryColor from 'lib/CategoryColors';
@@ -74,12 +75,12 @@ const ActiveShape = (props: any) => {
 
 type Props = {
   data: Array<Transaction>;
-  theme: Theme;
 };
 
 const CategoryChart = (props: Props) => {
-  const { data, theme } = props;
+  const { data } = props;
   const [activeCategory, setActiveCategory] = useState(0);
+  const theme: Theme = useTheme();
 
   const onCategorySelect = (data: Array<Transaction>, index: number) => {
     setActiveCategory(index);
@@ -118,10 +119,10 @@ const CategoryChart = (props: Props) => {
       width={600}
       height={600}
       margin={{
-        top: theme.spacing.unit * 4,
-        right: theme.spacing.unit * 4,
-        bottom: theme.spacing.unit * 4,
-        left: theme.spacing.unit * 4
+        top: theme.spacing(4),
+        right: theme.spacing(4),
+        bottom: theme.spacing(4),
+        left: theme.spacing(4)
       }}
     >
       <Pie
@@ -142,4 +143,4 @@ const CategoryChart = (props: Props) => {
   );
 };
 
-export default withTheme()(CategoryChart);
+export default CategoryChart;

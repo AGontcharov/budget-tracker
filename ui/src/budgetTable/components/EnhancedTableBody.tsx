@@ -159,7 +159,7 @@ const EnhancedTableBody = (props: Props) => {
       {isFilter && (
         <TableRow>
           {headers.map(filter => (
-            <TableCell padding="dense" key={filter.id}>
+            <TableCell size="medium" key={filter.id}>
               <Input
                 placeholder="Search..."
                 inputProps={{ 'aria-label': 'Description' }}
@@ -193,7 +193,7 @@ const EnhancedTableBody = (props: Props) => {
                   <AutoSave values={values} save={onSave} />
 
                   {/* Date */}
-                  <TableCell padding="dense">
+                  <TableCell size="medium">
                     <Field
                       name="date"
                       component={FinalTextField}
@@ -206,7 +206,7 @@ const EnhancedTableBody = (props: Props) => {
                   </TableCell>
 
                   {/* Type */}
-                  <TableCell padding="dense">
+                  <TableCell size="medium">
                     <Field
                       name="type"
                       component={FinalTextField}
@@ -217,12 +217,12 @@ const EnhancedTableBody = (props: Props) => {
                   </TableCell>
 
                   {/* Category */}
-                  <TableCell padding="dense">
+                  <TableCell size="medium">
                     <Field name="category" component={ReactSelectAdapter} value="category" />
                   </TableCell>
 
                   {/* Details */}
-                  <TableCell padding="dense">
+                  <TableCell size="medium">
                     <Field
                       name="details"
                       component={FinalTextField}
@@ -233,7 +233,7 @@ const EnhancedTableBody = (props: Props) => {
                   </TableCell>
 
                   {/* Descriptions */}
-                  <TableCell padding="dense">
+                  <TableCell size="medium">
                     <Field
                       name="description"
                       component={FinalTextField}
@@ -244,7 +244,7 @@ const EnhancedTableBody = (props: Props) => {
                   </TableCell>
 
                   {/* Price */}
-                  <TableCell padding="dense">
+                  <TableCell size="medium">
                     <Field
                       name="price"
                       component={FinalTextField}

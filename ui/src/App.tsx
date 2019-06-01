@@ -10,7 +10,8 @@ import Footer from 'layout/Footer';
 import DropFile from 'components/DropFile';
 
 // Material UI
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import { Palette, PaletteOptions } from '@material-ui/core/styles/createPalette';
 
 // Helper Functions
@@ -42,7 +43,9 @@ const theme = createMuiTheme({
     }
   },
   typography: {
-    useNextVariants: true
+    body1: {
+      fontSize: 14
+    }
   }
 });
 
@@ -55,7 +58,7 @@ type Props = {
 
 const App = ({ isLoading }: Props) => {
   return (
-    <MuiThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Layout>
         <Navbar />
         <DropFile />
@@ -64,7 +67,7 @@ const App = ({ isLoading }: Props) => {
         <Dashboard />
         <Footer />
       </Layout>
-    </MuiThemeProvider>
+    </ThemeProvider>
   );
 };
 

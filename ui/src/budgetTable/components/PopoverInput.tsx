@@ -40,7 +40,7 @@ const styles = ({ spacing }: Theme) =>
     },
     popoverInput: {
       width: 256,
-      margin: spacing.unit * 1.5,
+      margin: spacing(1.5),
       fontSize: 13
     }
   });

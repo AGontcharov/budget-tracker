@@ -91,7 +91,7 @@ type Props = {
 const styles = ({ palette, spacing }: Theme) =>
   createStyles({
     icon: {
-      marginRight: spacing.unit
+      marginRight: spacing(1)
     }
   });
 
@@ -147,9 +147,7 @@ const mapStateToProps = (state: AppState) => ({
   orderBy: state.transactions.sort.orderBy
 });
 
-export default withStyles(styles, { withTheme: true })(
-  connect(
-    mapStateToProps,
-    { loadSort }
-  )(EnhancedTableHead)
-);
+export default connect(
+  mapStateToProps,
+  { loadSort }
+)(withStyles(styles, { withTheme: true })(EnhancedTableHead));

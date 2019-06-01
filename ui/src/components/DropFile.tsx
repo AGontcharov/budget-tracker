@@ -41,8 +41,8 @@ const styles = ({ palette, spacing }: Theme) =>
       border: 'solid 1px',
       borderColor: palette.accent.main,
       borderRadius: 10,
-      margin: spacing.unit * 4.5,
-      marginBottom: spacing.unit * 2
+      margin: spacing(4.5),
+      marginBottom: spacing(2)
     },
     dropZoneInactive: {
       display: 'flex',
@@ -50,14 +50,14 @@ const styles = ({ palette, spacing }: Theme) =>
       alignItems: 'center'
     },
     dropZoneInactiveText: {
-      margin: spacing.unit
+      margin: spacing(1)
     },
     // TODO: Accepted styles?
     rejected: {
       borderColor: palette.error.dark
     },
     upload: {
-      fontSize: spacing.unit * 4
+      fontSize: spacing(4)
     }
   });
 
@@ -159,9 +159,7 @@ const DropFile = (props: Props) => {
   );
 };
 
-export default withStyles(styles, { withTheme: true })(
-  connect(
-    null,
-    { setLoading, loadData }
-  )(DropFile)
-);
+export default connect(
+  null,
+  { setLoading, loadData }
+)(withStyles(styles, { withTheme: true })(DropFile));
