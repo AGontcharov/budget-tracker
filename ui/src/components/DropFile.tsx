@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 
@@ -83,34 +83,37 @@ const DropFile = (props: Props) => {
     });
   };
 
-  const modifyFile = (csvFile: string) => {
-    const results = csvFile.split('\n');
-    results.pop();
+  const modifyFile = useCallback(
+    (csvFile: string) => {
+      const results = csvFile.split('\n');
+      results.pop();
 
-    const data = results.map((row, index) => {
-      // Convert every row into an array of strings
-      const transaction = row.split(',');
-      return {
-        id: index - 1,
-        date: new Date(transaction[2]),
-        type: transaction[0],
-        category: '',
-        // Remove the quotes around the details
-        details: transaction[4].replace(/^"(.*)"$/, '$1'),
-        description: '',
-        price: Number(transaction[6])
-      };
-    });
+      const data = results.map((row, index) => {
+        // Convert every row into an array of strings
+        const transaction = row.split(',');
+        return {
+          id: index - 1,
+          date: new Date(transaction[2]),
+          type: transaction[0],
+          category: '',
+          // Remove the quotes around the details
+          details: transaction[4].replace(/^"(.*)"$/, '$1'),
+          description: '',
+          price: Number(transaction[6])
+        };
+      });
 
-    // Remove the headers
-    data.shift();
-    setLoading(false);
-    loadData(data);
-  };
+      // Remove the headers
+      data.shift();
+      setLoading(false);
+      loadData(data);
+    },
+    [setLoading, loadData]
+  );
 
-  const onSnackbarClose = () => {
+  const onSnackbarClose = useCallback(() => {
     setIsRejected(false);
-  };
+  }, []);
 
   return (
     <>

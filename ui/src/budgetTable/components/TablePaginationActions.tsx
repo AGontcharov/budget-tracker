@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react';
+import React, { MouseEvent, useCallback } from 'react';
 
 // Material UI
 import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
@@ -55,21 +55,33 @@ const styles = ({ palette, spacing }: Theme) =>
 const TablePaginationActions = (props: Props) => {
   const { classes, count, onChangePage, page, rowsPerPage } = props;
 
-  const handleFirstPageButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
-    onChangePage(event, 0);
-  };
+  const handleFirstPageButtonClick = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      onChangePage(event, 0);
+    },
+    [onChangePage]
+  );
 
-  const handleBackButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
-    onChangePage(event, page - 1);
-  };
+  const handleBackButtonClick = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      onChangePage(event, page - 1);
+    },
+    [onChangePage, page]
+  );
 
-  const handleNextButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
-    onChangePage(event, page + 1);
-  };
+  const handleNextButtonClick = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      onChangePage(event, page + 1);
+    },
+    [onChangePage, page]
+  );
 
-  const handleLastPageButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
-    onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-  };
+  const handleLastPageButtonClick = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+    },
+    [count, onChangePage, rowsPerPage]
+  );
 
   return (
     <div className={classes.root}>

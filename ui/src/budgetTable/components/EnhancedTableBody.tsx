@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { Form, Field } from 'react-final-form';
 import { debounce } from 'lodash';
@@ -109,10 +109,6 @@ const EnhancedTableBody = (props: Props) => {
     }
   };
 
-  const onFilter = (name: string) => (event: ChangeEvent<HTMLInputElement>) => {
-    changeFilters(name, event.target.value);
-  };
-
   const changeFilters: (name: string, value: string) => void = debounce((name, value) => {
     const filters = [...props.filters];
     let index = -1;
@@ -132,8 +128,15 @@ const EnhancedTableBody = (props: Props) => {
     loadFilters(filters);
   }, 200);
 
+  const onFilter = useCallback(
+    (name: string) => (event: ChangeEvent<HTMLInputElement>) => {
+      changeFilters(name, event.target.value);
+    },
+    [changeFilters]
+  );
+
   // TODO: Later we want to concatenate the empty rows to the initial data
-  const onAddRows = () => {
+  const onAddRows = useCallback(() => {
     const emptyRows = [];
 
     for (let i = 0; i < 50; i++) {
@@ -149,7 +152,7 @@ const EnhancedTableBody = (props: Props) => {
     }
 
     loadData(emptyRows);
-  };
+  }, [loadData]);
 
   return (
     <TableBody>

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, ChangeEvent, MouseEvent } from 'react';
+import React, { ChangeEvent, MouseEvent, useCallback, useRef, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { debounce, cloneDeep } from 'lodash';
 
@@ -64,22 +64,22 @@ const BudgetTable = (props: Props) => {
   const tableRef: { current: null | HTMLDivElement } = useRef(null);
 
   useEffect(() => {
-    tableRef.current && tableRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    tableRef.current && tableRef.current.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }, [page, rowsPerPage]);
 
-  const onFilterClicked = () => {
+  const onFilterClicked = useCallback(() => {
     setIsFilter(!isFilter);
     loadFilters([]);
-  };
+  }, [isFilter, loadFilters]);
 
-  const onChangePage = (event: MouseEvent<HTMLButtonElement> | null, page: number) => {
+  const onChangePage = useCallback((event: MouseEvent<HTMLButtonElement> | null, page: number) => {
     setPage(page);
-  };
+  }, []);
 
-  const onChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeRowsPerPage = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     localStorage.setItem('rowsPerPage', event.target.value);
     setRowsPerPage(Number(event.target.value));
-  };
+  }, []);
 
   const onSave = debounce((values: Transaction) => {
     let transactions = cloneDeep(data);
@@ -93,24 +93,24 @@ const BudgetTable = (props: Props) => {
     <Paper className={classes.paper}>
       <div ref={tableRef} className={classes.tableWrapper}>
         <EnhancedToolBar onFilterClicked={onFilterClicked} />
-
-        <Table aria-labelledby="tableTitle">
-          <EnhancedTableHead />
-          <EnhancedTableBody
-            isFilter={isFilter}
-            minRows={10}
-            onSave={onSave}
-            page={page}
-            rowsPerPage={rowsPerPage}
-          />
-          <EnhancedTableFooter
-            onChangePage={onChangePage}
-            onChangeRowsPerPage={onChangeRowsPerPage}
-            page={page}
-            rowsPerPage={rowsPerPage}
-          />
-        </Table>
       </div>
+
+      <Table aria-labelledby="tableTitle">
+        <EnhancedTableHead />
+        <EnhancedTableBody
+          isFilter={isFilter}
+          minRows={10}
+          onSave={onSave}
+          page={page}
+          rowsPerPage={rowsPerPage}
+        />
+        <EnhancedTableFooter
+          onChangePage={onChangePage}
+          onChangeRowsPerPage={onChangeRowsPerPage}
+          page={page}
+          rowsPerPage={rowsPerPage}
+        />
+      </Table>
     </Paper>
   );
 };

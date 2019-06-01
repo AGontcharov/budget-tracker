@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 // Helper Functions
 import { parseNumber } from 'lib/Utils';
@@ -36,6 +36,7 @@ const AutoSave = ({ values, save }: Props) => {
     } else {
       didMountRef.current = true;
     }
+    // eslint-disable-next-line
   }, [difference]);
 
   return null;
