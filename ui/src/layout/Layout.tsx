@@ -1,16 +1,13 @@
 import React, { ReactNode } from 'react';
 
 // Material UI
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 type Props = {
   children: ReactNode;
-  classes: {
-    root: string;
-  };
 };
 
-const styles = createStyles({
+const useStyles = makeStyles({
   root: {
     height: '100%',
     width: '100%',
@@ -19,8 +16,9 @@ const styles = createStyles({
   }
 });
 
-const layout = (props: Props) => {
-  return <div className={props.classes.root}>{props.children}</div>;
+const Layout = ({ children }: Props) => {
+  const classes = useStyles();
+  return <div className={classes.root}>{children}</div>;
 };
 
-export default withStyles(styles)(layout);
+export default Layout;

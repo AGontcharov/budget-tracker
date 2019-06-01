@@ -6,7 +6,7 @@ import download from 'downloadjs';
 import { headers } from 'budgetTable/components/EnhancedTableHead';
 
 // Material UI
-import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -24,31 +24,26 @@ import { Transaction } from 'ducks/data';
 import { AppState } from 'ducks';
 
 type Props = {
-  classes: {
-    spacer: string;
-    actions: string;
-    title: string;
-  };
   data: Array<Transaction>;
   onFilterClicked: () => void;
 };
 
-const styles = ({ palette }: Theme) =>
-  createStyles({
-    spacer: {
-      flex: '1 1 100%'
-    },
-    actions: {
-      display: 'flex',
-      color: palette.text.secondary
-    },
-    title: {
-      flex: '0 0 auto'
-    }
-  });
+const useStyles = makeStyles(theme => ({
+  spacer: {
+    flex: '1 1 100%'
+  },
+  actions: {
+    display: 'flex',
+    color: theme.palette.text.secondary
+  },
+  title: {
+    flex: '0 0 auto'
+  }
+}));
 
 const EnhancedTableToolbar = (props: Props) => {
-  const { classes, data, onFilterClicked } = props;
+  const { data, onFilterClicked } = props;
+  const classes = useStyles();
 
   const onExportClicked = () => {
     // Get the headers
@@ -95,6 +90,4 @@ const EnhancedTableToolbar = (props: Props) => {
 
 const mapStateToProps = (state: AppState) => ({ data: getData(state) });
 
-export default connect(mapStateToProps)(
-  withStyles(styles, { withTheme: true })(EnhancedTableToolbar)
-);
+export default connect(mapStateToProps)(EnhancedTableToolbar);

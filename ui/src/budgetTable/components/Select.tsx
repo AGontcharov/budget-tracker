@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import CreatableSelect from 'react-select/lib/Creatable';
 
 // Material UI
-import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import NoSsr from '@material-ui/core/NoSsr';
 import Paper from '@material-ui/core/Paper';
@@ -29,41 +29,40 @@ const suggestions = [
   label: suggestion.label
 }));
 
-const styles = ({ spacing }: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-      minWidth: 200
-    },
-    input: {
-      display: 'flex',
-      padding: 0,
-      height: 'auto'
-    },
-    valueContainer: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      flex: 1,
-      alignItems: 'center',
-      overflow: 'hidden'
-    },
-    singleValue: {
-      fontSize: 13
-    },
-    placeholder: {
-      position: 'absolute',
-      left: 2,
-      bottom: 6,
-      fontSize: 13
-    },
-    paper: {
-      position: 'absolute',
-      zIndex: 1,
-      marginTop: spacing(1),
-      left: 0,
-      right: 0
-    }
-  });
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+    minWidth: 200
+  },
+  input: {
+    display: 'flex',
+    padding: 0,
+    height: 'auto'
+  },
+  valueContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    flex: 1,
+    alignItems: 'center',
+    overflow: 'hidden'
+  },
+  singleValue: {
+    fontSize: 13
+  },
+  placeholder: {
+    position: 'absolute',
+    left: 2,
+    bottom: 6,
+    fontSize: 13
+  },
+  paper: {
+    position: 'absolute',
+    zIndex: 1,
+    marginTop: theme.spacing(1),
+    left: 0,
+    right: 0
+  }
+}));
 
 // TODO: Fix type
 const inputComponent = ({ inputRef, ...props }: any) => <div ref={inputRef} {...props} />;
@@ -142,22 +141,14 @@ const components = {
 
 type Props = {
   autoFocus?: boolean;
-  classes: {
-    root: string;
-    input: string;
-    valueContainer: string;
-    singleValue: string;
-    placeholder: string;
-    paper: string;
-  };
   onChange: (value: string) => void;
-  theme: Theme;
   value: { value: string; label: string } | null;
 };
 
 const IntegrationReactSelect = (props: Props) => {
-  const { classes, theme } = props;
   const [value, setValue] = useState(props.value);
+  const classes = useStyles();
+  const theme = useTheme();
 
   const onChange = (value: any) => {
     props.onChange(value ? value.value : '');
@@ -192,4 +183,4 @@ const IntegrationReactSelect = (props: Props) => {
   );
 };
 
-export default withStyles(styles, { withTheme: true })(IntegrationReactSelect);
+export default IntegrationReactSelect;

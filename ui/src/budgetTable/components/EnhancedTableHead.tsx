@@ -2,7 +2,7 @@ import React, { SyntheticEvent } from 'react';
 import { connect } from 'react-redux';
 
 // Material UI
-import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
@@ -68,13 +68,6 @@ type Props = {
   /**
    * @ignore
    */
-  classes: {
-    icon: string;
-  };
-
-  /**
-   * @ignore
-   */
   loadSort: (payload: Sort) => void;
 
   /**
@@ -88,15 +81,15 @@ type Props = {
   orderBy: string;
 };
 
-const styles = ({ palette, spacing }: Theme) =>
-  createStyles({
-    icon: {
-      marginRight: spacing(1)
-    }
-  });
+const useStyles = makeStyles(theme => ({
+  icon: {
+    marginRight: theme.spacing(1)
+  }
+}));
 
 const EnhancedTableHead = (props: Props) => {
-  const { classes, loadSort } = props;
+  const { loadSort } = props;
+  const classes = useStyles();
 
   const createSortHandler = (property: string) => (event: SyntheticEvent) => {
     const orderBy = property;
@@ -150,4 +143,4 @@ const mapStateToProps = (state: AppState) => ({
 export default connect(
   mapStateToProps,
   { loadSort }
-)(withStyles(styles, { withTheme: true })(EnhancedTableHead));
+)(EnhancedTableHead);

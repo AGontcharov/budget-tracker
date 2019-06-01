@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 
 // Material UI
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -12,21 +12,19 @@ import { MONTHS } from 'lib/constants';
 
 type Props = {
   availableMonths: Array<number>;
-  classes: {
-    form: string;
-  };
   month: number;
-  onChange: (event: React.ChangeEvent<{ name?: string; value: unknown }>) => void;
+  onChange: (event: ChangeEvent<{ name?: string; value: unknown }>) => void;
 };
 
-const styles = {
+const useStyles = makeStyles({
   form: {
     width: 150
   }
-};
+});
 
 const SelectMonth = (props: Props) => {
-  const { availableMonths, classes, month, onChange } = props;
+  const { availableMonths, month, onChange } = props;
+  const classes = useStyles();
 
   return (
     <FormControl className={classes.form}>
@@ -44,4 +42,4 @@ const SelectMonth = (props: Props) => {
   );
 };
 
-export default withStyles(styles)(SelectMonth);
+export default SelectMonth;

@@ -2,7 +2,7 @@ import React, { MouseEvent, ChangeEvent } from 'react';
 import { connect } from 'react-redux';
 
 // Material UI
-import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -23,13 +23,6 @@ import { Transaction } from 'ducks/data';
 import { AppState } from 'ducks';
 
 type Props = {
-  /**
-   * @ignore
-   */
-  classes: {
-    amount: string;
-  };
-
   /**
    * @ignore
    */
@@ -60,15 +53,15 @@ type Props = {
   rowsPerPage: number;
 };
 
-const styles = ({ palette, spacing }: Theme) =>
-  createStyles({
-    amount: {
-      textAlign: 'right'
-    }
-  });
+const useStyles = makeStyles(theme => ({
+  amount: {
+    textAlign: 'right'
+  }
+}));
 
 const EnhancedTableFooter = (props: Props) => {
-  const { classes, data, onChangeRowsPerPage, onChangePage, page, rowsPerPage } = props;
+  const { data, onChangeRowsPerPage, onChangePage, page, rowsPerPage } = props;
+  const classes = useStyles();
 
   const amount = data.reduce((accumulator, row) => {
     return accumulator + row.price;
@@ -109,6 +102,4 @@ const mapStateToProps = (state: AppState) => ({
   data: getFilteredData(state)
 });
 
-export default connect(mapStateToProps)(
-  withStyles(styles, { withTheme: true })(EnhancedTableFooter)
-);
+export default connect(mapStateToProps)(EnhancedTableFooter);

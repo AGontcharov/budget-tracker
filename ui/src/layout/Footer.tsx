@@ -1,32 +1,24 @@
 import React from 'react';
 
 // Material UI
-import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
-type Props = {
-  classes: {
-    wrapper: string;
-    copyRight: string;
-  };
-};
+const useStyles = makeStyles(theme => ({
+  wrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 75,
+    background: theme.palette.accent.main
+  },
+  copyRight: {
+    fontSize: 13
+  }
+}));
 
-const styles = ({ palette }: Theme) =>
-  createStyles({
-    wrapper: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: 75,
-      background: palette.accent.main
-    },
-    copyRight: {
-      fontSize: 13
-    }
-  });
-
-const Footer = (props: Props) => {
-  const { classes } = props;
+const Footer = () => {
+  const classes = useStyles();
 
   return (
     <div className={classes.wrapper}>
@@ -37,4 +29,4 @@ const Footer = (props: Props) => {
   );
 };
 
-export default withStyles(styles, { withTheme: true })(Footer);
+export default React.memo(Footer);

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { debounce, cloneDeep } from 'lodash';
 
 // Material UI
-import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 
@@ -21,40 +21,33 @@ import { Filter, Transaction } from 'ducks/data';
 import { AppState } from 'ducks';
 
 type Props = {
-  classes: {
-    paper: string;
-    tableWrapper: string;
-    row: string;
-    input: string;
-    amount: string;
-  };
   data: Array<Transaction>;
   loadData: (payload: Array<Transaction>) => void;
   loadFilters: (payload: Array<Filter>) => void;
 };
 
-// TODO: Figure out Table Styles
-const styles = ({ palette, spacing }: Theme) =>
-  createStyles({
-    paper: {
-      margin: spacing(3.5)
-    },
-    tableWrapper: {
-      overflowX: 'auto'
-    },
-    row: {
-      backgroundColor: palette.background.default
-    },
-    input: {
-      fontSize: '13'
-    },
-    amount: {
-      textAlign: 'right'
-    }
-  });
+const useStyles = makeStyles(theme => ({
+  paper: {
+    margin: theme.spacing(3.5)
+  },
+  tableWrapper: {
+    overflowX: 'auto'
+  },
+  row: {
+    backgroundColor: theme.palette.background.default
+  },
+  input: {
+    fontSize: '13'
+  },
+  amount: {
+    textAlign: 'right'
+  }
+}));
 
+// TODO: Figure out Table Styles
 const BudgetTable = (props: Props) => {
-  const { classes, data, loadData, loadFilters } = props;
+  const { data, loadData, loadFilters } = props;
+  const classes = useStyles();
 
   const [isFilter, setIsFilter] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(Number(localStorage.getItem('rowsPerPage')) || 10);
@@ -123,4 +116,4 @@ const mapStateToProps = (state: AppState) => ({
 export default connect(
   mapStateToProps,
   { loadData, loadFilters }
-)(withStyles(styles, { withTheme: true })(BudgetTable));
+)(BudgetTable);

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 // Material UI
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,29 +16,23 @@ import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 
-type Props = {
-  classes: {
-    list: string;
-  };
-};
-
-const styles = {
+const useStyles = makeStyles({
   list: {
     minWidth: 256
   }
-};
+});
 
-const Navbar = (props: Props) => {
+const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const { classes } = props;
+  const classes = useStyles();
 
-  const onClick = () => {
+  const onClick = useCallback(() => {
     setOpen(true);
-  };
+  }, []);
 
-  const onClose = () => {
+  const onClose = useCallback(() => {
     setOpen(false);
-  };
+  }, []);
 
   return (
     <>
@@ -69,4 +63,4 @@ const Navbar = (props: Props) => {
   );
 };
 
-export default withStyles(styles)(Navbar);
+export default React.memo(Navbar);

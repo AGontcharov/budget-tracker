@@ -1,52 +1,45 @@
 import React, { useRef, FormEvent } from 'react';
 
 // Material UI
-import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
 import Popover from '@material-ui/core/Popover';
 
 type Props = {
   anchorEl: HTMLTableCellElement | null;
-  classes: {
-    form: string;
-    buttonWrapper: string;
-    button: string;
-    popover: string;
-    popoverInput: string;
-  };
   index: number;
   name: string;
   onChange: (index: number, value: string) => void;
   setAnchorEl: (AnchorEl: HTMLTableCellElement | null) => void;
 };
 
-const styles = ({ spacing }: Theme) =>
-  createStyles({
-    form: {
-      display: 'flex',
-      flexDirection: 'column' as 'column'
-    },
-    buttonWrapper: {
-      display: 'flex',
-      justifyContent: 'flex-end'
-    },
-    button: {
-      fontSize: 13,
-      margin: 4
-    },
-    popover: {
-      border: '1px solid grey'
-    },
-    popoverInput: {
-      width: 256,
-      margin: spacing(1.5),
-      fontSize: 13
-    }
-  });
+const useStyles = makeStyles(theme => ({
+  form: {
+    display: 'flex',
+    flexDirection: 'column' as 'column'
+  },
+  buttonWrapper: {
+    display: 'flex',
+    justifyContent: 'flex-end'
+  },
+  button: {
+    fontSize: 13,
+    margin: 4
+  },
+  popover: {
+    border: '1px solid grey'
+  },
+  popoverInput: {
+    width: 256,
+    margin: theme.spacing(1.5),
+    fontSize: 13
+  }
+}));
 
 const PopoverInput = (props: Props) => {
-  const { anchorEl, classes, index, onChange, setAnchorEl, ...rest } = props;
+  const { anchorEl, index, onChange, setAnchorEl, ...rest } = props;
+  const classes = useStyles();
   const inputRef = useRef<HTMLInputElement>(null);
   const open = Boolean(anchorEl);
 
@@ -97,4 +90,4 @@ const PopoverInput = (props: Props) => {
   );
 };
 
-export default withStyles(styles, { withTheme: true })(PopoverInput);
+export default PopoverInput;

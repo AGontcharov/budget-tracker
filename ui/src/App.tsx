@@ -12,7 +12,6 @@ import DropFile from 'components/DropFile';
 // Material UI
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import { Palette, PaletteOptions } from '@material-ui/core/styles/createPalette';
 
 // Helper Functions
 import { isLoadingSelector } from 'ducks/data';

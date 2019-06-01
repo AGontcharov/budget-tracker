@@ -5,7 +5,8 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts'
 import SelectMonth from 'dashboard/components/SelectMonth';
 
 // Material UI
-import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { Theme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { red, green } from '@material-ui/core/colors';
 
 // TypeScript
@@ -15,14 +16,10 @@ type Data = Array<{ name: string; value: number }>;
 
 type Props = {
   availableMonths: Array<number>;
-  classes: {
-    wrapper: string;
-  };
   data: Array<Transaction>;
-  theme: Theme;
 };
 
-const styles = createStyles({
+const useStyles = makeStyles({
   wrapper: {
     display: 'flex',
     flexDirection: 'column',
@@ -31,10 +28,13 @@ const styles = createStyles({
 });
 
 const ExpenseTimeChart = (props: Props) => {
-  const { availableMonths, classes, theme } = props;
+  const { availableMonths } = props;
+  const classes = useStyles();
+  const theme: Theme = useTheme();
+
   const [month, setMonth] = useState<number>(availableMonths[0]);
 
-  const onMonthChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
+  const onMonthChange = (event: ChangeEvent<{ name?: string; value: unknown }>) => {
     setMonth(Number(event.target.value));
   };
 
@@ -114,4 +114,4 @@ const ExpenseTimeChart = (props: Props) => {
   );
 };
 
-export default withStyles(styles, { withTheme: true })(ExpenseTimeChart);
+export default ExpenseTimeChart;

@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Material UI
-import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
@@ -29,14 +29,6 @@ const variantIcon: VariantIcon = {
 };
 
 type Props = {
-  classes: {
-    error: string;
-    info: string;
-    icon: string;
-    iconVariant: string;
-    message: string;
-    [key: string]: string;
-  };
   message: string;
   onClose: () => void;
   open: boolean;
@@ -44,29 +36,37 @@ type Props = {
 };
 
 // TODO: Look over colors later
-const styles = ({ palette, spacing }: Theme) =>
-  createStyles({
-    error: {
-      backgroundColor: palette.error.dark
-    },
-    info: {
-      backgroundColor: palette.primary.dark
-    },
-    icon: {
-      fontSize: 20
-    },
-    iconVariant: {
-      opacity: 0.9,
-      marginRight: spacing(1)
-    },
-    message: {
-      display: 'flex',
-      alignItems: 'center'
-    }
-  });
+const useStyles = makeStyles(theme => ({
+  error: {
+    backgroundColor: theme.palette.error.dark
+  },
+  info: {
+    backgroundColor: theme.palette.primary.dark
+  },
+  icon: {
+    fontSize: 20
+  },
+  iconVariant: {
+    opacity: 0.9,
+    marginRight: theme.spacing(1)
+  },
+  message: {
+    display: 'flex',
+    alignItems: 'center'
+  }
+}));
 
 const EnhancedSnackbar = (props: Props) => {
-  const { classes, message, onClose, open, variant } = props;
+  const { message, onClose, open, variant } = props;
+  const classes: {
+    error: string;
+    info: string;
+    icon: string;
+    iconVariant: string;
+    message: string;
+    [key: string]: string;
+  } = useStyles();
+
   const Icon = variantIcon[variant];
 
   return (
@@ -89,4 +89,4 @@ const EnhancedSnackbar = (props: Props) => {
   );
 };
 
-export default withStyles(styles, { withTheme: true })(EnhancedSnackbar);
+export default EnhancedSnackbar;

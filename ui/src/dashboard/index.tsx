@@ -7,7 +7,7 @@ import ExpenseTimeChart from 'dashboard/components/ExpenseTimeChart';
 import IncomeExpensesChart from 'dashboard/components/IncomeExpensesChart';
 
 // Material UI
-import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -22,32 +22,26 @@ import { AppState } from 'ducks';
 
 type Props = {
   data: Array<Transaction>;
-  classes: {
-    paper: string;
-    wrapper: string;
-    empty: string;
-  };
 };
 
-const styles = ({ spacing }: Theme) =>
-  createStyles({
-    paper: {
-      display: 'flex',
-      flexDirection: 'column',
-      margin: spacing(3.5)
-    },
-    wrapper: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    empty: {
-      margin: spacing(3.5)
-    }
-  });
+const useStyles = makeStyles(theme => ({
+  paper: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: theme.spacing(3.5)
+  },
+  wrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  empty: {
+    margin: theme.spacing(3.5)
+  }
+}));
 
-const Dashboard = (props: Props) => {
-  const { classes, data } = props;
+const Dashboard = ({ data }: Props) => {
+  const classes = useStyles();
   const availableMonths = [...Array.from(new Set(data.map(item => item.date.getMonth())))];
 
   return (
@@ -92,4 +86,4 @@ const mapStateToProps = (state: AppState) => ({
 export default connect(
   mapStateToProps,
   { getFilteredData }
-)(withStyles(styles, { withTheme: true })(Dashboard));
+)(Dashboard);

@@ -98,7 +98,7 @@ const EnhancedTableBody = (props: Props) => {
   const currentRows = Math.min(rowsPerPage, data.length - page * rowsPerPage);
   const emptyRows = rowsPerPage - currentRows;
 
-  // TODO: How to transition this to withStyles?
+  // TODO: How to transition this to makeStyles?
   const styles = {
     input: {
       fontSize: 13

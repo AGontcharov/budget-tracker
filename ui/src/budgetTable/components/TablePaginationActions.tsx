@@ -1,7 +1,7 @@
 import React, { MouseEvent, useCallback } from 'react';
 
 // Material UI
-import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 // Material UI Icons
 import FirstPageIcon from '@material-ui/icons/FirstPage';
@@ -11,13 +11,6 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 
 type Props = {
-  /**
-   * @ignore
-   */
-  classes: {
-    root: string;
-  };
-
   /**
    * The total number of rows.
    * @type {number}
@@ -43,17 +36,17 @@ type Props = {
   rowsPerPage: number;
 };
 
-const styles = ({ palette, spacing }: Theme) =>
-  createStyles({
-    root: {
-      flexShrink: 0,
-      color: palette.text.secondary,
-      marginLeft: spacing(2.5)
-    }
-  });
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexShrink: 0,
+    color: theme.palette.text.secondary,
+    marginLeft: theme.spacing(2.5)
+  }
+}));
 
 const TablePaginationActions = (props: Props) => {
-  const { classes, count, onChangePage, page, rowsPerPage } = props;
+  const { count, onChangePage, page, rowsPerPage } = props;
+  const classes = useStyles();
 
   const handleFirstPageButtonClick = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
@@ -113,4 +106,4 @@ const TablePaginationActions = (props: Props) => {
   );
 };
 
-export default withStyles(styles, { withTheme: true })(TablePaginationActions);
+export default TablePaginationActions;

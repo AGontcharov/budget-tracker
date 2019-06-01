@@ -6,7 +6,7 @@ import Dropzone from 'react-dropzone';
 import EnhancedSnackbar from 'components/EnhancedSnackbar';
 
 // Material UI
-import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Upload from '@material-ui/icons/CloudUpload';
 
@@ -17,52 +17,44 @@ import { setLoading, loadData } from 'ducks/data';
 import { Transaction } from 'ducks/data';
 
 type Props = {
-  classes: {
-    root: string;
-    dropZoneInactive: string;
-    dropZoneInactiveText: string;
-    rejected: string;
-    upload: string;
-  };
-  theme: Object;
   setLoading: (paylod: boolean) => void;
   loadData: (payload: Array<Transaction>) => void;
 };
 
-const styles = ({ palette, spacing }: Theme) =>
-  createStyles({
-    root: {
-      height: 110,
-      padding: '0 15%',
-      alignSelf: 'center',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      border: 'solid 1px',
-      borderColor: palette.accent.main,
-      borderRadius: 10,
-      margin: spacing(4.5),
-      marginBottom: spacing(2)
-    },
-    dropZoneInactive: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center'
-    },
-    dropZoneInactiveText: {
-      margin: spacing(1)
-    },
-    // TODO: Accepted styles?
-    rejected: {
-      borderColor: palette.error.dark
-    },
-    upload: {
-      fontSize: spacing(4)
-    }
-  });
+const useStyles = makeStyles(theme => ({
+  root: {
+    height: 110,
+    padding: '0 15%',
+    alignSelf: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: 'solid 1px',
+    borderColor: theme.palette.accent.main,
+    borderRadius: 10,
+    margin: theme.spacing(4.5),
+    marginBottom: theme.spacing(2)
+  },
+  dropZoneInactive: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  dropZoneInactiveText: {
+    margin: theme.spacing(1)
+  },
+  // TODO: Accepted styles?
+  rejected: {
+    borderColor: theme.palette.error.dark
+  },
+  upload: {
+    fontSize: theme.spacing(4)
+  }
+}));
 
 const DropFile = (props: Props) => {
-  const { classes, setLoading, loadData } = props;
+  const { setLoading, loadData } = props;
+  const classes = useStyles();
   const [isRejected, setIsRejected] = useState(false);
 
   const onDrop = (acceptedFiles: Array<Blob>) => {
@@ -162,4 +154,4 @@ const DropFile = (props: Props) => {
 export default connect(
   null,
   { setLoading, loadData }
-)(withStyles(styles, { withTheme: true })(DropFile));
+)(DropFile);
