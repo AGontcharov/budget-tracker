@@ -1,8 +1,12 @@
 import React, { useCallback, useState } from 'react';
 
+// Custom components
+import Login from 'components/Login';
+
 // Material UI
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -19,11 +23,15 @@ import HomeIcon from '@material-ui/icons/Home';
 const useStyles = makeStyles({
   list: {
     minWidth: 256
+  },
+  title: {
+    flexGrow: 1
   }
 });
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [login, setLogin] = useState(false);
   const classes = useStyles();
 
   const onClick = useCallback(() => {
@@ -34,6 +42,10 @@ const Navbar = () => {
     setOpen(false);
   }, []);
 
+  const onLogin = () => {
+    setLogin(!login);
+  };
+
   return (
     <>
       <AppBar position="static">
@@ -41,9 +53,12 @@ const Navbar = () => {
           <IconButton color="inherit" aria-label="Menu" onClick={onClick}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" color="inherit">
+          <Typography variant="h6" color="inherit" className={classes.title}>
             {'Budget Tracker'}
           </Typography>
+          <Button color="inherit" onClick={onLogin}>
+            {'Login'}
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer open={open} onClose={onClose}>
@@ -59,6 +74,8 @@ const Navbar = () => {
           ))}
         </List>
       </Drawer>
+
+      {login && <Login onClose={onLogin} />}
     </>
   );
 };

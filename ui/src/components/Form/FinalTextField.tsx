@@ -7,23 +7,23 @@ import TextField from '@material-ui/core/TextField';
 type FinalTextFieldProps = {
   input: any;
   meta: any;
-  InputProps?: any;
-  inputProps?: any;
 };
 
 const FinalTextField = ({
   input: { name, onChange, value, ...restInput },
   meta,
-  InputProps,
-  inputProps,
   ...rest
 }: FinalTextFieldProps) => {
+  const showError =
+    ((meta.submitError && !meta.dirtySinceLastSubmit) || meta.error) && meta.touched;
+
   return (
     <TextField
       autoComplete="off"
       name={name}
-      InputProps={{ ...InputProps, ...restInput }}
-      inputProps={inputProps}
+      error={showError}
+      helperText={showError ? meta.error || meta.submitError : undefined}
+      inputProps={restInput}
       onChange={onChange}
       value={value}
       {...rest}

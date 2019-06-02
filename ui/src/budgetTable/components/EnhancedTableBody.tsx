@@ -25,7 +25,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Select from 'budgetTable/components/Select';
 
 // Helper Functions
-import { getData, isLoadingSelector, filterSelector, loadData, loadFilters } from 'ducks/data';
+import { getData, isLoadingSelector, filterSelector, loadFilters } from 'ducks/data';
 import getCategoryColor from 'lib/CategoryColors';
 
 // TypeScript
@@ -110,10 +110,16 @@ const EnhancedTableBody = (props: Props) => {
       fontSize: 13
     },
     dateWidth: {
-      minWitdh: 150
+      minWidth: 150
     },
     detailsWidth: {
-      minWidth: 200
+      minWidth: 250
+    },
+    priceWidth: {
+      minWidth: 100
+    },
+    typeWidth: {
+      minWidth: 100
     },
     // 49px is the size of one row
     emptyRow: {
@@ -194,7 +200,10 @@ const EnhancedTableBody = (props: Props) => {
                         format={value => value.toDateString()}
                         parse={value => new Date(value)}
                         fullWidth
-                        InputProps={{ style: styles.input, disableUnderline: true }}
+                        InputProps={{
+                          style: { ...styles.input, ...styles.dateWidth },
+                          disableUnderline: true
+                        }}
                       />
                     </MuiPickersUtilsProvider>
                   </TableCell>
@@ -204,9 +213,11 @@ const EnhancedTableBody = (props: Props) => {
                     <Field
                       name="type"
                       component={FinalTextField}
-                      value="type"
                       fullWidth
-                      InputProps={{ style: styles.input, disableUnderline: true }}
+                      InputProps={{
+                        style: { ...styles.input, ...styles.typeWidth },
+                        disableUnderline: true
+                      }}
                     />
                   </TableCell>
 
@@ -220,7 +231,6 @@ const EnhancedTableBody = (props: Props) => {
                     <Field
                       name="details"
                       component={FinalTextField}
-                      value="details"
                       fullWidth
                       InputProps={{
                         style: { ...styles.input, ...styles.detailsWidth },
@@ -234,7 +244,6 @@ const EnhancedTableBody = (props: Props) => {
                     <Field
                       name="description"
                       component={FinalTextField}
-                      value="description"
                       fullWidth
                       InputProps={{
                         style: { ...styles.input, ...styles.dateWidth },
@@ -248,9 +257,11 @@ const EnhancedTableBody = (props: Props) => {
                     <Field
                       name="price"
                       component={FinalTextField}
-                      value="price"
                       fullWidth
-                      InputProps={{ style: styles.input, disableUnderline: true }}
+                      InputProps={{
+                        style: { ...styles.input, ...styles.priceWidth },
+                        disableUnderline: true
+                      }}
                       inputProps={{ style: { textAlign: 'right' } }}
                     />
                   </TableCell>

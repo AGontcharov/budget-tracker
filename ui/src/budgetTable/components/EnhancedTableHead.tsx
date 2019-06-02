@@ -59,7 +59,7 @@ export const headers = [
     id: 'price',
     numeric: true,
     disablePadding: false,
-    label: 'Price $ (CAD)',
+    label: 'Price (CAD)',
     tooltip: 'The price of the transaction'
   }
 ];

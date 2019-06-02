@@ -22,4 +22,6 @@ WORKDIR ../server
 # Build the server
 RUN npm install
 
+EXPOSE 8080
+
 CMD ["npm", "start"]

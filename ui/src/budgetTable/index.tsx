@@ -79,9 +79,9 @@ const BudgetTable = (props: Props) => {
     transactions[values.id] = values;
 
     loadData(transactions);
-  }, 1000);
+  }, 200);
 
-  const onAddRows = useCallback(() => {
+  const onAddRows = () => {
     let transactions = cloneDeep(data);
     const emptyRows = [];
 
@@ -98,23 +98,24 @@ const BudgetTable = (props: Props) => {
     }
 
     loadData(transactions.concat(emptyRows));
-  }, [loadData]);
+  };
 
   return (
     // TODO: Alternating Table color scheme?
     <Paper className={classes.paper}>
-      <div className={classes.tableWrapper}>
-        {/* Scroll up to the toolbar */}
-        <div ref={tableRef}>
-          <EnhancedToolBar onFilterClicked={onFilterClicked} />
-        </div>
+      {/* Scroll up to the toolbar */}
+      <div ref={tableRef}>
+        <EnhancedToolBar onFilterClicked={onFilterClicked} />
+      </div>
 
+      {/* Add horizontal overflow to the table */}
+      <div className={classes.tableWrapper}>
         <Table aria-labelledby="tableTitle">
           <EnhancedTableHead />
           <EnhancedTableBody
             onAddRows={onAddRows}
             isFilter={isFilter}
-            minRows={10}
+            minRows={5}
             onSave={onSave}
             page={page}
             rowsPerPage={rowsPerPage}
