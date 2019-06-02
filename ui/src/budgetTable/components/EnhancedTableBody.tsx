@@ -17,6 +17,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
+// Material UI Date Pickers
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
@@ -55,11 +56,6 @@ type Props = {
   /**
    * @ignore
    */
-  loadData: (data: Array<Transaction>) => void;
-
-  /**
-   * @ignore
-   */
   loadFilters: (payload: Array<Filter>) => void;
 
   /**
@@ -67,6 +63,12 @@ type Props = {
    * @type {number}
    */
   minRows: number;
+
+  /**
+   *
+   * @type {Function}
+   */
+  onAddRows: () => void;
 
   /**
    * @type {Function}
@@ -91,9 +93,9 @@ const EnhancedTableBody = (props: Props) => {
     data,
     isFilter,
     isLoading,
-    loadData,
     loadFilters,
     minRows,
+    onAddRows,
     onSave,
     page,
     rowsPerPage
@@ -106,6 +108,12 @@ const EnhancedTableBody = (props: Props) => {
   const styles = {
     input: {
       fontSize: 13
+    },
+    dateWidth: {
+      minWitdh: 150
+    },
+    detailsWidth: {
+      minWidth: 200
     },
     // 49px is the size of one row
     emptyRow: {
@@ -138,25 +146,6 @@ const EnhancedTableBody = (props: Props) => {
     },
     [changeFilters]
   );
-
-  // TODO: Later we want to concatenate the empty rows to the initial data
-  const onAddRows = useCallback(() => {
-    const emptyRows = [];
-
-    for (let i = 0; i < 50; i++) {
-      emptyRows.push({
-        id: i,
-        date: new Date(),
-        type: '',
-        category: '',
-        details: '',
-        description: '',
-        price: 0
-      });
-    }
-
-    loadData(emptyRows);
-  }, [loadData]);
 
   return (
     <TableBody>
@@ -233,7 +222,10 @@ const EnhancedTableBody = (props: Props) => {
                       component={FinalTextField}
                       value="details"
                       fullWidth
-                      InputProps={{ style: styles.input, disableUnderline: true }}
+                      InputProps={{
+                        style: { ...styles.input, ...styles.detailsWidth },
+                        disableUnderline: true
+                      }}
                     />
                   </TableCell>
 
@@ -244,7 +236,10 @@ const EnhancedTableBody = (props: Props) => {
                       component={FinalTextField}
                       value="description"
                       fullWidth
-                      InputProps={{ style: styles.input, disableUnderline: true }}
+                      InputProps={{
+                        style: { ...styles.input, ...styles.dateWidth },
+                        disableUnderline: true
+                      }}
                     />
                   </TableCell>
 
@@ -269,12 +264,13 @@ const EnhancedTableBody = (props: Props) => {
       {currentRows < minRows && (
         <TableRow style={styles.emptyRow}>
           <TableCell colSpan={6} align="center">
-            {!data.length && !isLoading && (
+            {isLoading ? (
+              <LinearProgress />
+            ) : (
               <Button color="primary" onClick={onAddRows} size="large" variant="outlined">
                 {'Add Rows'}
               </Button>
             )}
-            {isLoading && <LinearProgress />}
           </TableCell>
         </TableRow>
       )}
@@ -297,5 +293,5 @@ const mapStateToProps = (state: AppState) => ({
 
 export default connect(
   mapStateToProps,
-  { loadData, loadFilters }
+  { loadFilters }
 )(EnhancedTableBody);

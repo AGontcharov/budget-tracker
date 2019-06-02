@@ -81,29 +81,52 @@ const BudgetTable = (props: Props) => {
     loadData(transactions);
   }, 1000);
 
+  const onAddRows = useCallback(() => {
+    let transactions = cloneDeep(data);
+    const emptyRows = [];
+
+    for (let i = 0; i < 50; i++) {
+      emptyRows.push({
+        id: data.length + i,
+        date: new Date(),
+        type: '',
+        category: '',
+        details: '',
+        description: '',
+        price: 0
+      });
+    }
+
+    loadData(transactions.concat(emptyRows));
+  }, [loadData]);
+
   return (
     // TODO: Alternating Table color scheme?
     <Paper className={classes.paper}>
-      <div ref={tableRef} className={classes.tableWrapper}>
-        <EnhancedToolBar onFilterClicked={onFilterClicked} />
-      </div>
+      <div className={classes.tableWrapper}>
+        {/* Scroll up to the toolbar */}
+        <div ref={tableRef}>
+          <EnhancedToolBar onFilterClicked={onFilterClicked} />
+        </div>
 
-      <Table aria-labelledby="tableTitle">
-        <EnhancedTableHead />
-        <EnhancedTableBody
-          isFilter={isFilter}
-          minRows={10}
-          onSave={onSave}
-          page={page}
-          rowsPerPage={rowsPerPage}
-        />
-        <EnhancedTableFooter
-          onChangePage={onChangePage}
-          onChangeRowsPerPage={onChangeRowsPerPage}
-          page={page}
-          rowsPerPage={rowsPerPage}
-        />
-      </Table>
+        <Table aria-labelledby="tableTitle">
+          <EnhancedTableHead />
+          <EnhancedTableBody
+            onAddRows={onAddRows}
+            isFilter={isFilter}
+            minRows={10}
+            onSave={onSave}
+            page={page}
+            rowsPerPage={rowsPerPage}
+          />
+          <EnhancedTableFooter
+            onChangePage={onChangePage}
+            onChangeRowsPerPage={onChangeRowsPerPage}
+            page={page}
+            rowsPerPage={rowsPerPage}
+          />
+        </Table>
+      </div>
     </Paper>
   );
 };

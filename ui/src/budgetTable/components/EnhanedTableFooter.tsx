@@ -62,7 +62,7 @@ const EnhancedTableFooter = (props: Props) => {
   return (
     <TableFooter>
       <TableRow>
-        <TableCell colSpan={6} size="medium" align="right">
+        <TableCell colSpan={6} size="medium" align="right" style={{ border: 'none' }}>
           <FormControl margin="dense">
             <InputLabel htmlFor="adornment-amount">{'Amount'}</InputLabel>
             <Input
@@ -80,7 +80,7 @@ const EnhancedTableFooter = (props: Props) => {
           page={page}
           onChangePage={onChangePage}
           rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[10, 25, 50, 100]}
+          rowsPerPageOptions={[5, 10, 25, 50, 100]}
           onChangeRowsPerPage={onChangeRowsPerPage}
           ActionsComponent={TablePaginationActions}
         />
