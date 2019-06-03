@@ -7,11 +7,13 @@ import TextField from '@material-ui/core/TextField';
 type FinalTextFieldProps = {
   input: any;
   meta: any;
+  InputProps?: any;
 };
 
 const FinalTextField = ({
   input: { name, onChange, value, ...restInput },
   meta,
+  InputProps,
   ...rest
 }: FinalTextFieldProps) => {
   const showError =
@@ -23,7 +25,9 @@ const FinalTextField = ({
       name={name}
       error={showError}
       helperText={showError ? meta.error || meta.submitError : undefined}
-      inputProps={restInput}
+      // This was causing Material UI TextField to lose the focus behavior
+      // inputProps={restInput}
+      InputProps={{ ...InputProps, ...restInput }}
       onChange={onChange}
       value={value}
       {...rest}
