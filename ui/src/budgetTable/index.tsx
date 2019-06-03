@@ -120,14 +120,14 @@ const BudgetTable = (props: Props) => {
             page={page}
             rowsPerPage={rowsPerPage}
           />
-          <EnhancedTableFooter
-            onChangePage={onChangePage}
-            onChangeRowsPerPage={onChangeRowsPerPage}
-            page={page}
-            rowsPerPage={rowsPerPage}
-          />
         </Table>
       </div>
+      <EnhancedTableFooter
+        onChangePage={onChangePage}
+        onChangeRowsPerPage={onChangeRowsPerPage}
+        page={page}
+        rowsPerPage={rowsPerPage}
+      />
     </Paper>
   );
 };

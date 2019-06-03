@@ -2,14 +2,12 @@ import React, { MouseEvent, ChangeEvent } from 'react';
 import { connect } from 'react-redux';
 
 // Material UI
+import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
-import TableCell from '@material-ui/core/TableCell';
-import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
 
 // Custom Components
 import TablePaginationActions from 'budgetTable/components/TablePaginationActions';
@@ -52,40 +50,49 @@ type Props = {
   rowsPerPage: number;
 };
 
+const useStyles = makeStyles(theme => ({
+  amount: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    margin: theme.spacing(0, 2)
+  }
+}));
+
+// TableFooter is not imported because this component needs to exist outside the table
+// So that the table pagination actions and input do not overflow
 const EnhancedTableFooter = (props: Props) => {
   const { data, onChangeRowsPerPage, onChangePage, page, rowsPerPage } = props;
+  const classes = useStyles();
 
   const amount = data.reduce((accumulator, row) => {
     return accumulator + row.price;
   }, 0);
 
   return (
-    <TableFooter>
-      <TableRow>
-        <TableCell colSpan={6} size="medium" align="right" style={{ border: 'none' }}>
-          <FormControl margin="dense">
-            <InputLabel htmlFor="adornment-amount">{'Amount'}</InputLabel>
-            <Input
-              id="adornment-amount"
-              value={amount < 0 ? `(${Math.abs(amount).toFixed(2)})` : amount.toFixed(2)}
-              readOnly
-              startAdornment={<InputAdornment position="start">{'$'}</InputAdornment>}
-            />
-          </FormControl>
-        </TableCell>
-      </TableRow>
-      <TableRow>
-        <TablePagination
-          count={data.length}
-          page={page}
-          onChangePage={onChangePage}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[5, 10, 25, 50, 100]}
-          onChangeRowsPerPage={onChangeRowsPerPage}
-          ActionsComponent={TablePaginationActions}
-        />
-      </TableRow>
-    </TableFooter>
+    <>
+      <div className={classes.amount}>
+        <FormControl margin="normal">
+          <InputLabel htmlFor="adornment-amount">{'Amount'}</InputLabel>
+          <Input
+            id="adornment-amount"
+            value={amount < 0 ? `(${Math.abs(amount).toFixed(2)})` : amount.toFixed(2)}
+            readOnly
+            startAdornment={<InputAdornment position="start">{'$'}</InputAdornment>}
+          />
+        </FormControl>
+      </div>
+
+      <TablePagination
+        count={data.length}
+        component="div"
+        page={page}
+        onChangePage={onChangePage}
+        rowsPerPage={rowsPerPage}
+        rowsPerPageOptions={[5, 10, 25, 50, 100]}
+        onChangeRowsPerPage={onChangeRowsPerPage}
+        ActionsComponent={TablePaginationActions}
+      />
+    </>
   );
 };
 
