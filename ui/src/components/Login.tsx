@@ -30,20 +30,35 @@ type Props = {
   onClose: () => void;
 };
 
-const Login = (props: Props) => {
-  const { onClose } = props;
+const Login = ({ onClose }: Props) => {
   const [isRegister, setRegister] = useState(false);
 
   const onSubmit = useCallback(
     async (values: { username?: string; password?: string }) => {
       try {
-        console.log(values);
-        const response = await fetch('/login', { method: 'POST' });
-        console.log(response);
-      } catch (error) {}
-      onClose();
+        const response = isRegister
+          ? await fetch('/api/user', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(values)
+            })
+          : await fetch('/api/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(values)
+            });
+
+        if (!response.ok) {
+          throw response;
+        }
+
+        console.log(await response.json());
+        onClose();
+      } catch (error) {
+        console.log(await error.json());
+      }
     },
-    [onClose]
+    [onClose, isRegister]
   );
 
   const toggleRegistration = useCallback(() => {
@@ -113,7 +128,12 @@ const Login = (props: Props) => {
                   <DialogContentText>
                     {'Already have an account?'}
                     &nbsp;
-                    <Link component="button" onClick={toggleRegistration} variant="body1">
+                    <Link
+                      component="button"
+                      type="button"
+                      onClick={toggleRegistration}
+                      variant="body1"
+                    >
                       {'Login'}
                     </Link>
                   </DialogContentText>
@@ -171,7 +191,12 @@ const Login = (props: Props) => {
                   <DialogContentText>
                     {'Not registered?'}
                     &nbsp;
-                    <Link component="button" onClick={toggleRegistration} variant="body1">
+                    <Link
+                      component="button"
+                      type="button"
+                      onClick={toggleRegistration}
+                      variant="body1"
+                    >
                       {'Create an Account'}
                     </Link>
                   </DialogContentText>

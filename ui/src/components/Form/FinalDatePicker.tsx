@@ -16,11 +16,12 @@ const FinalDatePicker = (props: Props) => {
 
   return (
     <DatePicker
-      {...rest}
       name={name}
       format="MMM E dd yyyy"
       onChange={onChange}
       value={value === '' ? null : value}
+      InputProps={{ ...restInput }}
+      {...rest}
     />
   );
 };

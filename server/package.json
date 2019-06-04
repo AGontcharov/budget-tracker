@@ -21,6 +21,9 @@
   },
   "homepage": "https://github.com/AGontcharov/budget-tracker#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "bcrypt": "^3.0.6",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.2.6"
   }
 }
