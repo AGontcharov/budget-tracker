@@ -5,7 +5,7 @@ let db;
 // TODO: Look up database pool connection
 module.exports = {
   connect: MongoClient.connect(
-    "mongodb://localhost:27017/Transactions",
+    "mongodb://mongo:27017/Transactions",
     { useNewUrlParser: true },
     (err, client) => {
       if (err) throw err;
