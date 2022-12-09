@@ -22,7 +22,7 @@
   "homepage": "https://github.com/AGontcharov/budget-tracker#readme",
   "dependencies": {
     "bcrypt": "^3.0.6",
-    "express": "^4.16.4",
+    "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.2.6"
   }
